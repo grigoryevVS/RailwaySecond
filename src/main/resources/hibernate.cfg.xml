@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+
+        <mapping class="ru.javaschool.model.entities.EmployeeData" />
+        <mapping class="ru.javaschool.model.entities.Passenger" />
+        <mapping class="ru.javaschool.model.entities.Route" />
+        <mapping class="ru.javaschool.model.entities.Schedule" />
+        <mapping class="ru.javaschool.model.entities.Station" />
+        <mapping class="ru.javaschool.model.entities.StationDistance" />
+        <mapping class="ru.javaschool.model.entities.StationDistanceEPK" />
+        <mapping class="ru.javaschool.model.entities.Ticket" />
+        <mapping class="ru.javaschool.model.entities.Train" />
+    </session-factory>
+</hibernate-configuration>

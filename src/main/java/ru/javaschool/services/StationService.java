@@ -15,16 +15,19 @@ public class StationService {
     StationDao stationDao;
 
     @Transactional
+    @SuppressWarnings("unchecked")
     public List<Station> getAllStations() {
-        return stationDao.findAll();
+        return stationDao.findAll(Station.class);
     }
 
     @Transactional
+    @SuppressWarnings("unchecked")
     public void createStation(Station station) {
         stationDao.create(station);
     }
 
     @Transactional
+    @SuppressWarnings("unchecked")
     public void deleteStation(Long key){
         stationDao.deleteObject(Station.class, key );
     }

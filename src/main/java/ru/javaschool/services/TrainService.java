@@ -16,16 +16,19 @@ public class TrainService {
     TrainDao trainDao;
 
     @Transactional
+    @SuppressWarnings("unchecked")
     public List<Train> getAllTrains() {
-        return trainDao.findAll();
+        return trainDao.findAll(Train.class);
     }
 
     @Transactional
+    @SuppressWarnings("unchecked")
     public void createTrain(Train train) {
         trainDao.create(train);
     }
 
     @Transactional
+    @SuppressWarnings("unchecked")
     public void deleteTrain(Long key){
         trainDao.deleteObject(Train.class, key );
     }

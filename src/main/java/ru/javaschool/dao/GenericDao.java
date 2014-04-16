@@ -23,16 +23,15 @@ public abstract class GenericDao<T extends Serializable, PK extends Serializable
     public T findByPK(Class<T> entity, final PK key) {
         return (T) sessionFactory.getCurrentSession().get(entity, key);
     }
-
-    @SuppressWarnings("unchecked")
+   @SuppressWarnings("unchecked")
     public List<T> findAll(Class<T> entityClass){
         return sessionFactory.getCurrentSession().createQuery("FROM " + entityClass.getSimpleName()).list();
     }
 
 
     @SuppressWarnings("unchecked")
-    public T update(final T t){
-        return (T) sessionFactory.getCurrentSession().merge(t);
+    public void update(final T t){
+        sessionFactory.getCurrentSession().update(t);
     }
 
     public void delete(final T t){

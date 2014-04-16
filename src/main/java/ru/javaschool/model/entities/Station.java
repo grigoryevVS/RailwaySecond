@@ -13,7 +13,7 @@ public class Station implements Serializable {
 
     @Id
     @GeneratedValue
-    private long stationId;
+    private Long stationId;
     @Column(nullable = false, length = 30)
     private String name;
 
@@ -21,7 +21,7 @@ public class Station implements Serializable {
         return stationId;
     }
 
-    public void setStationId(long stationId) {
+    public void setStationId(Long stationId) {
         this.stationId = stationId;
     }
 

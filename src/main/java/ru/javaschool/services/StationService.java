@@ -31,4 +31,16 @@ public class StationService {
     public void deleteStation(Long key){
         stationDao.deleteObject(Station.class, key );
     }
+
+    @Transactional
+    @SuppressWarnings("unchecked")
+    public void updateStation(Station station) {
+        stationDao.update(station);
+    }
+
+    @Transactional
+    @SuppressWarnings("unchecked")
+    public Station findStation(Long key) {
+        return (Station) stationDao.findByPK(Station.class, key);
+    }
 }

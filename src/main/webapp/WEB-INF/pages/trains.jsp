@@ -1,7 +1,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ include file="header.jsp" %>
 
-<h2>Add a new train:</h2>
+<h2>Add a new train</h2>
 
 <form:form method="post" action="createTrain" commandName="train">
 

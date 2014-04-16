@@ -1,14 +1,9 @@
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ include file="header.jsp" %>
 
-<h2>Add a new station:</h2>
-
-<form:form method="post" action="createStation" commandName="station">
+<form:form method="post" action="create" commandName="station">
 
     <table>
-        <tr>
-            <td>Name </td><form:input path="name"></form:input>
-        </tr>
         <tr>
             <td colspan="2">
                 <input type="submit" value="Add station"/>
@@ -19,19 +14,20 @@
 
 
 <h3>Stations:</h3>
-<c:if  test="${!empty stationList}">
-<table>
-    <tr>
-        <th>id</th>
-        <th>Name</th>
-        <th>&nbsp;</th>
-    </tr>
-    <c:forEach items="${stationList}" var="station">
+<c:if test="${!empty stationList}">
+    <table>
         <tr>
-            <td>${station.stationId}</td>
-            <td>${station.name}</td>
-            <td><a href="delete/${station.stationId}">delete</a></td>
+            <th>id</th>
+            <th>Name</th>
+            <th>&nbsp;</th>
         </tr>
-    </c:forEach>
-</table>
+        <c:forEach items="${stationList}" var="station">
+            <tr>
+                <td>${station.stationId}</td>
+                <td>${station.name}</td>
+                <td><a href="update/${station.stationId}">update</a></td>
+                <td><a href="delete/${station.stationId}">delete</a></td>
+            </tr>
+        </c:forEach>
+    </table>
 </c:if>

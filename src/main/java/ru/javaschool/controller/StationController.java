@@ -17,21 +17,40 @@ public class StationController {
     private StationService stationService;
 
     @RequestMapping("/stations")
-    public String getStationList(Model model) {
+    public String getList(Model model) {
         model.addAttribute("station", new Station());
         model.addAttribute("stationList", stationService.getAllStations());
-        return "/stations";
+        return "stations";
     }
 
-    @RequestMapping(value = "/createStation", method = RequestMethod.POST)
-    public String createStation(@ModelAttribute("station")Station station) {
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String create(Model model) {
+        model.addAttribute("station", new Station());
+        return "create";
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String add(@ModelAttribute("station")Station station) {
         stationService.createStation(station);
         return "redirect:/stations";
     }
 
-    @RequestMapping(value = "/deleteStation/{stationId}")
-    public String deleteStation(@PathVariable("stationId") Long stationId){
+    @RequestMapping("/delete/{stationId}")
+    public String delete(@PathVariable("stationId") Long stationId){
         stationService.deleteStation(stationId);
+        return "redirect:/stations";
+    }
+
+    @RequestMapping("/update/{stationId}")
+    public String update(@PathVariable("stationId") Long id,
+                         Model model) {
+        model.addAttribute("station", stationService.findStation(id));
+        return "update";
+    }
+
+    @RequestMapping(value = "/refresh", method = RequestMethod.POST)
+    public String refresh(@ModelAttribute("station")Station station) {
+        stationService.updateStation(station);
         return "redirect:/stations";
     }
 }

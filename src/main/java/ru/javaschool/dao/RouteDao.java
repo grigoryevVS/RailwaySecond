@@ -17,5 +17,4 @@ public class RouteDao<Route, Long> extends GenericDao{
     @Autowired
     private SessionFactory sessionFactory;
 
-
 }

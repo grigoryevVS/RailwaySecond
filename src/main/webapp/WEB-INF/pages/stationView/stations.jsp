@@ -1,5 +1,5 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<%@ include file="header.jsp" %>
+<%@ include file="../header.jsp" %>
 
 <form:form method="post" action="create" commandName="station">
 
@@ -13,11 +13,11 @@
 </form:form>
 
 
-<h3>Stations:</h3>
+<h3>Stations</h3>
 <c:if test="${!empty stationList}">
     <table>
         <tr>
-            <th>id</th>
+            <th>StationId</th>
             <th>Name</th>
             <th>&nbsp;</th>
         </tr>

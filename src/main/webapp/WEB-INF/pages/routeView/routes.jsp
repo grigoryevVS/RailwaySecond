@@ -1,5 +1,5 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@ include file="header.jsp" %>
+<%@ include file="../header.jsp" %>
 
 <h2>Add a new route</h2>
 

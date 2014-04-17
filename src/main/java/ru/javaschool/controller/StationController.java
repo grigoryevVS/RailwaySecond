@@ -11,46 +11,50 @@ import ru.javaschool.model.entities.Station;
 import ru.javaschool.services.StationService;
 
 @Controller
+@RequestMapping("/stationView")
 public class StationController {
 
     @Autowired
     private StationService stationService;
 
     @RequestMapping("/stations")
-    public String getList(Model model) {
+    public String getStationList(Model model) {
         model.addAttribute("station", new Station());
         model.addAttribute("stationList", stationService.getAllStations());
-        return "stations";
+        return "stationView/stations";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(Model model) {
         model.addAttribute("station", new Station());
-        return "create";
+        return "stationView/create";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String add(@ModelAttribute("station")Station station) {
-        stationService.createStation(station);
-        return "redirect:/stations";
+    public String add(@ModelAttribute("station") Station station) {
+        if(stationService.createStation(station)){
+        return "redirect:/stationView/stations";
+        } else {
+            return "redirect:/stationView/stations";    // TODO  create error page, will be include info about double entty and button home.
+        }
     }
 
     @RequestMapping("/delete/{stationId}")
-    public String delete(@PathVariable("stationId") Long stationId){
+    public String delete(@PathVariable("stationId") Long stationId) {
         stationService.deleteStation(stationId);
-        return "redirect:/stations";
+        return "redirect:/stationView/stations";
     }
 
     @RequestMapping("/update/{stationId}")
-    public String update(@PathVariable("stationId") Long id,
+    public String update(@PathVariable("stationId") Long stationId,
                          Model model) {
-        model.addAttribute("station", stationService.findStation(id));
-        return "update";
+        model.addAttribute("station", stationService.findStation(stationId));
+        return "stationView/update";
     }
 
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
-    public String refresh(@ModelAttribute("station")Station station) {
+    public String refresh(@ModelAttribute("station") Station station) {
         stationService.updateStation(station);
-        return "redirect:/stations";
+        return "redirect:/stationView/stations";
     }
 }

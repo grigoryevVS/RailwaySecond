@@ -1,14 +1,9 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@ include file="header.jsp" %>
+<%@ include file="../header.jsp" %>
 
-<h2>Add a new train</h2>
-
-<form:form method="post" action="createTrain" commandName="train">
+<form:form method="post" action="create" commandName="train">
 
     <table>
-        <tr>
-            <td>Name </td><form:input path="name"></form:input>
-        </tr>
         <tr>
             <td colspan="2">
                 <input type="submit" value="Add train"/>
@@ -18,18 +13,21 @@
 </form:form>
 
 
-<h3>Trains:</h3>
+<h3>Trains</h3>
 <c:if  test="${!empty trainList}">
     <table>
         <tr>
-            <th>id</th>
+            <th>TrainId</th>
             <th>Name</th>
+            <th>Capacity</th>
             <th>&nbsp;</th>
         </tr>
         <c:forEach items="${trainList}" var="train">
             <tr>
                 <td>${train.trainId}</td>
                 <td>${train.name}</td>
+                <td>${train.numberOfSeats}</td>
+                <td><a href="update/${train.trainId}">update</a></td>
                 <td><a href="delete/${train.trainId}">delete</a></td>
             </tr>
         </c:forEach>

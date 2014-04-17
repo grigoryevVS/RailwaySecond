@@ -6,10 +6,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>Update station stationId ${station.stationId}</title>
+    <title>update station stationId ${station.stationId}</title>
 </head>
 <body>
-<form:form method="post" action="${pageContext.request.contextPath}/refresh" commandName="station">
+<form:form method="post" action="${pageContext.request.contextPath}/stationView/refresh" commandName="station">
     <form:label path="name">Name</form:label>
     <form:input path="name" />
     <form:hidden path="stationId"/>

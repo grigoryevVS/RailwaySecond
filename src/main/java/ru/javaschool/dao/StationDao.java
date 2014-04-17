@@ -14,14 +14,14 @@ public class StationDao extends GenericDao {
     private SessionFactory sessionFactory;
 
     /**
-     * Find existence of station passed as parameter in the database
+     * Find existence of station ,which name passed as parameter, in the database
      *
-     * @param station - concrete station to check its existence
+     * @param name - concrete stations name to check its existence
      * @return - true if it is exist, false another way.
      */
     @SuppressWarnings("unchecked")
-    public boolean isStationExist(Station station) {
-        List<Station> stationList = (List<Station>) sessionFactory.getCurrentSession().createQuery("from Station where name='"+ station.getName() + "'").list();
+    public boolean isStationExist(String name) {
+        List<Station> stationList = (List<Station>) sessionFactory.getCurrentSession().createQuery("from Station where name='" + name + "'").list();
         return (!stationList.isEmpty());
     }
 

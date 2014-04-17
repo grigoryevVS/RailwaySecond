@@ -8,7 +8,7 @@ import ru.javaschool.model.entities.Station;
 import java.util.List;
 
 @Repository
-public class StationDistanceDao {
+public class StationDistanceDao extends GenericDao {
 
     @Autowired
     private SessionFactory sessionFactory;

@@ -62,18 +62,29 @@ public class TrainService {
     public void deleteTrain(Long key) {
         Train train = (Train) trainDao.findByPK(Train.class, key);
         if (train != null) {
-            if (!scheduleDao.isTrainInSchedule(train)) {
+            if (!scheduleDao.isTrainInSchedule(key)) {
                 trainDao.delete(train);
             }
         }
     }
 
 
+    /**
+     * Update target trains name and/or capacity.
+     *
+     * @param train - target train to update.
+     */
     @SuppressWarnings("unchecked")
     public void updateTrain(Train train) {
         trainDao.update(train);
     }
 
+    /**
+     * Find train by its primary key.
+     *
+     * @param key - primary key.
+     * @return - instance of target train.
+     */
     @SuppressWarnings("unchecked")
     public Train findTrain(Long key) {
         return (Train) trainDao.findByPK(Train.class, key);

@@ -19,6 +19,11 @@ public class StationService {
     @Autowired
     StationDistanceDao distanceDao;
 
+    /**
+     * Get all stations from the database.
+     *
+     * @return - list of stations.
+     */
     @SuppressWarnings("unchecked")
     public List<Station> getAllStations() {
         return stationDao.findAll(Station.class);
@@ -33,7 +38,7 @@ public class StationService {
      */
     @SuppressWarnings("unchecked")
     public boolean createStation(Station station) {
-        if (stationDao.isStationExist(station)) {
+        if (stationDao.isStationExist(station.getName())) {
             return false;
         } else {
             stationDao.create(station);
@@ -56,18 +61,30 @@ public class StationService {
         Station station = (Station) stationDao.findByPK(Station.class, key);
         if (station != null) {
             if (!distanceDao.isStationDistance(station)) {
-                stationDao.deleteObject(Station.class, key);
+                stationDao.delete(station);
                 return true;
             }
         }
         return false;
     }
 
+    /**
+     * Update station name.
+     *
+     * @param station - concrete station, with unique contain key,
+     *                and changed name.
+     */
     @SuppressWarnings("unchecked")
     public void updateStation(Station station) {
         stationDao.update(station);
     }
 
+    /**
+     * Find station in the database.
+     *
+     * @param key - primary key of target station in the database
+     * @return - instance of target station.
+     */
     @SuppressWarnings("unchecked")
     public Station findStation(Long key) {
         return (Station) stationDao.findByPK(Station.class, key);

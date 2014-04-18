@@ -25,4 +25,15 @@ public class StationDao extends GenericDao {
         return (!stationList.isEmpty());
     }
 
+    /**
+     * Get station by name from the database.
+     *
+     * @param name - target name
+     * @return - instance of target station.
+     */
+    public Station findByName(String name) {
+        return (Station) sessionFactory.getCurrentSession().createQuery("from Station where name=" + name).uniqueResult();
+
+    }
+
 }

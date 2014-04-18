@@ -24,6 +24,7 @@ public class TrainController {
 
     /**
      * Get all trains from database.
+     *
      * @param model - model of parameters, which will be used in the service layer.
      * @return - concrete url of jsp which will be redirected to.
      */
@@ -36,6 +37,7 @@ public class TrainController {
 
     /**
      * This method, open new page, where will be create train.
+     *
      * @param model - web model of view
      * @return - needed url, which will return.
      */
@@ -47,12 +49,13 @@ public class TrainController {
 
     /**
      * Create train in the database, if it is not exists yet.
+     *
      * @param train - concrete train, which we need to input.
      * @return - redirection url, which will be appear i the browser.
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addTrain(@ModelAttribute("train")Train train) {
-        if(trainService.createTrain(train)){
+    public String addTrain(@ModelAttribute("train") Train train) {
+        if (trainService.createTrain(train)) {
             return "redirect:/trainView/trains";
         } else {
             return "redirect:/trainView/trains";    // TODO  create error page, will be include info about double entty and button home.
@@ -61,30 +64,33 @@ public class TrainController {
 
     /**
      * delete concrete train from the database.
+     *
      * @param trainId - passed from the jsp, by what primary key will be deleted train.
      * @return - redirection jsp view, which will be appear when delete acts.
      */
     @RequestMapping(value = "/delete/{trainId}")
-    public String deleteTrain(@PathVariable("trainId") Long trainId){
+    public String deleteTrain(@PathVariable("trainId") Long trainId) {
         trainService.deleteTrain(trainId);
         return "redirect:/trainView/trains";
     }
 
     /**
      * Update train, opens page with concrete form.
+     *
      * @param trainId - to update entity, its primary key
-     * @param model - model of view
+     * @param model   - model of view
      * @return -  url.
      */
     @RequestMapping(value = "/update/{trainId}")
     public String updateTrain(@PathVariable("trainId") Long trainId,
-                         Model model) {
+                              Model model) {
         model.addAttribute("train", trainService.findTrain(trainId));
         return "trainView/update";
     }
 
     /**
      * Refresh, updating train in the database, redirects to main page
+     *
      * @param train - concrete train, which we need to update.
      * @return - redirecting url.
      */

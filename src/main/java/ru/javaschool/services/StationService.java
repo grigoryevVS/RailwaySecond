@@ -60,7 +60,7 @@ public class StationService {
     public boolean deleteStation(Long key) {
         Station station = (Station) stationDao.findByPK(Station.class, key);
         if (station != null) {
-            if (!distanceDao.isStationDistance(station)) {
+            if (!distanceDao.isStationDistance(key)) {
                 stationDao.delete(station);
                 return true;
             }
@@ -88,5 +88,15 @@ public class StationService {
     @SuppressWarnings("unchecked")
     public Station findStation(Long key) {
         return (Station) stationDao.findByPK(Station.class, key);
+    }
+
+    /**
+     * Get station by name from the database.
+     *
+     * @param stationName - target name
+     * @return - instance of target station.
+     */
+    public Station getStationByName(String stationName) {
+        return stationDao.findByName(stationName);
     }
 }

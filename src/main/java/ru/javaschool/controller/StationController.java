@@ -17,6 +17,12 @@ public class StationController {
     @Autowired
     private StationService stationService;
 
+    /**
+     * Get station list.
+     *
+     * @param model - model of view.
+     * @return - target url
+     */
     @RequestMapping("/stations")
     public String getStationList(Model model) {
         model.addAttribute("station", new Station());
@@ -24,36 +30,68 @@ public class StationController {
         return "stationView/stations";
     }
 
+    /**
+     * Apply new url, which will be the form,
+     * to set needed fields, to create station.
+     *
+     * @param model - - model of view.
+     * @return - target url
+     */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model) {
+    public String createStation(Model model) {
         model.addAttribute("station", new Station());
         return "stationView/create";
     }
 
+    /**
+     * Create new station and redirect us to central view.
+     *
+     * @param station - target station to be created
+     * @return - redirect url.
+     */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String add(@ModelAttribute("station") Station station) {
-        if(stationService.createStation(station)){
-        return "redirect:/stationView/stations";
+    public String addStation(@ModelAttribute("station") Station station) {
+        if (stationService.createStation(station)) {
+            return "redirect:/stationView/stations";
         } else {
             return "redirect:/stationView/stations";    // TODO  create error page, will be include info about double entty and button home.
         }
     }
 
+    /**
+     * Delete station from the database
+     *
+     * @param stationId - targets identifier
+     * @return - redirect url.
+     */
     @RequestMapping("/delete/{stationId}")
-    public String delete(@PathVariable("stationId") Long stationId) {
+    public String deleteStation(@PathVariable("stationId") Long stationId) {
         stationService.deleteStation(stationId);
         return "redirect:/stationView/stations";
     }
 
+    /**
+     * Throw us to the update form
+     *
+     * @param stationId - targets identifier
+     * @param model     - model of view.
+     * @return - target url.
+     */
     @RequestMapping("/update/{stationId}")
-    public String update(@PathVariable("stationId") Long stationId,
-                         Model model) {
+    public String updateStation(@PathVariable("stationId") Long stationId,
+                                Model model) {
         model.addAttribute("station", stationService.findStation(stationId));
         return "stationView/update";
     }
 
+    /**
+     * Update station
+     *
+     * @param station - target station to update
+     * @return - redirect url.
+     */
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
-    public String refresh(@ModelAttribute("station") Station station) {
+    public String refreshStation(@ModelAttribute("station") Station station) {
         stationService.updateStation(station);
         return "redirect:/stationView/stations";
     }

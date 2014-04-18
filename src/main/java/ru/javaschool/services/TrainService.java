@@ -18,7 +18,7 @@ import java.util.List;
 public class TrainService {
 
     /**
-     * Autowired dao layer class, which implements working with database.
+     * Autowired dao layer classes, which implements working with database.
      */
     @Autowired
     TrainDao trainDao;

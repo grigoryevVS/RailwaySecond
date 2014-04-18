@@ -4,6 +4,9 @@ package ru.javaschool.model.criteria;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * Class contains of constraint fields of schedule.
+ */
 public class ScheduleConstraints implements Serializable{
 
     private static final long serialVersionUID = 8416702862541712658L;

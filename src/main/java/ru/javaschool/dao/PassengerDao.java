@@ -15,10 +15,10 @@ public class PassengerDao extends GenericDao{
 
     /**
      * This method checks passenger registration, did he already
-     * registered as a passenger once.
+     * registered as a passenger or not yet.
      *
      * @param passenger - target passenger to check.
-     * @return - true, if he already exist in the database, else return false.
+     * @return - true, if target passenger already exist in the database, else return false.
      */
     @SuppressWarnings("unchecked")
     public boolean isRegistrationPass(Passenger passenger) {

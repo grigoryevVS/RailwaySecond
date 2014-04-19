@@ -19,6 +19,7 @@ public class ScheduleDao extends GenericDao {
 
     /**
      * Get list of schedules, with date constraints.
+     *
      * @param date - target constraints
      * @return - list of schedules.
      */
@@ -31,7 +32,7 @@ public class ScheduleDao extends GenericDao {
      * This method getting set of schedules, with constraints from and/or to stations.
      *
      * @param from - station from will depart target train.
-     * @param to - station where will arrive target train.
+     * @param to   - station where will arrive target train.
      * @return - set of schedules, which are satisfy the conditions.
      */
     public Set<Schedule> getScheduleSetByStation(String from, String to) {  // TODO wrong, passed parameters from first part!
@@ -73,6 +74,7 @@ public class ScheduleDao extends GenericDao {
 
     /**
      * Checks existence of train in schedule.
+     * Used by trainService method deleteTrain - if exist, it can't be deleted.
      *
      * @param key - trainId, by which will be execute search.
      * @return - true, if it was found, else return false.
@@ -85,6 +87,7 @@ public class ScheduleDao extends GenericDao {
 
     /**
      * Checks existence of route in schedule.
+     * Used by routeService method routeDelete - if exist. it can't be deleted.
      *
      * @param key - routeId, by which will be execute search.
      * @return - true, if it was found, else return false.

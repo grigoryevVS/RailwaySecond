@@ -9,7 +9,7 @@
         <td align="center"><h2><a href="${pageContext.request.contextPath}/logInView/authorization">Authorization</a></h2> </td>
         <td align="center"><h2><a href="${pageContext.request.contextPath}/stationView/stations">Station management</a></h2> </td>
         <td align="center"><h2><a href="${pageContext.request.contextPath}/trainView/trains">Train management</a></h2> </td>
-        <%--<td align="center"><h2><a href="${pageContext.request.contextPath}/routeView/routes">Route management</a></h2> </td>--%>
+        <td align="center"><h2><a href="${pageContext.request.contextPath}/routeView/routes">Route management</a></h2> </td>
     </tr>
 </table>
 <br/>

@@ -22,7 +22,7 @@ public class TicketDao extends GenericDao {
 
     /**
      * Checks that ticket was already bought such passenger on concrete schedule.
-     * One passenger can have only one ticket on one schedule.
+     * One passenger can have only one ticket on concrete schedule.
      *
      * @param schedule  - target schedule
      * @param passenger - target passenger.
@@ -66,6 +66,11 @@ public class TicketDao extends GenericDao {
         return duration.isShorterThan(interval);
     }
 
+    /**
+     * Get all registered passengers on target train
+     * @param schedule - target schedule.
+     * @return - list
+     */
     @SuppressWarnings("unchecked")
     public List<Passenger> getAllPassengersOnTrain(Schedule schedule) {
         String queryString = "from Ticket where schedule=" + schedule;

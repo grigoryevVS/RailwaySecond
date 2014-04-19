@@ -53,7 +53,7 @@ public class TrainService {
     }
 
     /**
-     * Delete concrete train from the database,
+     * Delete target train from the database,
      * what train we need to delete passed as parameter.
      *
      * @param key - primary key( unique identifier of concrete train, to delete.

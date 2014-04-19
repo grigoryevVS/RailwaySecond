@@ -27,12 +27,12 @@ public class TicketService {
     private ScheduleDao scheduleDao;
 
     /**
-     * This method implements buying ticket on target schedule by target passenger.
-     * Before check ticket credentials, check was passenger buy ticket someday,
+     * This method implements buying ticket on target schedule by target passenger(both passes as a parameters).
+     * Before check ticket credentials, check was target passenger buy ticket on any schedule,
      * if he did it, such passenger already exist in the database,
      * else, it will be create.
-     * First checks, if passenger already bought ticket on this train,
-     * then checks, if train is already full,
+     * Then checks, if passenger already bought ticket on this train,
+     * checks, if train is already full,
      * and checks, if it is too late to buy tickets on this schedule,
      * it must be more then 10 minutes, before departure.
      *

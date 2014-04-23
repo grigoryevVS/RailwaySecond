@@ -6,24 +6,24 @@ import java.io.Serializable;
 public class StationDistanceEPK implements Serializable {
     private static final long serialVersionUID = 1312321L;
 
-    private Long route;
+    private Long routeId;
 
     private Long sequenceNumber;
 
     public StationDistanceEPK() {
 
     }
-    public StationDistanceEPK(Long routeId, Long sequenceNumber) {
-        this.route = routeId;
+    public StationDistanceEPK(Route route, Long sequenceNumber) {
+        this.routeId = route.getRouteId();
         this.sequenceNumber = sequenceNumber;
     }
 
     public Long getRoute() {
-        return route;
+        return routeId;
     }
 
-    public void setRoute(Long route) {
-        this.route = route;
+    public void setRoute(Route route) {
+        this.routeId = route.getRouteId();
     }
 
     public Long getSequenceNumber() {
@@ -42,14 +42,14 @@ public class StationDistanceEPK implements Serializable {
         StationDistanceEPK that = (StationDistanceEPK) o;
 
         if (sequenceNumber != that.sequenceNumber) return false;
-        if (route != null ? !route.equals(that.route) : that.route != null) return false;
+        if (routeId != null ? !routeId.equals(that.routeId) : that.routeId != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = route != null ? route.hashCode() : 0;
+        int result = routeId != null ? routeId.hashCode() : 0;
         result = 31 * result + sequenceNumber.intValue();
         return result;
     }

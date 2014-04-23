@@ -9,11 +9,9 @@ import java.util.Date;
 @IdClass(StationDistanceEPK.class)
 public class StationDistance implements Serializable {
 
-    private static final long serialVersionUID = -2478846496713769074L;
+    private static final Long serialVersionUID = -2478846496713769074L;
 
-    @Id
     @ManyToOne
-    @JoinColumn(name = "routeId")
     private Route route;
     @Id
     @Column

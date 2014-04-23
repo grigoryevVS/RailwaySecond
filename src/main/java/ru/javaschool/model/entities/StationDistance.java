@@ -18,7 +18,7 @@ public class StationDistance implements Serializable {
     @Id
     @Column
     @Min(1)
-    private int sequenceNumber;
+    private Long sequenceNumber;
     @ManyToOne
     private Station station;
     @Column
@@ -49,18 +49,21 @@ public class StationDistance implements Serializable {
         this.route = route;
     }
 
-    public int getSequenceNumber() {
+    public Long getSequenceNumber() {
         return sequenceNumber;
     }
 
-    public void setSequenceNumber(int sequenceNumber) {
+    public void setSequenceNumber(Long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
     }
 
     @Override
     public String toString() {
-        return
-                "key=" + route
-               ;
+        return "StationDistance{" +
+                "route=" + route +
+                ", sequenceNumber=" + sequenceNumber +
+                ", station=" + station +
+                ", appearTime=" + appearTime +
+                '}';
     }
 }

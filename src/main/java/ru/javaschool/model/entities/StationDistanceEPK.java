@@ -3,35 +3,34 @@ package ru.javaschool.model.entities;
 
 import java.io.Serializable;
 
-
 public class StationDistanceEPK implements Serializable {
     private static final long serialVersionUID = 1312321L;
 
-    private Route route;
+    private Long route;
 
-    private int sequenceNumber;
+    private Long sequenceNumber;
 
     public StationDistanceEPK() {
 
     }
-    public StationDistanceEPK(Route route, int sequenceNumber) {
-        this.route = route;
+    public StationDistanceEPK(Long routeId, Long sequenceNumber) {
+        this.route = routeId;
         this.sequenceNumber = sequenceNumber;
     }
 
-    public Route getRoute() {
+    public Long getRoute() {
         return route;
     }
 
-    public void setRoute(Route route) {
+    public void setRoute(Long route) {
         this.route = route;
     }
 
-    public int getSequenceNumber() {
+    public Long getSequenceNumber() {
         return sequenceNumber;
     }
 
-    public void setSequenceNumber(int sequenceNumber) {
+    public void setSequenceNumber(Long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
     }
 
@@ -51,7 +50,7 @@ public class StationDistanceEPK implements Serializable {
     @Override
     public int hashCode() {
         int result = route != null ? route.hashCode() : 0;
-        result = 31 * result + sequenceNumber;
+        result = 31 * result + sequenceNumber.intValue();
         return result;
     }
 }

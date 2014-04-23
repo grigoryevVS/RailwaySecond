@@ -4,15 +4,13 @@ package ru.javaschool.dao;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ru.javaschool.model.entities.Route;
 import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.model.entities.StationDistance;
-import ru.javaschool.model.entities.Train;
 
 import java.util.*;
 
 @Repository
-public class ScheduleDao extends GenericDao {
+public class ScheduleDao extends GenericDao<Schedule, Long> {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -81,20 +79,35 @@ public class ScheduleDao extends GenericDao {
      */
     @SuppressWarnings("unchecked")
     public boolean isTrainInSchedule(Long key) {
-        List<Train> trainList = sessionFactory.getCurrentSession().createQuery("from Schedule where train.trainId=" + key).list();
-        return (!trainList.isEmpty());
+        List<Schedule> scheduleList = sessionFactory.getCurrentSession().createQuery("from Schedule where train.trainId=" + key).list();
+        return (!scheduleList.isEmpty());
     }
 
     /**
-     * Checks existence of route in schedule.
-     * Used by routeService method routeDelete - if exist. it can't be deleted.
-     *
-     * @param key - routeId, by which will be execute search.
-     * @return - true, if it was found, else return false.
+     * Get schedule list, which contains target route
+     * method need to choose, what schedules need to be
+     * updated, if target route was updated.
+     * @param routeId - identifier of target route
+     * @return - list of concrete schedules to update.
      */
     @SuppressWarnings("unchecked")
-    public boolean isRouteInSchedule(Long key) {
-        List<Route> routeList = sessionFactory.getCurrentSession().createQuery("from Schedule where route.routeId=" + key).list();
-        return (!routeList.isEmpty());
+    public List<Schedule> getScheduleListByRoute(Long routeId){
+        return sessionFactory.getCurrentSession().createQuery("from Schedule where route.routeId=" + routeId).list();
+    }
+
+    /**
+     * Help method, to check, if target schedule list
+     * contains schedules, on which tickets has been bought already.
+     * @param scheduleList - target schedule list.
+     * @return - true, if we can update schedules,
+     *          false - if someone already bought ticket on any of items of target schedule list.
+     */
+    public boolean isTicketListEmpty(List<Schedule> scheduleList) {
+        for (Schedule sch : scheduleList) {
+            if(!sch.getTicketList().isEmpty()){
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -12,18 +12,18 @@ public class Route implements Serializable{
 
     @Id
     @GeneratedValue
-    private long routeId;
+    private Long routeId;
     @Column
     @NotNull(message = "It can't be empty!")
     private String title;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy="route")
+    @OneToMany(mappedBy="route")
     private List<StationDistance> stationDistances;
 
-    public long getRouteId() {
+    public Long getRouteId() {
         return routeId;
     }
 
-    public void setRouteId(long routeId) {
+    public void setRouteId(Long routeId) {
         this.routeId = routeId;
     }
 

@@ -13,7 +13,7 @@ import java.util.List;
  * as create, insert, delete, update.
  */
 @Repository
-public class RouteDao extends GenericDao {
+public class RouteDao extends GenericDao<Route, Long> {
 
     @Autowired
     private SessionFactory sessionFactory;

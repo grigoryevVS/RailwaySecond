@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javaschool.dao.PassengerDao;
 import ru.javaschool.dao.ScheduleDao;
 import ru.javaschool.dao.TicketDao;
-import ru.javaschool.model.entities.Passenger;
 import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.model.entities.Ticket;
+import ru.javaschool.model.entities.User;
 
 import java.util.List;
 
@@ -37,20 +37,20 @@ public class TicketService {
      * it must be more then 10 minutes, before departure.
      *
      * @param scheduleId  - target schedules identifier.
-     * @param passenger - target passenger.
+     * @param user - target passenger.
      * @return - true if buying ticket successful, else return false.
      */
     @SuppressWarnings("unchecked")
-    public boolean buyTicket(Long scheduleId, Passenger passenger) {
+    public boolean buyTicket(Long scheduleId, User user) {
         Schedule schedule = (Schedule) scheduleDao.findByPK(Schedule.class, scheduleId);
-        if (!passengerDao.isRegistrationPass(passenger)) {
-            passengerDao.create(passenger);
+        if (!passengerDao.isRegistrationPass(user)) {
+            passengerDao.create(user);
         }
-        if (!ticketDao.isExistPassenger(schedule, passenger)) {
+        if (!ticketDao.isExistPassenger(schedule, user)) {
             if (!ticketDao.isTrainFull(schedule)) {
                 if (!ticketDao.isTooLate(schedule)) {
                     Ticket ticket = new Ticket();
-                    ticket.setPassenger(passenger);
+                    ticket.setUser(user);
                     ticket.setSchedule(schedule);
                     ticketDao.create(ticket);
                     return true;
@@ -68,7 +68,7 @@ public class TicketService {
      * @return - list of all passengers, who bought tickets on target train.
      */
     @SuppressWarnings("unchecked")
-    public List<Passenger> getAllRegisteredOnTrain(Long scheduleId) {
+    public List<User> getAllRegisteredOnTrain(Long scheduleId) {
         Schedule schedule = (Schedule) scheduleDao.findByPK(Schedule.class, scheduleId);
         return ticketDao.getAllPassengersOnTrain(schedule);
     }

@@ -9,7 +9,7 @@ import ru.javaschool.model.entities.Train;
 import java.util.List;
 
 @Repository
-public class TrainDao extends GenericDao {
+public class TrainDao extends GenericDao<Train, Long> {
 
     @Autowired
     private SessionFactory sessionFactory;

@@ -37,10 +37,10 @@ public class StationController {
      * @param model - - model of view.
      * @return - target url
      */
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/createStation", method = RequestMethod.POST)
     public String createStation(Model model) {
         model.addAttribute("station", new Station());
-        return "stationView/create";
+        return "stationView/createStation";
     }
 
     /**
@@ -77,11 +77,11 @@ public class StationController {
      * @param model     - model of view.
      * @return - target url.
      */
-    @RequestMapping("/update/{stationId}")
+    @RequestMapping("/updateStation/{stationId}")
     public String updateStation(@PathVariable("stationId") Long stationId,
                                 Model model) {
         model.addAttribute("station", stationService.findStation(stationId));
-        return "stationView/update";
+        return "stationView/updateStation";
     }
 
     /**

@@ -1,7 +1,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@ include file="../header.jsp" %>
+<%@ include file="/WEB-INF/pages/layout/header.jsp" %>
 
-<form:form method="post" action="create" commandName="train">
+<form:form method="post" action="createTrain" commandName="train">
 
     <table>
         <tr>
@@ -27,7 +27,7 @@
                 <td>${train.trainId}</td>
                 <td>${train.name}</td>
                 <td>${train.numberOfSeats}</td>
-                <td><a href="update/${train.trainId}">update</a></td>
+                <td><a href="updateTrain/${train.trainId}">update</a></td>
                 <td><a href="delete/${train.trainId}">delete</a></td>
             </tr>
         </c:forEach>

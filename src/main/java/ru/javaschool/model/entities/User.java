@@ -6,13 +6,13 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Passenger implements Serializable{
+public class User implements Serializable{
 
     private static final long serialVersionUID = 7322705805494879474L;
 
     @Id
     @GeneratedValue
-    private long passengerId;
+    private Long userId;
     @Column( nullable = false, length = 20)
     private String firstName;
     @Column( nullable = false, length = 20)
@@ -20,25 +20,34 @@ public class Passenger implements Serializable{
     @Column( nullable = false)
     @Temporal(TemporalType.DATE)
     private Date birthDate;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "passenger")
+    @Column
+    private String login;
+    @Column
+    private String password;
+    @Column
+    private String role;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Ticket> ticketList;
 
-    public Passenger() {
+    public User() {
     }
 
-    public Passenger(long passengerId, String firstName, String lastName, Date birthDate) {
-        this.passengerId = passengerId;
+    public User(Long userId, String firstName, String lastName, Date birthDate, String login, String pass, String role) {
+        this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
+        this.login = login;
+        this.password = pass;
+        this.role = role;
     }
 
-    public long getPassengerId() {
-        return passengerId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setPassengerId(long passengerId) {
-        this.passengerId = passengerId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {
@@ -73,18 +82,42 @@ public class Passenger implements Serializable{
         this.ticketList = ticketList;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Passenger passenger = (Passenger) o;
+        User user = (User) o;
 
-        if (!birthDate.equals(passenger.birthDate)) return false;
-        if (!firstName.equals(passenger.firstName)) return false;
-        if (!lastName.equals(passenger.lastName)) return false;
-
-        return true;
+        if (!birthDate.equals(user.birthDate) || !firstName.equals(user.firstName) || lastName.equals(user.lastName)){
+            return false;
+        } else{
+            return true;
+        }
     }
 
     @Override
@@ -97,12 +130,11 @@ public class Passenger implements Serializable{
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Passenger{");
-        sb.append("passengerId=").append(passengerId);
-        sb.append(", firstName='").append(firstName).append('\'');
-        sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", birthDate=").append(birthDate).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthDate=" + birthDate +
+                ", login='" + login + '\'' +
+                '}';
     }
 }

@@ -41,10 +41,10 @@ public class TrainController {
      * @param model - web model of view
      * @return - needed url, which will return.
      */
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/createTrain", method = RequestMethod.POST)
     public String createTrain(Model model) {
         model.addAttribute("train", new Train());
-        return "trainView/create";
+        return "trainView/createTrain";
     }
 
     /**
@@ -81,11 +81,11 @@ public class TrainController {
      * @param model   - model of view
      * @return -  url.
      */
-    @RequestMapping(value = "/update/{trainId}")
+    @RequestMapping(value = "/updateTrain/{trainId}")
     public String updateTrain(@PathVariable("trainId") Long trainId,
                               Model model) {
         model.addAttribute("train", trainService.findTrain(trainId));
-        return "trainView/update";
+        return "trainView/updateTrain";
     }
 
     /**

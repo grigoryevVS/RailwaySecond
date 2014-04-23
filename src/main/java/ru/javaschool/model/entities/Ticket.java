@@ -11,7 +11,7 @@ public class Ticket implements Serializable{
     @GeneratedValue
     private long ticketId;
     @ManyToOne
-    private Passenger passenger;
+    private User user;
     @ManyToOne(fetch = FetchType.EAGER)
     private Schedule schedule;
 
@@ -23,12 +23,12 @@ public class Ticket implements Serializable{
         this.ticketId = ticketId;
     }
 
-    public Passenger getPassenger() {
-        return passenger;
+    public User getUser() {
+        return user;
     }
 
-    public void setPassenger(Passenger passenger) {
-        this.passenger = passenger;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Schedule getSchedule() {
@@ -43,8 +43,8 @@ public class Ticket implements Serializable{
     public String toString() {
         return "Ticket{" +
                 "ticketId=" + ticketId +
-                ", passenger=" + passenger.getFirstName() +
-                ", passenger=" + passenger.getLastName() +
+                ", passenger=" + user.getFirstName() +
+                ", passenger=" + user.getLastName() +
                 ", schedule=" + schedule.getDateTrip() +
                 '}';
     }

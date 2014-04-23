@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javaschool.dao.ScheduleDao;
+import ru.javaschool.dto.ScheduleDto;
 import ru.javaschool.model.entities.Schedule;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,7 +19,7 @@ public class ScheduleService {
     private ScheduleDao scheduleDao;
 
 //    public List<Schedule> getRevisedScheduleList(ScheduleConstraints constraints) {
-//       // TODO impl
+//
 //    }
 
     /**
@@ -26,19 +28,14 @@ public class ScheduleService {
      * @return - list of schedules.
      */
     @SuppressWarnings("unchecked")
-    public List<Schedule> getAllSchedule() {
-        return scheduleDao.findAll(Schedule.class);
-    }
+    public List<ScheduleDto> getAllSchedule() {
+        List<ScheduleDto> scheduleDtos = new ArrayList<>();
+        List<Schedule> scheduleList = scheduleDao.findAll(Schedule.class);
+        for (Schedule sch : scheduleList) {
+            scheduleDtos.add(new ScheduleDto(sch));
+        }
+        return scheduleDtos;
 
-    /**
-     * Find schedule in the database, by its identifier.
-     *
-     * @param key - primary key( identifier )
-     * @return - instance of target schedule.
-     */
-    @SuppressWarnings("unchecked")
-    public Schedule findByPk(Long key) {
-        return (Schedule) scheduleDao.findByPK(Schedule.class, key);
     }
 
     /**
@@ -69,4 +66,17 @@ public class ScheduleService {
         return false;
     }
 
+    /**
+     * Update schedule.
+     * @param schedule - target schedule to update.
+     * @return - true if update successful, else return false.
+     */
+    public boolean updateSchedule(Schedule schedule) {
+
+        return true;
+    }
+
+    public Schedule findSchedule(Long scheduleId) {
+        return null;
+    }
 }

@@ -7,15 +7,15 @@ import org.joda.time.Duration;
 import org.joda.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ru.javaschool.model.entities.Passenger;
 import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.model.entities.Ticket;
+import ru.javaschool.model.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class TicketDao extends GenericDao {
+public class TicketDao extends GenericDao<Ticket, Long> {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -25,12 +25,12 @@ public class TicketDao extends GenericDao {
      * One passenger can have only one ticket on concrete schedule.
      *
      * @param schedule  - target schedule
-     * @param passenger - target passenger.
+     * @param user - target passenger.
      * @return - true, if such passenger already have ticket, else return false.
      */
     @SuppressWarnings("unchecked")
-    public boolean isExistPassenger(Schedule schedule, Passenger passenger) {
-        String queryString = "from Ticket where passenger='" + passenger + "' and schedule='" + schedule + "'";
+    public boolean isExistPassenger(Schedule schedule, User user) {
+        String queryString = "from Ticket where user='" + user + "' and schedule='" + schedule + "'";
         List<Ticket> ticketList = sessionFactory.getCurrentSession().createQuery(queryString).list();
         return (!ticketList.isEmpty());
     }
@@ -68,16 +68,17 @@ public class TicketDao extends GenericDao {
 
     /**
      * Get all registered passengers on target train
+     *
      * @param schedule - target schedule.
      * @return - list
      */
     @SuppressWarnings("unchecked")
-    public List<Passenger> getAllPassengersOnTrain(Schedule schedule) {
+    public List<User> getAllPassengersOnTrain(Schedule schedule) {
         String queryString = "from Ticket where schedule=" + schedule;
         List<Ticket> ticketList = sessionFactory.getCurrentSession().createQuery(queryString).list();
-        List<Passenger> passengerList = new ArrayList<>();
+        List<User> passengerList = new ArrayList<>();
         for (Ticket t : ticketList) {
-            passengerList.add(t.getPassenger());
+            passengerList.add(t.getUser());
         }
         return passengerList;
     }

@@ -5,15 +5,16 @@
 
 <hibernate-configuration>
     <session-factory>
-
+        <property name="hibernate.hbm2ddl.auto">update</property>
         <mapping class="ru.javaschool.model.entities.EmployeeData" />
-        <mapping class="ru.javaschool.model.entities.Passenger" />
+        <mapping class="ru.javaschool.model.entities.User" />
         <mapping class="ru.javaschool.model.entities.Route" />
         <mapping class="ru.javaschool.model.entities.Schedule" />
         <mapping class="ru.javaschool.model.entities.Station" />
         <mapping class="ru.javaschool.model.entities.StationDistance" />
-        <mapping class="ru.javaschool.model.entities.StationDistanceEPK" />
         <mapping class="ru.javaschool.model.entities.Ticket" />
         <mapping class="ru.javaschool.model.entities.Train" />
+
     </session-factory>
+
 </hibernate-configuration>

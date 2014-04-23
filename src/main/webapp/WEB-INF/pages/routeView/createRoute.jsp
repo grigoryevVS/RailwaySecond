@@ -12,12 +12,12 @@
 </head>
 <%--<body>--%>
 <%--<form:form method="post" action="${pageContext.request.contextPath}/routeView/add" commandName="route">--%>
-    <%--<form:label path="title">Name</form:label>--%>
-    <%--<form:input path="title" />--%>
+<%--<form:label path="title">Name</form:label>--%>
+<%--<form:input path="title" />--%>
 
 
 
-    <%--<input type="submit" value="Create" />--%>
+<%--<input type="submit" value="Create" />--%>
 <%--</form:form>--%>
 <%--</body>--%>
 <body>
@@ -27,21 +27,28 @@
     <input type="submit" value="Create" />
 </form:form>
 
-<form:form method="post" action="${pageContext.request.contextPath}/routeView/addStation" commandName="route">
+<form action="${pageContext.request.contextPath}/routeView/addStation" method="POST">
+    <label for="stationName">Select station</label>
+    <select id="stationName" name="stationName" required/>
+    <c:forEach items="${stationList}" var="station">
+        <option>${station.name}</option>
+    </c:forEach>
+    </select>
+    <input type="time" id="appearenceTime" name="appearenceTime" required/>
+    <label for="appearenceTime">Appearence time</label>
+
     <input type="submit" value="Add station distance" />
-</form:form>
+</form>
 
 <h3>StationDistances</h3>
 <c:if test="${!empty distanceList}">
     <table class="data">
         <tr>
-            <th>Route name</th>
             <th>Station name</th>
             <th>Appearence time</th>
         </tr>
         <c:forEach items="${distanceList}" var="stationDistanceDto">
             <tr>
-                <td>${stationDistanceDto.routeName}</td>
                 <td>${stationDistanceDto.stationName}</td>
                 <td>${stationDistanceDto.appearenceTime}</td>
             </tr>

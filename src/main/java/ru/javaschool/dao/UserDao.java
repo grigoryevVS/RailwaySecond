@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.javaschool.model.entities.User;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Repository
@@ -24,8 +25,10 @@ public class UserDao extends GenericDao<User, Long>{
      */
     @SuppressWarnings("unchecked")
     public boolean isRegistrationPass(User passenger) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String queryString = "from User where firstName='" + passenger.getFirstName() + "'" + " and lastName='" +
-                passenger.getLastName() + "'" + " and birthDate='" + passenger.getBirthDate() + "'";
+                passenger.getLastName() + "'" + " AND DATE_FORMAT(birthDate,'%Y-%m-%d')='" +
+                sdf.format(passenger.getBirthDate())+"'";
         List<User> passengerList = sessionFactory.getCurrentSession().createQuery(queryString).list();
         return (!passengerList.isEmpty());
     }

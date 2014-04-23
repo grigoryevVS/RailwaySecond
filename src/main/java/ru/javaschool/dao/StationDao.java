@@ -32,7 +32,7 @@ public class StationDao extends GenericDao<Station, Long> {
      * @return - instance of target station.
      */
     public Station findByName(String name) {
-        return (Station) sessionFactory.getCurrentSession().createQuery("from Station where name=" + name).uniqueResult();
+        return (Station) sessionFactory.getCurrentSession().createQuery("from Station where name='" + name + "'").uniqueResult();
 
     }
 

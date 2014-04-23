@@ -14,7 +14,7 @@
         <intercept-url pattern="/WEB-INF/pages/trainView**" access="ROLE_ADMIN"/>
 
 
-        <form-login login-page="/WEB-INF/pages/userView/login.jsp" default-target-url="/scheduleView/schedule.jsp"
+        <form-login login-page="/WEB-INF/pages/userView/login.jsp" default-target-url="/scheduleView/schedule"
                     authentication-failure-url="/login.jsp?error=true" />
         <logout logout-url="/logout" logout-success-url="/index.jsp"/>
 

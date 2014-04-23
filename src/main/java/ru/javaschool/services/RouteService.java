@@ -180,13 +180,11 @@ public class RouteService {
             Long sequenceNumber = (long) 1;
             for (StationDistanceDto sdDto : distanceList) {
                 StationDistance stationDistance = new StationDistance();
-
                 stationDistance.setRoute(insertedRoute);
                 stationDistance.setSequenceNumber(sequenceNumber);
                 stationDistance.setStation(stationDao.findByName(sdDto.getStationName()));
                 String[] time = sdDto.getAppearenceTime().split(":");
                 stationDistance.setAppearTime(new Time(Integer.parseInt(time[0]), Integer.parseInt(time[1]), 0));
-
                 distanceDao.create(stationDistance);
 
                 sequenceNumber++;

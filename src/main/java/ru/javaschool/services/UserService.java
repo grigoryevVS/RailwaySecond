@@ -22,10 +22,10 @@ public class UserService {
      */
     public boolean isRegistrationSuccess(User user) {
         if(!userDao.isRegistrationPass(user)){
-            return false;
-        } else {
             userDao.create(user);
             return true;
+        } else {
+            return false;
         }
     }
 

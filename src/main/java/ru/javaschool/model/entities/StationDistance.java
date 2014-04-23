@@ -6,15 +6,19 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@IdClass(StationDistanceEPK.class)
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"route", "sequenceNumber"}))
+//@IdClass(StationDistanceEPK.class)
 public class StationDistance implements Serializable {
 
     private static final Long serialVersionUID = -2478846496713769074L;
 
-    @ManyToOne
-    private Route route;
     @Id
-    @Column
+    @GeneratedValue
+    private Long id;
+    @ManyToOne
+    @JoinColumn(name="route")
+    private Route route;
+    @Column(name = "sequenceNumber")
     @Min(1)
     private Long sequenceNumber;
     @ManyToOne
@@ -22,6 +26,14 @@ public class StationDistance implements Serializable {
     @Column
     @Temporal(TemporalType.TIME)
     private Date appearTime;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Station getStation() {
         return station;

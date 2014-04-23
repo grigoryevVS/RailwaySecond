@@ -122,6 +122,7 @@ public class RouteService {
                 scheduleDao.update(sch);
             }
         }
+        route.setStationDistances(distanceDao.getStationsInRoute(route));
         routeDao.update(route);
         List<StationDistance> distanceList = route.getStationDistances();
         for (StationDistance sd : distanceList) {
@@ -173,22 +174,28 @@ public class RouteService {
     public boolean createRoute(Route route, List<StationDistanceDto> distanceList) {
         // if not exist yet
         if(!routeDao.isRouteExist(route.getTitle())) {
-            routeDao.create(route);
-            Route insertedRoute = routeDao.findByPK(Route.class, route.getRouteId());
 
+            //Route insertedRoute = routeDao.findByPK(Route.class, route.getRouteId());
+            List<StationDistance> stationDistances = new ArrayList<>();
             // creating stationDistances
             Long sequenceNumber = (long) 1;
             for (StationDistanceDto sdDto : distanceList) {
                 StationDistance stationDistance = new StationDistance();
-                stationDistance.setRoute(insertedRoute);
+                stationDistance.setRoute(route);
                 stationDistance.setSequenceNumber(sequenceNumber);
                 stationDistance.setStation(stationDao.findByName(sdDto.getStationName()));
                 String[] time = sdDto.getAppearenceTime().split(":");
                 stationDistance.setAppearTime(new Time(Integer.parseInt(time[0]), Integer.parseInt(time[1]), 0));
-                distanceDao.create(stationDistance);
-
+                stationDistances.add(stationDistance);
                 sequenceNumber++;
             }
+            route.setStationDistances(stationDistances);
+            routeDao.create(route);
+            for(StationDistance sd: stationDistances){
+                distanceDao.create(sd);
+            }
+            //route.setStationDistances(stationDistances);
+            //routeDao.update(route);
             return true;
         }
         return false;

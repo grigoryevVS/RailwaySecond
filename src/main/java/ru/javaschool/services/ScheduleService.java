@@ -31,8 +31,10 @@ public class ScheduleService {
     public List<ScheduleDto> getAllSchedule() {
         List<ScheduleDto> scheduleDtos = new ArrayList<>();
         List<Schedule> scheduleList = scheduleDao.findAll(Schedule.class);
-        for (Schedule sch : scheduleList) {
-            scheduleDtos.add(new ScheduleDto(sch));
+        if (!scheduleList.isEmpty()) {
+            for (Schedule sch : scheduleList) {
+                scheduleDtos.add(new ScheduleDto(sch));
+            }
         }
         return scheduleDtos;
 
@@ -68,6 +70,7 @@ public class ScheduleService {
 
     /**
      * Update schedule.
+     *
      * @param schedule - target schedule to update.
      * @return - true if update successful, else return false.
      */

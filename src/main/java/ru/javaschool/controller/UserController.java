@@ -5,10 +5,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import ru.javaschool.model.entities.User;
 import ru.javaschool.services.UserService;
 
@@ -53,6 +50,15 @@ public class UserController {
         userService.isRegistrationSuccess(user);
         return "userView/registrationResult";
     }
+
+    @RequestMapping(value = "/tickets/{userId}")
+    public String getUsersTickets(@PathVariable("userId") Long userId, Model model) {
+        model.addAttribute("user", userService.getUserByPk(userId));
+        model.addAttribute("ticketList", userService.getUsersTicketList(userId));
+        return "userView/tickets";
+    }
+
+
 
 
 }

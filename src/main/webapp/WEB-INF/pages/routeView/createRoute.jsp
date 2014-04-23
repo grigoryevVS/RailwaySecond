@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+         pageEncoding="UTF-8" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,21 +10,11 @@
     <title>Create new route</title>
     <%@ include file="/WEB-INF/pages/layout/headerStyles.jsp" %>
 </head>
-<%--<body>--%>
-<%--<form:form method="post" action="${pageContext.request.contextPath}/routeView/add" commandName="route">--%>
-<%--<form:label path="title">Name</form:label>--%>
-<%--<form:input path="title" />--%>
-
-
-
-<%--<input type="submit" value="Create" />--%>
-<%--</form:form>--%>
-<%--</body>--%>
 <body>
 <form:form method="post" action="${pageContext.request.contextPath}/routeView/add" commandName="route">
     <form:label path="title">Name</form:label>
-    <form:input path="title" />
-    <input type="submit" value="Create" />
+    <form:input path="title"/>
+    <input type="submit" value="Create"/>
 </form:form>
 
 <form action="${pageContext.request.contextPath}/routeView/addStation" method="POST">
@@ -37,7 +27,7 @@
     <input type="time" id="appearenceTime" name="appearenceTime" required/>
     <label for="appearenceTime">Appearence time</label>
 
-    <input type="submit" value="Add station distance" />
+    <input type="submit" value="Add station distance"/>
 </form>
 
 <h3>StationDistances</h3>

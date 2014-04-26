@@ -38,7 +38,7 @@
                 <td>${scheduler.emptySeats}</td>
                 <td><a href="updateSchedule/${scheduler.id}">update</a></td>
                 <td><a href="delete/${scheduler.id}">delete</a></td>
-                <td><a href="ticketView/buyTicket/${scheduler.id}">buy ticket</a></td>
+                <td><a href="buyTicket/${scheduler.id}">buy ticket</a></td>
             </tr>
         </c:forEach>
     </table>

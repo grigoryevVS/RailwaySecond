@@ -27,7 +27,7 @@
                 <td>${scheduler.date}</td>
                 <td>${scheduler.routeName}</td>
                 <td>${scheduler.emptySeats}</td>
-                <td><a href="buyTicket/${schedule.scheduleId}">buy ticket</a></td>
+                <td><a href="buyTicket/${scheduler.id}">buy ticket</a></td>
             </tr>
         </c:forEach>
     </table>

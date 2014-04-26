@@ -1,15 +1,6 @@
 <%--<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>--%>
 <%@ include file="/WEB-INF/pages/layout/headerStyles.jsp" %>
 <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
-<form:form method="post" action="createSchedule" commandName="schedule">
-    <table>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="Add schedule"/>
-            </td>
-        </tr>
-    </table>
-</form:form>
 
 <h3>Schedule</h3>
 <c:if test="${!empty scheduleList}">
@@ -36,9 +27,7 @@
                 <td>${scheduler.date}</td>
                 <td>${scheduler.routeName}</td>
                 <td>${scheduler.emptySeats}</td>
-                <td><a href="updateSchedule/${scheduler.id}">update</a></td>
-                <td><a href="delete/${scheduler.id}">delete</a></td>
-                <td><a href="ticketView/buyTicket/${scheduler.id}">buy ticket</a></td>
+                <td><a href="buyTicket/${schedule.scheduleId}">buy ticket</a></td>
             </tr>
         </c:forEach>
     </table>

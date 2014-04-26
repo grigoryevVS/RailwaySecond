@@ -43,6 +43,26 @@ public class RouteController {
         return "routeView/routes";
     }
 
+    /**
+     * Get route list for standard user or anonymous.
+     *
+     * @param model - model of view.
+     * @return - target url
+     */
+    @RequestMapping("/routeIndex")
+    public String index(Model model) {
+        model.addAttribute("route", new Route());
+        model.addAttribute("routeList", routeService.getAllRoutes());
+        return "routeView/routeIndex";
+    }
+
+    /**
+     * Show concrete stationDistances of target route
+     *
+     * @param routeId - route identifier
+     * @param model   - model of view.
+     * @return - url
+     */
     @RequestMapping("/details/{routeId}")
     public String getStationDistances(@PathVariable("routeId") Long routeId,
                                       Model model) {

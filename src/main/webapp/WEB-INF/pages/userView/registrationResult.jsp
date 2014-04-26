@@ -3,16 +3,15 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <%@include file="/WEB-INF/pages/layout/headerStyles.jsp" %>
     <title>Registration</title>
 </head>
 <body>
-<%@include file="/WEB-INF/pages/layout/headerStyles.jsp" %>
 <%@include file="/WEB-INF/pages/layout/header.jsp" %>
-<%@include file="/WEB-INF/pages/layout/sidebar.jsp" %>
 <table class=".msg">
     <tr>
         <td align="center">
-            <h2>Congratulation!</h2>
+            <h3>Congratulation!</h3>
             <span>You can login or stay anonymous user<a href="${pageContext.request.contextPath}/userView/login">Login</a></span>
         </td>
     </tr>

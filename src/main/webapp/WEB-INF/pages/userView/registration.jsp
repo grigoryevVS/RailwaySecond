@@ -7,12 +7,11 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf8">
-    <%--<%@ include file="/WEB-INF/pages/layout/header.jsp" %>--%>
-    <%@ include file="/WEB-INF/pages/layout/header.jsp" %>
+    <%@ include file="/WEB-INF/pages/layout/headerStyles.jsp" %>
     <title>Registration</title>
 </head>
 <body>
-<%@ include file="/WEB-INF/pages/layout/headLogout.jsp" %>
+<%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 <form:form method="post" action="add" commandName="user">
     <form:label path="login">Login</form:label>
     <form:input path="login" />
@@ -29,7 +28,7 @@
     <form:label path="birthDate">BirthDate</form:label>
     <form:input path="birthDate" type="date"/>
 
-    <input type="submit" value="Save" />
+    <input type="submit" value="Sign up" />
 
 </form:form>
 </body>

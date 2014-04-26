@@ -4,14 +4,16 @@ package ru.javaschool.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.javaschool.dao.PassengerDao;
 import ru.javaschool.dao.ScheduleDao;
+import ru.javaschool.dao.StationDistanceDao;
 import ru.javaschool.dao.TicketDao;
 import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.model.entities.Ticket;
 import ru.javaschool.model.entities.User;
 
 import java.util.List;
+
+//import ru.javaschool.dao.PassengerDao;
 
 @Service
 @Transactional
@@ -21,10 +23,10 @@ public class TicketService {
     private TicketDao ticketDao;
 
     @Autowired
-    private PassengerDao passengerDao;
+    private ScheduleDao scheduleDao;
 
     @Autowired
-    private ScheduleDao scheduleDao;
+    private StationDistanceDao distanceDao;
 
     /**
      * This method implements buying ticket on target schedule by target passenger(both passes as a parameters).
@@ -36,21 +38,17 @@ public class TicketService {
      * and checks, if it is too late to buy tickets on this schedule,
      * it must be more then 10 minutes, before departure.
      *
-     * @param scheduleId  - target schedules identifier.
-     * @param user - target passenger.
+     * @param schedule - target schedule.
+     * @param user     - target passenger.
      * @return - true if buying ticket successful, else return false.
      */
-    @SuppressWarnings("unchecked")
-    public boolean buyTicket(Long scheduleId, User user) {
-        Schedule schedule = (Schedule) scheduleDao.findByPK(Schedule.class, scheduleId);
-        if (!passengerDao.isRegistrationPass(user)) {
-            passengerDao.create(user);
-        }
+    public boolean buyTicket(User user, Schedule schedule) {
         if (!ticketDao.isExistPassenger(schedule, user)) {
             if (!ticketDao.isTrainFull(schedule)) {
-                if (!ticketDao.isTooLate(schedule)) {
+                if (!scheduleDao.isTooLate(schedule)) {
                     Ticket ticket = new Ticket();
                     ticket.setUser(user);
+                    schedule.getRoute().setStationDistances(distanceDao.getStationsInRoute(schedule.getRoute()));
                     ticket.setSchedule(schedule);
                     ticketDao.create(ticket);
                     return true;
@@ -67,9 +65,8 @@ public class TicketService {
      * @param scheduleId - target schedules primary key.
      * @return - list of all passengers, who bought tickets on target train.
      */
-    @SuppressWarnings("unchecked")
     public List<User> getAllRegisteredOnTrain(Long scheduleId) {
-        Schedule schedule = (Schedule) scheduleDao.findByPK(Schedule.class, scheduleId);
+        Schedule schedule = scheduleDao.findByPK(Schedule.class, scheduleId);
         return ticketDao.getAllPassengersOnTrain(schedule);
     }
 }

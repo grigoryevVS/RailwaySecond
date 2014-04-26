@@ -6,21 +6,36 @@
                  http://www.springframework.org/schema/security
                  http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-    <http access-denied-page="/error403.jsp">
-        <intercept-url pattern="/WEB-INF/pages/routeView**" access="ROLE_ADMIN"/>
-        <intercept-url pattern="/WEB-INF/pages/stationView**" access="ROLE_ADMIN"/>
-        <intercept-url pattern="/WEB-INF/pages/trainView**" access="ROLE_ADMIN"/>
-        <intercept-url pattern="/WEB-INF/pages/scheduleView/schedule.jsp" access="ROLE_CLIENT,ROLE_ADMIN"/>
-        <intercept-url pattern="/WEB-INF/pages/trainView**" access="ROLE_ADMIN"/>
+    <http access-denied-page="/error403">
+
+        <intercept-url pattern="/routeView/routeIndex" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
+        <intercept-url pattern="/routeView/details" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
+        <intercept-url pattern="/routeView/createRoute" access="ROLE_ADMIN"/>
+        <intercept-url pattern="/routeView/routes" access="ROLE_ADMIN"/>
+        <intercept-url pattern="/routeView/updateRoute" access="ROLE_ADMIN"/>
+
+        <intercept-url pattern="/stationView/stationIndex" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
+        <intercept-url pattern="/stationView/**" access="ROLE_ADMIN"/>
+
+        <intercept-url pattern="/trainView/trainIndex" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
+        <intercept-url pattern="/trainView/**" access="ROLE_ADMIN"/>
+
+        <intercept-url pattern="/scheduleView/scheduleIndex" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
+        <intercept-url pattern="/scheduleView/**" access="ROLE_ADMIN"/>
+
+        <intercept-url pattern="/userView/editor" access="ROLE_USER,ROLE_ADMIN"/>
 
 
-        <form-login login-page="/WEB-INF/pages/userView/login.jsp" default-target-url="/scheduleView/schedule"
-                    authentication-failure-url="/login.jsp?error=true" />
-        <logout logout-url="/logout" logout-success-url="/index.jsp"/>
+        <form-login login-page="/userView/login" default-target-url="/index"
+                    authentication-failure-url="/userView/login?error=true" />
+        <logout logout-url="/userView/logout" logout-success-url="/index"/>
 
         <anonymous username="guest" granted-authority="ROLE_ANONYMOUS" />
         <remember-me />
     </http>
+
+    <beans:bean id="webexpressionHandler"
+                class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
 
     <beans:bean id="daoAuthenticationProvider"
                 class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">

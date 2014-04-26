@@ -25,7 +25,7 @@ public class Schedule implements Serializable {
     private Train train;
     @ManyToOne(fetch = FetchType.EAGER)
     private Route route;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "schedule")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "schedule")
     private List<Ticket> ticketList;
 
     public long getScheduleId() {

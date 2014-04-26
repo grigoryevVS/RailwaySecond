@@ -16,7 +16,7 @@ public class Route implements Serializable{
     @Column
     @NotNull(message = "It can't be empty!")
     private String title;
-    @OneToMany(mappedBy="route")
+    @OneToMany( mappedBy="route")
     private List<StationDistance> stationDistances;
 
     public Long getRouteId() {

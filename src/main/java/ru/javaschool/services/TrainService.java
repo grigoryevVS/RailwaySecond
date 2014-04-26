@@ -31,7 +31,6 @@ public class TrainService {
      *
      * @return list of trains.
      */
-    @SuppressWarnings("unchecked")
     public List<Train> getAllTrains() {
         return trainDao.findAll(Train.class);
     }
@@ -42,7 +41,6 @@ public class TrainService {
      * @param train - what train we need to create,
      *              getting from the employee, who fills all its fields.
      */
-    @SuppressWarnings("unchecked")
     public boolean createTrain(Train train) {
         if (trainDao.isTrainExist(train)) {
             return false;
@@ -58,9 +56,8 @@ public class TrainService {
      *
      * @param key - primary key( unique identifier of concrete train, to delete.
      */
-    @SuppressWarnings("unchecked")
     public void deleteTrain(Long key) {
-        Train train = (Train) trainDao.findByPK(Train.class, key);
+        Train train = trainDao.findByPK(Train.class, key);
         if (train != null) {
             if (!scheduleDao.isTrainInSchedule(key)) {
                 trainDao.delete(train);
@@ -68,13 +65,11 @@ public class TrainService {
         }
     }
 
-
     /**
      * Update target trains name and/or capacity.
      *
      * @param train - target train to update.
      */
-    @SuppressWarnings("unchecked")
     public void updateTrain(Train train) {
         trainDao.update(train);
     }
@@ -85,8 +80,7 @@ public class TrainService {
      * @param key - primary key.
      * @return - instance of target train.
      */
-    @SuppressWarnings("unchecked")
     public Train findTrain(Long key) {
-        return (Train) trainDao.findByPK(Train.class, key);
+        return trainDao.findByPK(Train.class, key);
     }
 }

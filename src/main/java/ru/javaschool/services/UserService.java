@@ -43,7 +43,6 @@ public class UserService {
         return userDao.findByPK(User.class, userId);
     }
 
-
     /**
      * Get list of users tickets.
      *
@@ -53,5 +52,24 @@ public class UserService {
     public List<Ticket> getUsersTicketList(Long userId) {
         User user = userDao.findByPK(User.class, userId);
         return user.getTicketList();
+    }
+
+    /**
+     * Update target user
+     *
+     * @param user - target
+     */
+    public void updateUser(User user) {
+        userDao.update(user);
+    }
+
+    /**
+     * Getting user by his login
+     *
+     * @param name - users login
+     * @return - user instance
+     */
+    public User getUserByLogin(String name) {
+        return userDao.getUserByLogin(name);
     }
 }

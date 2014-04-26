@@ -3,13 +3,17 @@ package ru.javaschool.dto;
 
 import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.model.entities.StationDistance;
+import ru.javaschool.model.entities.User;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class ScheduleDto {
+public class TicketDto {
 
-    private long id;
+    private String firstName;
+    private String lastName;
+    private String birthDate;
+
     private String stationFrom;
     private String stationTo;
     private String trainName;
@@ -17,33 +21,49 @@ public class ScheduleDto {
     private String routeName;
     private String appearTimeFrom;
     private String appearTimeTo;
-    private int emptySeats;
 
-    public ScheduleDto() {
+    public TicketDto() {
     }
 
-    public ScheduleDto(Schedule schedule) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    public TicketDto(User user, Schedule schedule) {
+
         List<StationDistance> sdList = schedule.getRoute().getStationDistances();
-        this.id = schedule.getScheduleId();
-        if(!sdList.isEmpty()){
+
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        this.birthDate = sdf.format(user.getBirthDate());
         this.stationFrom = sdList.get(0).getStation().getName();
-        this.appearTimeFrom = String.valueOf((sdList.get(0).getAppearTime()));
         this.stationTo = sdList.get(sdList.size() - 1).getStation().getName();
-        this.appearTimeTo = String.valueOf((sdList.get(sdList.size() - 1).getAppearTime()));
-        }
         this.trainName = schedule.getTrain().getName();
         this.date = sdf.format(schedule.getDateTrip());
         this.routeName = schedule.getRoute().getTitle();
-        this.emptySeats = schedule.getTrain().getNumberOfSeats() - schedule.getTicketList().size();
+        this.appearTimeFrom = String.valueOf((sdList.get(0).getAppearTime()));
+        this.appearTimeTo = String.valueOf((sdList.get(sdList.size() - 1).getAppearTime()));
     }
 
-    public long getId() {
-        return id;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getStationFrom() {
@@ -100,13 +120,5 @@ public class ScheduleDto {
 
     public void setAppearTimeTo(String appearTimeTo) {
         this.appearTimeTo = appearTimeTo;
-    }
-
-    public int getEmptySeats() {
-        return emptySeats;
-    }
-
-    public void setEmptySeats(int emptySeats) {
-        this.emptySeats = emptySeats;
     }
 }

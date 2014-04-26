@@ -31,6 +31,19 @@ public class StationController {
     }
 
     /**
+     * Get station list for custom user.
+     *
+     * @param model - model of view.
+     * @return - target url
+     */
+    @RequestMapping("/stationIndex")
+    public String index(Model model) {
+        model.addAttribute("station", new Station());
+        model.addAttribute("stationList", stationService.getAllStations());
+        return "stationView/stationIndex";
+    }
+
+    /**
      * Apply new url, which will be the form,
      * to set needed fields, to create station.
      *

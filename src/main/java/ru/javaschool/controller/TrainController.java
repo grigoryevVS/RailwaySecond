@@ -36,6 +36,19 @@ public class TrainController {
     }
 
     /**
+     * Get all trains for custom user.
+     *
+     * @param model - model of parameters, which will be used in the service layer.
+     * @return - concrete url of jsp which will be redirected to.
+     */
+    @RequestMapping("/trainIndex")
+    public String index(Model model) {
+        model.addAttribute("train", new Train());
+        model.addAttribute("trainList", trainService.getAllTrains());
+        return "trainView/trainIndex";
+    }
+
+    /**
      * This method, open new page, where will be create train.
      *
      * @param model - web model of view

@@ -49,6 +49,19 @@ public class ScheduleController {
     }
 
     /**
+     * Get schedule list.
+     *
+     * @param model - model of view.
+     * @return - target url
+     */
+    @RequestMapping("/scheduleIndex")
+    public String index(Model model) {
+        model.addAttribute("scheduler", new ScheduleDto());
+        model.addAttribute("scheduleList", scheduleService.getAllSchedule());
+        return "scheduleView/scheduleIndex";
+    }
+
+    /**
      * Apply new url, which will be the form,
      * to set needed fields, to create schedule.
      *
@@ -70,9 +83,18 @@ public class ScheduleController {
      * @return - redirect url.
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addSchedule(@ModelAttribute("schedule") Schedule schedule) {
-        scheduleService.createSchedule(schedule);
-        return "redirect:/scheduleView/schedule";
+    public String addSchedule(@ModelAttribute("schedule") Schedule schedule,
+                              @ModelAttribute("trainName") String trainName,
+                              @ModelAttribute("routeName") String routeName,
+                              @ModelAttribute("dateTrip") String dateTrip) {
+        ScheduleDto scheduleDto = new ScheduleDto();
+        scheduleDto.setTrainName(trainName);
+        scheduleDto.setRouteName(routeName);
+        scheduleDto.setDate(dateTrip);
+        if (scheduleService.wrapAndCreateSchedule(scheduleDto)) {
+            return "redirect:/scheduleView/schedule";
+        } else
+            return "redirect:/scheduleView/schedule"; // TODO error hanDle.
     }
 
     /**

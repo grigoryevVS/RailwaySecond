@@ -41,7 +41,6 @@ public class RouteService {
      *
      * @return - list of all routes.
      */
-    @SuppressWarnings("unchecked")
     public List<Route> getAllRoutes() {
         return routeDao.findAll(Route.class);
     }
@@ -78,21 +77,20 @@ public class RouteService {
      * @param routeId - unique identifier of the concrete route.
      * @return - true, if delete successful, else return false.
      */
-    @SuppressWarnings("unchecked")
     public boolean deleteRoute(Long routeId) {
         Route route = routeDao.findByPK(Route.class, routeId);
         if (route != null) {
             List<Schedule> scheduleList = scheduleDao.getScheduleListByRoute(routeId);
             if (!scheduleList.isEmpty()) {
                 if (!scheduleDao.isTicketListEmpty(scheduleList)) {
-                    return false;                                       // delete can't be done, if someone already bought ticket on target route.
+                    return false;
                 }
                 for (Schedule sch : scheduleList) {
                     scheduleDao.delete(sch);
                 }
             }
             List<StationDistance> distanceList = route.getStationDistances();
-            routeDao.delete(route);                                     // mappedBy route, maybe need to delete stationDistances first.
+            routeDao.delete(route);
             for (StationDistance sd : distanceList) {
                 distanceDao.delete(sd);
             }
@@ -110,7 +108,6 @@ public class RouteService {
      * @param route - target route
      * @return - true, if update successful, else return false.
      */
-    @SuppressWarnings("unchecked")
     public boolean updateRoute(Route route) {
         List<Schedule> scheduleList = scheduleDao.getScheduleListByRoute(route.getRouteId());
         if (!scheduleList.isEmpty()) {
@@ -137,20 +134,20 @@ public class RouteService {
 
     /**
      * Find target route by its identifier, passed as a parameter
+     *
      * @param key - identifier
      * @return - instance of target route.
      */
-    @SuppressWarnings("unchecked")
     public Route findRoute(Long key) {
-        return (Route) routeDao.findByPK(Route.class, key);
+        return routeDao.findByPK(Route.class, key);
     }
 
     /**
      * Get list of station distances, in target route
+     *
      * @param routeId - identifier of target route
      * @return - list of station distances.
      */
-    @SuppressWarnings("unchecked")
     public List<StationDistanceDto> getStationDistances(Long routeId) {
         Route route = routeDao.findByPK(Route.class, routeId);
         List<StationDistance> sdList = distanceDao.getStationsInRoute(route);
@@ -161,19 +158,16 @@ public class RouteService {
         return dtoList;
     }
 
-    public List<StationDistance> getAllStationDistances() {
-        return distanceDao.findAll(StationDistance.class);
-    }
-
     /**
      * Adding station distances of target route, passed as a parameter.
-     * @param route - target route.
+     *
+     * @param route        - target route.
      * @param distanceList - list of stationDistances to add in the database.
      * @return -  true, if creating stationDistances success. else return false.
      */
     public boolean createRoute(Route route, List<StationDistanceDto> distanceList) {
         // if not exist yet
-        if(!routeDao.isRouteExist(route.getTitle())) {
+        if (!routeDao.isRouteExist(route.getTitle())) {
 
             //Route insertedRoute = routeDao.findByPK(Route.class, route.getRouteId());
             List<StationDistance> stationDistances = new ArrayList<>();
@@ -191,7 +185,7 @@ public class RouteService {
             }
             route.setStationDistances(stationDistances);
             routeDao.create(route);
-            for(StationDistance sd: stationDistances){
+            for (StationDistance sd : stationDistances) {
                 distanceDao.create(sd);
             }
             //route.setStationDistances(stationDistances);

@@ -25,4 +25,13 @@ public class TrainDao extends GenericDao<Train, Long> {
         List<Train> trainList = (List<Train>) sessionFactory.getCurrentSession().createQuery("from Train where name='" + train.getName() + "'").list();
         return (!trainList.isEmpty());
     }
+
+    /**
+     * To create schedule, we need to find target train of it.
+     * @param trainName - name of train
+     * @return -  train instance.
+     */
+    public Train findByName(String trainName) {
+        return (Train) sessionFactory.getCurrentSession().createQuery("from Train where name='" + trainName + "'").uniqueResult();
+    }
 }

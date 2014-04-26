@@ -1,18 +1,6 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-<form:form method="post" action="createTrain" commandName="train">
-
-    <table>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="Add train"/>
-            </td>
-        </tr>
-    </table>
-</form:form>
-
-
 <h3>Trains</h3>
 <c:if  test="${!empty trainList}">
     <table>
@@ -27,8 +15,6 @@
                 <td>${train.trainId}</td>
                 <td>${train.name}</td>
                 <td>${train.numberOfSeats}</td>
-                <td><a href="updateTrain/${train.trainId}">update</a></td>
-                <td><a href="delete/${train.trainId}">delete</a></td>
             </tr>
         </c:forEach>
     </table>

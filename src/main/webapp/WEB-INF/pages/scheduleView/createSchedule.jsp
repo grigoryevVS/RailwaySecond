@@ -23,8 +23,8 @@
         <option>${route.title}</option>
     </c:forEach>
     </select>
-    <label for="DateTrip">Date trip</label>
-    <input type="date" id="DateTrip" name="DateTrip" required/>
+    <label for="dateTrip">Date trip</label>
+    <input type="date" id="dateTrip" name="dateTrip" required/>
     <input type="submit" value="Create"/>
 </form:form>
 </body>

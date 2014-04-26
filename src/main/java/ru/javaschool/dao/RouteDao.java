@@ -29,6 +29,15 @@ public class RouteDao extends GenericDao<Route, Long> {
         List<Route> routeList = (List<Route>) sessionFactory.getCurrentSession().createQuery("from Route where title='" + name + "'").list();
         return (!routeList.isEmpty());
     }
+
+    /**
+     * To create schedule, we need to find target route of it.
+     * @param routeName - title of route
+     * @return -  route instance.
+     */
+    public Route findByName(String routeName) {
+        return (Route) sessionFactory.getCurrentSession().createQuery("from Route where title='" + routeName + "'").uniqueResult();
+    }
 }
 
 //    /**

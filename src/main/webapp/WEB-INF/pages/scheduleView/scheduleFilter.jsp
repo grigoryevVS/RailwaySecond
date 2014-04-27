@@ -21,19 +21,5 @@
 
     <input type="submit" value="Search" />
 </form:form>
-
-<%--<label for="stationFromName">Select station from</label>--%>
-<%--<select id="stationFromName" name="stationFromName" required/>--%>
-<%--<c:forEach items="${stationListFrom}" var="station">--%>
-<%--<option>${station.name}</option>--%>
-<%--</c:forEach>--%>
-<%--</select>--%>
-
-<%--<label for="stationToName">Select station to</label>--%>
-<%--<select id="stationToName" name="stationToName" required/>--%>
-<%--<c:forEach items="${stationListTo}" var="station">--%>
-<%--<option>${station.name}</option>--%>
-<%--</c:forEach>--%>
-<%--</select>--%>
 </body>
 </html>

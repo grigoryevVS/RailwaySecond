@@ -27,12 +27,13 @@ public class UserService {
      * @return - true if we create new one, else return false - such user already exist.
      */
     public boolean isRegistrationSuccess(User user) {
-        if (!userDao.isRegistrationPass(user)) {
-            userDao.create(user);
-            return true;
-        } else {
-            return false;
+        if (!userDao.loginExist(user.getLogin())) {
+            if (!userDao.isRegistrationPass(user)) {
+                userDao.create(user);
+                return true;
+            }
         }
+        return false;
     }
 
     /**

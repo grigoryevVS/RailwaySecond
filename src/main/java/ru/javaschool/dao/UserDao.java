@@ -40,7 +40,11 @@ public class UserDao extends GenericDao<User, Long>{
      */
     @SuppressWarnings("unchecked")
     public User getUserByLogin(String login) {
-        List<User> users = sessionFactory.getCurrentSession().createQuery("from User where login='" + login + "'").list();
-        return users.get(0);
+        return (User) sessionFactory.getCurrentSession().createQuery("from User where login='" + login + "'").uniqueResult();
+    }
+
+    public boolean loginExist(String login) {
+        User user = (User) sessionFactory.getCurrentSession().createQuery("from User where login='" + login + "'").uniqueResult();
+        return user != null;
     }
 }

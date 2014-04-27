@@ -6,10 +6,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.javaschool.model.entities.User;
 import ru.javaschool.services.UserService;
 
@@ -63,17 +63,17 @@ public class UserController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addUser(@Valid @ModelAttribute("user") User user,
-                          BindingResult result,ModelMap model) {
+                          BindingResult result,final RedirectAttributes redirectAttributes) {
         user.setRole("ROLE_USER");
         if(result.hasErrors()) {
-            model.put("message", "Wrong data");
+            redirectAttributes.addFlashAttribute("msg", "Wrong data");
             return "redirect:/userView/registration";
         }
         if(!userService.isRegistrationSuccess(user)) {
-            model.put("message", "Such client is already exist!");
+            redirectAttributes.addFlashAttribute("msg", "Such client/login is already exist!");
             return "redirect:/userView/registration";
         } else{
-            model.put("message", "Successful registration!");
+            redirectAttributes.addFlashAttribute("msg", "Successful registration!");
             return "userView/login";
         }
     }
@@ -122,11 +122,7 @@ public class UserController {
     public String updateUser(@ModelAttribute("user") User user, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (user.getLogin().equals(auth.getName())) {
-            if (user.getRole().equals("ROLE_ADMIN")) {
-                user.setRole("ROLE_ADMIN");
-            } else {
-                user.setRole("ROLE_USER");
-            }
+            user.setRole(userService.getUserByLogin(user.getLogin()).getRole());
             userService.updateUser(user);
             model.addAttribute("user", user);
             return "userView/editor";

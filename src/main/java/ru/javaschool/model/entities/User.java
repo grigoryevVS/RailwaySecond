@@ -30,9 +30,8 @@ public class User implements Serializable{
     @Temporal(TemporalType.DATE)
     private Date birthDate;
     @NotEmpty
-
     @Size(min=1, max=30)
-    @Column(unique = true)
+    @Column
     private String login;
     @NotEmpty
     @Size(min=3, max=50)

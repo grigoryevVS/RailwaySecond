@@ -36,9 +36,7 @@
                 <td>${scheduler.date}</td>
                 <td>${scheduler.routeName}</td>
                 <td>${scheduler.emptySeats}</td>
-                <td><a href="updateSchedule/${scheduler.id}">update</a></td>
-                <td><a href="delete/${scheduler.id}">delete</a></td>
-                <td><a href="buyTicket/${scheduler.id}">buy ticket</a></td>
+                <%@ include file="/WEB-INF/pages/layout/adminHrefSchedule.jsp" %>
             </tr>
         </c:forEach>
     </table>

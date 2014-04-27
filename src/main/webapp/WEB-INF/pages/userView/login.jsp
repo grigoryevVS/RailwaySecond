@@ -7,6 +7,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf8">
     <%@ include file="/WEB-INF/pages/layout/headerStyles.jsp" %>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/loginValidate.js"></script>
     <title>Log in</title>
 </head>
 <body>
@@ -35,5 +36,10 @@
         </tr>
     </table>
 </form>
+<c:if test="${message != null}">
+    <div>
+            ${message}
+    </div>
+</c:if>
 </body>
 </html>

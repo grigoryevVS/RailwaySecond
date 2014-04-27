@@ -1,7 +1,10 @@
 package ru.javaschool.model.entities;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
@@ -13,6 +16,8 @@ public class Route implements Serializable{
     @Id
     @GeneratedValue
     private Long routeId;
+    @NotEmpty
+    @Size(min=2, max=40)
     @Column
     @NotNull(message = "It can't be empty!")
     private String title;

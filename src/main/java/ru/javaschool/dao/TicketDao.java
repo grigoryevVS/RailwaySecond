@@ -65,4 +65,8 @@ public class TicketDao extends GenericDao<Ticket, Long> {
     }
 
 
+    public Ticket getTicket(Long userId,Long scheduleId) {
+        String queryString = "from Ticket where user.userId=" + userId + " and schedule.scheduleId=" + scheduleId;
+        return (Ticket) sessionFactory.getCurrentSession().createQuery(queryString).uniqueResult();
+    }
 }

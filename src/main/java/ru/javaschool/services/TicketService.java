@@ -69,4 +69,24 @@ public class TicketService {
         Schedule schedule = scheduleDao.findByPK(Schedule.class, scheduleId);
         return ticketDao.getAllPassengersOnTrain(schedule);
     }
+
+    /**
+     * Get ticket of target user on target schedule
+     *
+     * @param userId     - user identifier
+     * @param scheduleId - schedule identifier
+     * @return - ticket instance.
+     */
+    public Ticket getTicket(Long userId, Long scheduleId) {
+        return ticketDao.getTicket(userId, scheduleId);
+    }
+
+    /**
+     * Delete target ticket
+     *
+     * @param ticket - target ticket to delete
+     */
+    public void deleteTicket(Ticket ticket) {
+        ticketDao.delete(ticket);
+    }
 }

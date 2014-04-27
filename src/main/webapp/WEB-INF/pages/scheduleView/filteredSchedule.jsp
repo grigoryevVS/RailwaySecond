@@ -1,8 +1,7 @@
 <%--<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>--%>
 <%@ include file="/WEB-INF/pages/layout/headerStyles.jsp" %>
 <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
-
-<h3>Schedule</h3>
+<h3>Filtered schedule</h3>
 <c:if test="${!empty scheduleList}">
     <table>
         <tr>
@@ -27,9 +26,11 @@
                 <td>${scheduler.date}</td>
                 <td>${scheduler.routeName}</td>
                 <td>${scheduler.emptySeats}</td>
+                <%@ include file="/WEB-INF/pages/layout/adminHrefSchedule.jsp" %>
                 <%@ include file="/WEB-INF/pages/layout/clientHrefSchedule.jsp" %>
             </tr>
         </c:forEach>
     </table>
 </c:if>
+
 

@@ -4,6 +4,7 @@ package ru.javaschool.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import ru.javaschool.services.RouteService;
 import ru.javaschool.services.StationService;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,14 +118,27 @@ public class RouteController {
      */
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addRoute(HttpSession session, @ModelAttribute("route") Route route) {
+    public String addRoute(HttpSession session,@Valid @ModelAttribute("route") Route route, BindingResult result) {
+        if (result.hasErrors()) {
+            session.setAttribute("message", "Wrong data");
+        }
         if (session.getAttribute("distanceList") != null) {
             List<StationDistanceDto> distanceList = (List<StationDistanceDto>) session.getAttribute("distanceList");
-            routeService.createRoute(route, distanceList);
+            if(distanceList.size() < 2){
+                session.setAttribute("message", "there is only 1 station distance. Must be 2 as minimum");
+                return "redirect:/routeView/createRoute";
+            }
+            if(!routeService.createRoute(route, distanceList)){
+                session.setAttribute("message", "Wrong data!");
+                return "redirect:/routeView/createRoute";
+            }
             distanceList.clear();
             session.setAttribute("distanceList", distanceList);
+            session.setAttribute("message", "Success!");
+            return "redirect:/routeView/routes";
         }
-        return "redirect:/routeView/routes";
+        session.setAttribute("message", "Station distance list is empty!");
+        return "redirect:/routeView/createRoute";
     }
 
     /**
@@ -134,8 +149,17 @@ public class RouteController {
      */
     @RequestMapping("/delete/{routeId}")
     public String deleteRoute(@PathVariable("routeId") Long routeId) {
-        routeService.deleteRoute(routeId);
-        return "redirect:/routeView/routes";
+        Route route = routeService.findRoute(routeId);
+        if (route != null) {
+            if(!routeService.deleteRoute(routeId)) {
+                // TODO message error
+                return "redirect:routeView/routes";
+            }
+            // TODO message success
+            return "redirect:/routeView/routes";
+        }
+        return "error404";
+
     }
 
     /**
@@ -159,8 +183,15 @@ public class RouteController {
      * @return - redirect url.
      */
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
-    public String refreshRoute(@ModelAttribute("route") Route route) {
-        routeService.updateRoute(route);
+    public String refreshRoute(@Valid @ModelAttribute("route") Route route, BindingResult result) {
+        if (result.hasErrors()) {
+
+            return "redirect:/updateRoute";
+        }
+        if (!routeService.updateRoute(route)) {
+
+            return "redirect:/updateRoute";
+        }
         return "redirect:/routeView/routes";
     }
 }

@@ -1,6 +1,7 @@
 package ru.javaschool.model.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.Date;
@@ -19,10 +20,11 @@ public class StationDistance implements Serializable {
     @JoinColumn(name="route")
     private Route route;
     @Column(name = "sequenceNumber")
-    @Min(1)
+    @Min(1) @Max(20)
     private Long sequenceNumber;
     @ManyToOne
     private Station station;
+
     @Column
     @Temporal(TemporalType.TIME)
     private Date appearTime;

@@ -43,30 +43,4 @@ public class UserDao extends GenericDao<User, Long>{
         List<User> users = sessionFactory.getCurrentSession().createQuery("from User where login='" + login + "'").list();
         return users.get(0);
     }
-
-
-//    /**
-//     * Help method, to get all actual login and passwords
-//     *
-//     * @return - list of employeeData
-//     */
-//    @SuppressWarnings("unchecked")
-//    public List<EmployeeData> getActualLogins() {
-//        return sessionFactory.getCurrentSession().createQuery("from EmployeeData").list();
-//    }
-//
-//    /**
-//     * Method checks correctness of input login and password.
-//     *
-//     * @param login    - target login
-//     * @param password - target password
-//     * @return - true, if correct, false if incorrect.
-//     */
-//    @SuppressWarnings("unchecked")
-//    public boolean isExistLoginData(String login, String password) {
-//        String queryString = "from EmployeeData where login='" + login + "'" + "and password='" + password + "'";
-//        List<EmployeeData> employeeDataList = sessionFactory.getCurrentSession().createQuery(queryString).list();
-//        return (!employeeDataList.isEmpty());
-//    }
-
 }

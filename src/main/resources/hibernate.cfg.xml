@@ -6,7 +6,6 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.hbm2ddl.auto">update</property>
-        <mapping class="ru.javaschool.model.entities.EmployeeData" />
         <mapping class="ru.javaschool.model.entities.User" />
         <mapping class="ru.javaschool.model.entities.Route" />
         <mapping class="ru.javaschool.model.entities.Schedule" />

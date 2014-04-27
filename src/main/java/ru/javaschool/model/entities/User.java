@@ -1,6 +1,10 @@
 package ru.javaschool.model.entities;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -13,15 +17,25 @@ public class User implements Serializable{
     @Id
     @GeneratedValue
     private Long userId;
+    @NotEmpty
+    @Size(min=2, max=30)
     @Column( nullable = false, length = 20)
     private String firstName;
+    @NotEmpty
+    @Size(min=2, max=30)
     @Column( nullable = false, length = 20)
     private String lastName;
+    @NotNull
     @Column( nullable = false)
     @Temporal(TemporalType.DATE)
     private Date birthDate;
-    @Column
+    @NotEmpty
+
+    @Size(min=1, max=30)
+    @Column(unique = true)
     private String login;
+    @NotEmpty
+    @Size(min=3, max=50)
     @Column
     private String password;
     @Column

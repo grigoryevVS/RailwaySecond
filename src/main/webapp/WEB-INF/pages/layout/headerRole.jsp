@@ -11,7 +11,6 @@
     <c:when test="${pageContext.request.userPrincipal.name != null}">
         <sec:authorize ifAnyGranted="ROLE_ADMIN">
             <%@ include file="/WEB-INF/pages/layout/headerAdmin.jsp" %>
-
         </sec:authorize>
         <sec:authorize ifAnyGranted="ROLE_USER">
             <%@ include file="/WEB-INF/pages/layout/header.jsp" %>

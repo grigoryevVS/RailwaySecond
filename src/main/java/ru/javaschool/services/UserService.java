@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javaschool.dao.UserDao;
+import ru.javaschool.dto.TicketDto;
 import ru.javaschool.model.entities.Ticket;
 import ru.javaschool.model.entities.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,11 +49,16 @@ public class UserService {
      * Get list of users tickets.
      *
      * @param userId - target user identifier.
-     * @return - list of users tickets.
+     * @return - list of users tickets wrapped by ticketDto to show info on the view.
      */
-    public List<Ticket> getUsersTicketList(Long userId) {
+    public List<TicketDto> getUsersTicketList(Long userId) {
         User user = userDao.findByPK(User.class, userId);
-        return user.getTicketList();
+        List<Ticket> tickets = user.getTicketList();
+        List<TicketDto> ticketDtos = new ArrayList<>();
+        for (Ticket t : tickets) {
+            ticketDtos.add(new TicketDto(t.getUser(), t.getSchedule()));
+        }
+        return ticketDtos;
     }
 
     /**

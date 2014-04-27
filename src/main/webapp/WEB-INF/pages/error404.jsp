@@ -6,6 +6,6 @@
 </head>
 <body>
 <%@include file = "layout/headerRole.jsp" %>
-<h2>Sorry, access denied! error 403</h2>
+<h2>We can't find this page! error 404</h2>
 </body>
 </html>

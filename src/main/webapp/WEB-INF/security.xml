@@ -21,6 +21,8 @@
         <intercept-url pattern="/trainView/**" access="ROLE_ADMIN"/>
 
         <intercept-url pattern="/scheduleView/scheduleIndex" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
+        <intercept-url pattern="/scheduleView/scheduleFilter" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
+        <intercept-url pattern="/scheduleView/filteredSchedule" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
         <intercept-url pattern="/scheduleView/buyTicket/**" access="ROLE_USER,ROLE_ADMIN"/>
         <intercept-url pattern="/scheduleView/**" access="ROLE_ADMIN"/>
 

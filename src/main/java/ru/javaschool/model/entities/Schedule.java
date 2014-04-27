@@ -1,6 +1,7 @@
 package ru.javaschool.model.entities;
 
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.LocalTime;
@@ -18,6 +19,7 @@ public class Schedule implements Serializable {
     @Id
     @GeneratedValue
     private long scheduleId;
+    @NotEmpty
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date dateTrip;

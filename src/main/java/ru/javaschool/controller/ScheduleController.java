@@ -7,13 +7,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import ru.javaschool.dto.ScheduleDto;
+import ru.javaschool.dto.ScheduleFilterDto;
 import ru.javaschool.model.entities.Schedule;
+import ru.javaschool.model.entities.Station;
 import ru.javaschool.services.RouteService;
 import ru.javaschool.services.ScheduleService;
+import ru.javaschool.services.StationService;
 import ru.javaschool.services.TrainService;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/scheduleView")
@@ -27,6 +32,9 @@ public class ScheduleController {
 
     @Autowired
     private RouteService routeService;
+
+    @Autowired
+    private StationService stationService;
 
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
@@ -134,5 +142,41 @@ public class ScheduleController {
         scheduleService.updateSchedule(schedule);
         return "redirect:/scheduleView/schedule";
     }
+
+    @RequestMapping(value = "/scheduleFilter")
+    public String createFilter( Model model) {
+        ScheduleFilterDto filter = new ScheduleFilterDto();
+        model.addAttribute("filter", filter);
+        model.addAttribute("stationListFrom", stationService.getAllStations());
+        model.addAttribute("stationListTo", stationService.getAllStations());
+        return "scheduleView/scheduleFilter";
+    }
+
+    @RequestMapping(value = "/filteredSchedule")
+    public String filteredSchedule(@ModelAttribute("filter") ScheduleFilterDto filter, Model model) {
+        List<ScheduleDto> schedList = scheduleService.getFilteredSchedule(filter);
+        model.addAttribute("scheduler", new ScheduleDto());
+        model.addAttribute("scheduleList", schedList);
+        return "scheduleView/filteredSchedule";
+    }
+
+    /**
+     * Get stations to the js autocomplete method
+     * @param stationName Name of station
+     * @return List of station
+     */
+    @RequestMapping(value = "/getStations", method = RequestMethod.GET)
+    public @ResponseBody
+    List<Station> getStationsForJS(@RequestParam String stationName) {
+        List<Station> result = new ArrayList<Station>();
+        List<Station> stations = stationService.getAllStations();
+        for(Station station : stations) {
+            if(station.getName().contains(stationName)) {
+                result.add(station);
+            }
+        }
+        return result;
+    }
+
 }
 

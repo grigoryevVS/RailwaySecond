@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.javaschool.dto.TicketDto;
 import ru.javaschool.model.entities.Schedule;
+import ru.javaschool.model.entities.Ticket;
 import ru.javaschool.model.entities.User;
 import ru.javaschool.services.ScheduleService;
 import ru.javaschool.services.TicketService;
@@ -40,11 +41,18 @@ public class TicketController {
         webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
 
+    /**
+     * Buy ticket on target schedule
+     *
+     * @param scheduleId - schedule identifier
+     * @param model      - model view
+     * @return - view of successfully bought ticket, or validation message.
+     */
     @RequestMapping("buyTicket/{scheduleId}")
     public String buyTicket(@PathVariable("scheduleId") Long scheduleId, Model model) {
         User user = userService.getUserByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
         Schedule schedule = scheduleService.findSchedule(scheduleId);
-        if(ticketService.buyTicket(user, schedule)) {
+        if (ticketService.buyTicket(user, schedule)) {
             TicketDto ticketDto = new TicketDto(user, schedule);
             model.addAttribute("ticket", ticketDto);
             return "scheduleView/buyTicket";
@@ -52,4 +60,34 @@ public class TicketController {
             return "redirect:/scheduleView/scheduleIndex";  // TODO validation msg
         }
     }
+
+    /**
+     * Getting all registered passengers on target train
+     *
+     * @param scheduleId - identifier of target schedule
+     * @param model      - view
+     * @return - view of list passengers.
+     */
+    @RequestMapping("passengers/{scheduleId}")
+    public String passengers(@PathVariable("scheduleId") Long scheduleId, Model model) {
+        model.addAttribute("userList", ticketService.getAllRegisteredOnTrain(scheduleId));
+        model.addAttribute("schedule", scheduleService.findSchedule(scheduleId));
+        return "scheduleView/passengers";
+    }
+
+    /**
+     * Administrator can delete tickets of passengers if they can't go.
+     *
+     * @param userId     - target user identifier
+     * @param scheduleId - target schedule identifier
+     * @return - view of registered passengers on train, after deleting.
+     */
+    @RequestMapping(value = "passengers/deletePassenger/{userId}/{scheduleId}")
+    public String deletePassengerFromTrain(@PathVariable("userId") Long userId, @PathVariable("scheduleId") Long scheduleId) {
+        Ticket ticket = ticketService.getTicket(userId, scheduleId);
+        ticketService.deleteTicket(ticket);
+        return "redirect:/scheduleView/passengers/{scheduleId}";
+    }
+
+
 }

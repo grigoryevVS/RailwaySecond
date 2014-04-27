@@ -10,7 +10,10 @@ import org.springframework.stereotype.Repository;
 import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.model.entities.StationDistance;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Repository
 public class ScheduleDao extends GenericDao<Schedule, Long> {
@@ -28,8 +31,8 @@ public class ScheduleDao extends GenericDao<Schedule, Long> {
      * @return - list of schedules.
      */
     @SuppressWarnings("unchecked")
-    public List<Schedule> getScheduleListByDate(Date date) {
-        return sessionFactory.getCurrentSession().createQuery("from Schedule where dateTrip=" + date).list();
+    public List<Schedule> getScheduleListByDate(String date) {
+        return sessionFactory.getCurrentSession().createQuery("from Schedule where DATE_FORMAT(dateTrip,'%Y-%m-%d')='"+ date + "'").list();
     }
 
     /**
@@ -39,7 +42,7 @@ public class ScheduleDao extends GenericDao<Schedule, Long> {
      * @param to   - station where will arrive target train.
      * @return - set of schedules, which are satisfy the conditions.
      */
-    public Set<Schedule> getScheduleSetByStation(String from, String to) {  // TODO wrong, passed parameters from first part!
+    public Set<Schedule> getScheduleSetByStation(String from, String to) {
 
         List<Schedule> scheduleList = new ArrayList<Schedule>();
         Set<Schedule> resultSet = new HashSet<Schedule>();

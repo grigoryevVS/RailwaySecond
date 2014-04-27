@@ -5,6 +5,7 @@
         <td align="center"><h4><a href="${pageContext.request.contextPath}/trainView/trainIndex">Train view</a></h4> </td>
         <td align="center"><h4><a href="${pageContext.request.contextPath}/routeView/routeIndex">Route view</a></h4> </td>
         <td align="center"><h4><a href="${pageContext.request.contextPath}/scheduleView/scheduleIndex">Schedule view</a></h4> </td>
+        <td align="center"><h4><a href="${pageContext.request.contextPath}/scheduleView/scheduleFilter">Schedule filter</a></h4> </td>
         <td align="center"><h4><a href="${pageContext.request.contextPath}/userView/editor/${pageContext.request.userPrincipal.name}">User editor</a></h4> </td>
     </tr>
 </table>

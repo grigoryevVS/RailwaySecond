@@ -118,17 +118,17 @@ public class RouteController {
      */
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addRoute(HttpSession session,@Valid @ModelAttribute("route") Route route, BindingResult result) {
+    public String addRoute(HttpSession session, @Valid @ModelAttribute("route") Route route, BindingResult result) {
         if (result.hasErrors()) {
             session.setAttribute("message", "Wrong data");
         }
         if (session.getAttribute("distanceList") != null) {
             List<StationDistanceDto> distanceList = (List<StationDistanceDto>) session.getAttribute("distanceList");
-            if(distanceList.size() < 2){
+            if (distanceList.size() < 2) {
                 session.setAttribute("message", "there is only 1 station distance. Must be 2 as minimum");
                 return "redirect:/routeView/createRoute";
             }
-            if(!routeService.createRoute(route, distanceList)){
+            if (!routeService.createRoute(route, distanceList)) {
                 session.setAttribute("message", "Wrong data!");
                 return "redirect:/routeView/createRoute";
             }
@@ -149,17 +149,11 @@ public class RouteController {
      */
     @RequestMapping("/delete/{routeId}")
     public String deleteRoute(@PathVariable("routeId") Long routeId) {
-        Route route = routeService.findRoute(routeId);
-        if (route != null) {
-            if(!routeService.deleteRoute(routeId)) {
-                // TODO message error
-                return "redirect:routeView/routes";
-            }
-            // TODO message success
+        if(!routeService.deleteRoute(routeId)){
             return "redirect:/routeView/routes";
         }
-        return "error404";
-
+        // TODO message error
+        return "redirect:/routeView/routes";
     }
 
     /**

@@ -3,6 +3,7 @@ package ru.javaschool.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.javaschool.dao.ScheduleDao;
 import ru.javaschool.dao.StationDao;
 import ru.javaschool.dao.StationDistanceDao;
 import ru.javaschool.model.entities.Station;
@@ -14,10 +15,13 @@ import java.util.List;
 public class StationService {
 
     @Autowired
-    StationDao stationDao;
+    private StationDao stationDao;
 
     @Autowired
-    StationDistanceDao distanceDao;
+    private StationDistanceDao distanceDao;
+
+    @Autowired
+    private ScheduleDao scheduleDao;
 
     /**
      * Get all stations from the database.
@@ -58,12 +62,10 @@ public class StationService {
      */
     @SuppressWarnings("unchecked")
     public boolean deleteStation(Long key) {
-        Station station = (Station) stationDao.findByPK(Station.class, key);
-        if (station != null) {
-            if (!distanceDao.isStationDistance(key)) {
-                stationDao.delete(station);
-                return true;
-            }
+        Station station = stationDao.findByPK(Station.class, key);
+        if (!distanceDao.isStationDistance(key)) {
+            stationDao.delete(station);
+            return true;
         }
         return false;
     }

@@ -17,18 +17,20 @@
     <form:input path="password" type="password"/>
 
     <form:label path="firstName">First name</form:label>
-    <form:input path="firstName" />
+    <form:input path="firstName" readonly="true"/>
 
     <form:label path="lastName">Last name</form:label>
-    <form:input path="lastName" />
+    <form:input path="lastName" readonly="true"/>
 
     <form:label path="birthDate">Birth date</form:label>
-    <form:input path="birthDate" type="date"/>
+    <form:input path="birthDate" readonly="true" type="date"/>
 
     <form:hidden path="userId"/>
 
     <input type="submit" value="Change account data" />
-
+    <c:if test="${message != null}">
+    <h6 style="color: red">${message}</h6>
+    </c:if>
 </form:form>
 <c:if test="${!empty ticketList}">
 <a href="<c:url value="/userView/tickets/${user.userId}" />">Tickets</a>

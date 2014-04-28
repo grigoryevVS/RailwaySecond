@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
@@ -26,6 +27,7 @@ public class User implements Serializable{
     @Column( nullable = false, length = 20)
     private String lastName;
     @NotNull
+    @Past
     @Column( nullable = false)
     @Temporal(TemporalType.DATE)
     private Date birthDate;

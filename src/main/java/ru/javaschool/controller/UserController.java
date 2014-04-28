@@ -63,17 +63,17 @@ public class UserController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addUser(@Valid @ModelAttribute("user") User user,
-                          BindingResult result,final RedirectAttributes redirectAttributes) {
+                          BindingResult result, final RedirectAttributes redirectAttributes) {
         user.setRole("ROLE_USER");
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("msg", "Wrong data");
             return "redirect:/userView/registration";
         }
-        if(!userService.isRegistrationSuccess(user)) {
+        if (!userService.isRegistrationSuccess(user)) {
             redirectAttributes.addFlashAttribute("msg", "Such client/login is already exist!");
             return "redirect:/userView/registration";
-        } else{
-            redirectAttributes.addFlashAttribute("msg", "Successful registration!");
+        } else {
+            redirectAttributes.addAttribute("msg", "Successful registration!");
             return "userView/login";
         }
     }
@@ -88,7 +88,11 @@ public class UserController {
     @RequestMapping(value = "/tickets/{userId}")
     public String getUsersTickets(@PathVariable("userId") Long userId, Model model) {
 
-        model.addAttribute("user", userService.getUserByPk(userId));
+        User user = userService.getUserByPk(userId);
+        if (user == null) {
+            return "error404";
+        }
+        model.addAttribute("user", user);
         model.addAttribute("ticketList", userService.getUsersTicketList(userId));
         return "userView/tickets";
     }
@@ -107,6 +111,9 @@ public class UserController {
             User user = userService.getUserByLogin(login);
             model.addAttribute("user", user);
             model.addAttribute("ticketList", userService.getUsersTicketList(user.getUserId()));
+            if (user == null) {
+                return "error404";
+            }
             return "userView/editor";
         }
         return "redirect:/error403";
@@ -119,12 +126,16 @@ public class UserController {
      * @return view
      */
     @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
-    public String updateUser(@ModelAttribute("user") User user, Model model) {
+    public String updateUser(@Valid @ModelAttribute("user") User user, Model model, BindingResult result) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (user.getLogin().equals(auth.getName())) {
             user.setRole(userService.getUserByLogin(user.getLogin()).getRole());
-            userService.updateUser(user);
             model.addAttribute("user", user);
+            if (result.hasErrors()) {
+                model.addAttribute("message", "Wrong data");
+                return "redirect:/userView/editor/" + user.getLogin(); // TODO check this out
+            }
+            userService.updateUser(user);
             return "userView/editor";
         }
         return "redirect:/error403";

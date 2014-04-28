@@ -3,12 +3,17 @@ package ru.javaschool.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.javaschool.model.entities.Station;
 import ru.javaschool.services.StationService;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/stationView")
@@ -50,7 +55,7 @@ public class StationController {
      * @param model - - model of view.
      * @return - target url
      */
-    @RequestMapping(value = "/createStation", method = RequestMethod.POST)
+    @RequestMapping(value = "/createStation")
     public String createStation(Model model) {
         model.addAttribute("station", new Station());
         return "stationView/createStation";
@@ -62,12 +67,13 @@ public class StationController {
      * @param station - target station to be created
      * @return - redirect url.
      */
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addStation(@ModelAttribute("station") Station station) {
+    @RequestMapping(value = "/add")
+    public String addStation(@Valid @ModelAttribute("station") Station station, RedirectAttributes redAttr) {
         if (stationService.createStation(station)) {
             return "redirect:/stationView/stations";
         } else {
-            return "redirect:/stationView/stations";    // TODO  create error page, will be include info about double entty and button home.
+            redAttr.addFlashAttribute("msg", "Such station is already exist!");
+            return "redirect:/stationView/createStation";
         }
     }
 
@@ -78,9 +84,17 @@ public class StationController {
      * @return - redirect url.
      */
     @RequestMapping("/delete/{stationId}")
-    public String deleteStation(@PathVariable("stationId") Long stationId) {
-        stationService.deleteStation(stationId);
-        return "redirect:/stationView/stations";
+    public String deleteStation(@PathVariable("stationId") Long stationId, RedirectAttributes redAttr) {
+        Station station = stationService.findStation(stationId);
+        if (station != null) {
+            if (!stationService.deleteStation(stationId)) {
+                redAttr.addFlashAttribute("msg", "Station " + station.getName() + " exist in some route, you can't delete it!");
+                return "redirect:/stationView/stations";
+            }
+            redAttr.addFlashAttribute("msg", "Delete successful!");
+            return "redirect:/stationView/stations";
+        }
+        return "error404";
     }
 
     /**
@@ -91,9 +105,12 @@ public class StationController {
      * @return - target url.
      */
     @RequestMapping("/updateStation/{stationId}")
-    public String updateStation(@PathVariable("stationId") Long stationId,
-                                Model model) {
-        model.addAttribute("station", stationService.findStation(stationId));
+    public String updateStation(@PathVariable("stationId") Long stationId, ModelMap model) {
+        Station station = stationService.findStation(stationId);
+        if (station == null) {
+            return "error404";
+        }
+        model.put("station", station);
         return "stationView/updateStation";
     }
 
@@ -104,7 +121,15 @@ public class StationController {
      * @return - redirect url.
      */
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
-    public String refreshStation(@ModelAttribute("station") Station station) {
+    public String refreshStation(@Valid @ModelAttribute("station") Station station, BindingResult result, RedirectAttributes redAttr) {
+        if (result.hasErrors()) {
+            redAttr.addFlashAttribute("msg", "Wrong data!");
+            return "redirect:/stationView/updateStation/" + station.getStationId();
+        }
+        if(stationService.getStationByName(station.getName()) != null){
+            redAttr.addFlashAttribute("msg", "Such station name is already exist!");
+            return "redirect:/stationView/updateStation/" + station.getStationId();
+        }
         stationService.updateStation(station);
         return "redirect:/stationView/stations";
     }

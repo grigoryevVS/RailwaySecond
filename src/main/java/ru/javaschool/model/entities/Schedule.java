@@ -2,11 +2,9 @@ package ru.javaschool.model.entities;
 
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
-import org.joda.time.LocalTime;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +18,7 @@ public class Schedule implements Serializable {
     @GeneratedValue
     private long scheduleId;
     @NotEmpty
+    @Future
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date dateTrip;
@@ -68,29 +67,5 @@ public class Schedule implements Serializable {
 
     public void setTicketList(List<Ticket> ticketList) {
         this.ticketList = ticketList;
-    }
-
-    public Date getDepartTime(Station station) {
-        long stationId = 0;
-        if (station != null)
-            stationId = station.getStationId();
-        DateTime departDate = new DateTime(dateTrip);
-        Date arriveTime = null;
-        for (StationDistance distance : route.getStationDistances()) {
-            if (arriveTime != null) {
-                long difference = distance.getAppearTime().getTime() - arriveTime.getTime();
-                if (difference < 0)
-                    difference += 24 * 3600 * 1000;
-                departDate = departDate.plus(new Duration(difference));
-            }
-            else {
-                LocalTime departTime = new LocalTime(distance.getAppearTime());
-                departDate = departDate.plus(departTime.getMillisOfDay());
-            }
-            arriveTime = distance.getAppearTime();
-            if (distance.getStation().getStationId() == stationId)
-                break;
-        }
-        return departDate.toDate();
     }
 }

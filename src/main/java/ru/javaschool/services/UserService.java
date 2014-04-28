@@ -4,6 +4,7 @@ package ru.javaschool.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.javaschool.dao.TicketDao;
 import ru.javaschool.dao.UserDao;
 import ru.javaschool.dto.TicketDto;
 import ru.javaschool.model.entities.Ticket;
@@ -18,6 +19,9 @@ public class UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private TicketDao ticketDao;
 
     /**
      * This method implements check, is target user( passed as a parameter )

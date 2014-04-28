@@ -13,7 +13,12 @@
 </form:form>
 
 
-<h3>Stations</h3>
+<h4>Stations</h4>
+<c:if test="${msg != null}">
+    <h4 style="color: red">
+            ${msg}
+    </h4>
+</c:if>
 <c:if test="${!empty stationList}">
     <table>
         <tr>

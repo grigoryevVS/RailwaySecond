@@ -3,7 +3,6 @@ package ru.javaschool.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,7 +90,7 @@ public class StationController {
                 redAttr.addFlashAttribute("msg", "Station " + station.getName() + " exist in some route, you can't delete it!");
                 return "redirect:/stationView/stations";
             }
-            redAttr.addFlashAttribute("msg", "Delete successful!");
+            redAttr.addFlashAttribute("msg", "Delete station " + station.getName() + " successful!");
             return "redirect:/stationView/stations";
         }
         return "error404";
@@ -105,12 +104,12 @@ public class StationController {
      * @return - target url.
      */
     @RequestMapping("/updateStation/{stationId}")
-    public String updateStation(@PathVariable("stationId") Long stationId, ModelMap model) {
+    public String updateStation(@PathVariable("stationId") Long stationId, Model model) {
         Station station = stationService.findStation(stationId);
         if (station == null) {
             return "error404";
         }
-        model.put("station", station);
+        model.addAttribute("station", station);
         return "stationView/updateStation";
     }
 
@@ -121,7 +120,8 @@ public class StationController {
      * @return - redirect url.
      */
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
-    public String refreshStation(@Valid @ModelAttribute("station") Station station, BindingResult result, RedirectAttributes redAttr) {
+    public String refreshStation(@Valid @ModelAttribute("station") Station station, BindingResult result,
+                                 RedirectAttributes redAttr) {
         if (result.hasErrors()) {
             redAttr.addFlashAttribute("msg", "Wrong data!");
             return "redirect:/stationView/updateStation/" + station.getStationId();

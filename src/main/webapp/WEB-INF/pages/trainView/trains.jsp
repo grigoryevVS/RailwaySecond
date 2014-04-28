@@ -13,7 +13,12 @@
 </form:form>
 
 
-<h3>Trains</h3>
+<h4>Trains</h4>
+<c:if test="${msg != null}">
+    <h4 style="color: red">
+            ${msg}
+    </h4>
+</c:if>
 <c:if  test="${!empty trainList}">
     <table>
         <tr>

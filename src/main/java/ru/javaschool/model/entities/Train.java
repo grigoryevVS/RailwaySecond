@@ -7,8 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
@@ -21,7 +20,7 @@ public class  Train implements Serializable{
     @GeneratedValue
     private long trainId;
     @Column( nullable = false)
-    @Min(1) @Max(350)
+    @NotNull
     private int numberOfSeats;
     @NotEmpty
     @Size(min=2, max=20)

@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javaschool.dao.ScheduleDao;
+import ru.javaschool.dao.TicketDao;
 import ru.javaschool.dao.TrainDao;
+import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.model.entities.Train;
 
 import java.util.List;
@@ -26,6 +28,9 @@ public class TrainService {
     @Autowired
     ScheduleDao scheduleDao;
 
+    @Autowired
+    private TicketDao ticketDao;
+
     /**
      * Get all trains, which exists in our db
      *
@@ -37,17 +42,19 @@ public class TrainService {
 
     /**
      * Creating new train if it is not exist yet.
+     * Validate correctness train capacity and name uniqueness.
      *
      * @param train - what train we need to create,
      *              getting from the employee, who fills all its fields.
      */
     public boolean createTrain(Train train) {
-        if (trainDao.isTrainExist(train)) {
+
+        int capacity = train.getNumberOfSeats();
+        if (capacity < 1 || capacity > 400 || trainDao.isTrainExist(train)) {
             return false;
-        } else {
-            trainDao.create(train);
-            return true;
         }
+        trainDao.create(train);
+        return true;
     }
 
     /**
@@ -56,22 +63,54 @@ public class TrainService {
      *
      * @param key - primary key( unique identifier of concrete train, to delete.
      */
-    public void deleteTrain(Long key) {
+    public boolean deleteTrain(Long key) {
         Train train = trainDao.findByPK(Train.class, key);
         if (train != null) {
             if (!scheduleDao.isTrainInSchedule(key)) {
                 trainDao.delete(train);
+                return true;
             }
         }
+        return false;
     }
 
     /**
      * Update target trains name and/or capacity.
+     * Validate correctness of train capacity and compares
+     * new capacity with bought ticketList size
      *
      * @param train - target train to update.
      */
-    public void updateTrain(Train train) {
+    public boolean updateTrain(Train train) {
+        int capacity = train.getNumberOfSeats();
+        if (capacity < 1 || capacity > 400) {
+            return false;
+        }
+        List<Schedule> scheduleList = scheduleDao.getScheduleListByTrain(train.getTrainId());
+        for (Schedule schedule : scheduleList) {
+            if (capacity <= schedule.getTicketList().size()) {
+                return false;
+            }
+        }
         trainDao.update(train);
+        return true;
+    }
+
+    /**
+     * Getting count of maximum bought tickets on any of the target scheduleList
+     *
+     * @param trainId - target train id to check its schedule
+     * @return - counted tickets.
+     */
+    public int maxBoughtTicketsOnTrain(Long trainId) {
+        List<Schedule> scheduleList = scheduleDao.getScheduleListByTrain(trainId);
+        int actualTickets = 0;
+        for (Schedule schedule : scheduleList) {
+            if (actualTickets <= schedule.getTicketList().size()) {
+                actualTickets = schedule.getTicketList().size();
+            }
+        }
+        return actualTickets;
     }
 
     /**
@@ -82,5 +121,15 @@ public class TrainService {
      */
     public Train findTrain(Long key) {
         return trainDao.findByPK(Train.class, key);
+    }
+
+    /**
+     * Get train by its name
+     *
+     * @param name - target trains name
+     * @return - train instance
+     */
+    public Train getTrainByName(String name) {
+        return trainDao.findByName(name);
     }
 }

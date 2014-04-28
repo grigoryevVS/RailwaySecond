@@ -134,4 +134,9 @@ public class ScheduleDao extends GenericDao<Schedule, Long> {
 //        return duration.isShorterThan(interval);
         return false;
     }
+
+    @SuppressWarnings("unchecked")
+    public List<Schedule> getScheduleListByTrain(Long trainId) {
+        return sessionFactory.getCurrentSession().createQuery("from Schedule where train.trainId=" + trainId).list();
+    }
 }

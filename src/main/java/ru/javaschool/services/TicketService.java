@@ -42,7 +42,7 @@ public class TicketService {
      * @param user     - target passenger.
      * @return - true if buying ticket successful, else return false.
      */
-    public boolean buyTicket(User user, Schedule schedule) {
+    public String buyTicket(User user, Schedule schedule) {
         if (!ticketDao.isExistPassenger(schedule, user)) {
             if (!ticketDao.isTrainFull(schedule)) {
                 if (!scheduleDao.isTooLate(schedule)) {
@@ -51,22 +51,24 @@ public class TicketService {
                     schedule.getRoute().setStationDistances(distanceDao.getStationsInRoute(schedule.getRoute()));
                     ticket.setSchedule(schedule);
                     ticketDao.create(ticket);
-                    return true;
+                    return "Buy ticket success!";
                 }
+                return "Sorry, it's too late, only 10 minutes before departure!";
             }
+            return "Sorry, the train is full!";
         }
-        return false;
+        return "Sorry, but you've" +
+                " already bought ticket on train " + schedule.getTrain().getName() + " at " + schedule.getDateTrip();
     }
 
     /**
      * Get all registered passengers on target train,
      * i.e. who bought ticket on it.
      *
-     * @param scheduleId - target schedules primary key.
+     * @param schedule - target schedule.
      * @return - list of all passengers, who bought tickets on target train.
      */
-    public List<User> getAllRegisteredOnTrain(Long scheduleId) {
-        Schedule schedule = scheduleDao.findByPK(Schedule.class, scheduleId);
+    public List<User> getAllRegisteredOnTrain(Schedule schedule) {
         return ticketDao.getAllPassengersOnTrain(schedule);
     }
 

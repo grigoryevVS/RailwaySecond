@@ -42,6 +42,7 @@ public class ScheduleService {
         List<Schedule> scheduleList = scheduleDao.findAll(Schedule.class);
         if (!scheduleList.isEmpty()) {
             for (Schedule sch : scheduleList) {
+                // TODO check date - if old, delete schedule!
                 scheduleDtos.add(new ScheduleDto(sch));
             }
         }

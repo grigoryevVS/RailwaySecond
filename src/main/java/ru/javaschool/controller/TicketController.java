@@ -10,6 +10,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.javaschool.dto.TicketDto;
 import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.model.entities.Ticket;
@@ -49,15 +50,21 @@ public class TicketController {
      * @return - view of successfully bought ticket, or validation message.
      */
     @RequestMapping("buyTicket/{scheduleId}")
-    public String buyTicket(@PathVariable("scheduleId") Long scheduleId, Model model) {
+    public String buyTicket(@PathVariable("scheduleId") Long scheduleId, Model model, RedirectAttributes redAttr) {
         User user = userService.getUserByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
         Schedule schedule = scheduleService.findSchedule(scheduleId);
-        if (ticketService.buyTicket(user, schedule)) {
-            TicketDto ticketDto = new TicketDto(user, schedule);
-            model.addAttribute("ticket", ticketDto);
-            return "scheduleView/buyTicket";
+        if (schedule != null) {
+            String validateResult = ticketService.buyTicket(user, schedule);
+            if (validateResult.equals("Buy ticket success!")) {
+                TicketDto ticketDto = new TicketDto(user, schedule);
+                model.addAttribute("ticket", ticketDto);
+                return "scheduleView/buyTicket";
+            } else {
+                redAttr.addFlashAttribute("msg", validateResult);
+                return "redirect:/scheduleView/scheduleIndex";
+            }
         } else {
-            return "redirect:/scheduleView/scheduleIndex";  // TODO validation msg
+            return "error404";
         }
     }
 
@@ -70,9 +77,14 @@ public class TicketController {
      */
     @RequestMapping("passengers/{scheduleId}")
     public String passengers(@PathVariable("scheduleId") Long scheduleId, Model model) {
-        model.addAttribute("userList", ticketService.getAllRegisteredOnTrain(scheduleId));
-        model.addAttribute("schedule", scheduleService.findSchedule(scheduleId));
-        return "scheduleView/passengers";
+        Schedule schedule = scheduleService.findSchedule(scheduleId);
+        if (schedule != null) {
+            model.addAttribute("userList", ticketService.getAllRegisteredOnTrain(schedule));
+            model.addAttribute("schedule", schedule);
+            return "scheduleView/passengers";
+        } else {
+            return "error404";
+        }
     }
 
     /**
@@ -85,8 +97,12 @@ public class TicketController {
     @RequestMapping(value = "passengers/deletePassenger/{userId}/{scheduleId}")
     public String deletePassengerFromTrain(@PathVariable("userId") Long userId, @PathVariable("scheduleId") Long scheduleId) {
         Ticket ticket = ticketService.getTicket(userId, scheduleId);
-        ticketService.deleteTicket(ticket);
-        return "redirect:/scheduleView/passengers/{scheduleId}";
+        if (ticket != null) {
+            ticketService.deleteTicket(ticket);
+            return "redirect:/scheduleView/passengers/{scheduleId}";
+        } else {
+            return "error404";
+        }
     }
 
 

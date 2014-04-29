@@ -2,6 +2,9 @@ package ru.javaschool.dao;
 
 
 import org.hibernate.SessionFactory;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.joda.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.javaschool.model.entities.Schedule;
@@ -124,15 +127,14 @@ public class ScheduleDao extends GenericDao<Schedule, Long> {
      * @return - true if it's too late to buy tickets on it, else return false.
      */
     public boolean isTooLate(Schedule schedule) {
-//        Duration interval = new Duration(600 * 1000L);
-//        DateTime departureTime = new DateTime(schedule.getDateTrip());
-//        DateTime currentTime = new DateTime();
-//        List<StationDistance> distanceList = distanceDao.getStationsInRoute(schedule.getRoute());
-//        LocalTime departTime = new LocalTime(distanceList.get(0).getAppearTime());
-//        departureTime = departureTime.plus(departTime.getMillisOfDay());
-//        Duration duration = new Duration(currentTime, departureTime);
-//        return duration.isShorterThan(interval);
-        return false;
+        Duration interval = new Duration(600 * 1000L);
+        DateTime departureTime = new DateTime(schedule.getDateTrip());
+        DateTime currentTime = new DateTime();
+        List<StationDistance> distanceList = distanceDao.getStationsInRoute(schedule.getRoute());
+        LocalTime departTime = new LocalTime(distanceList.get(0).getAppearTime());
+        departureTime = departureTime.plus(departTime.getMillisOfDay());
+        Duration duration = new Duration(currentTime, departureTime);
+        return duration.isShorterThan(interval);
     }
 
     @SuppressWarnings("unchecked")

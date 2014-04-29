@@ -86,7 +86,7 @@ public class StationController {
     public String deleteStation(@PathVariable("stationId") Long stationId, RedirectAttributes redAttr) {
         Station station = stationService.findStation(stationId);
         if (station != null) {
-            if (!stationService.deleteStation(stationId)) {
+            if (!stationService.deleteStation(station)) {
                 redAttr.addFlashAttribute("msg", "Station " + station.getName() + " exist in some route, you can't delete it!");
                 return "redirect:/stationView/stations";
             }

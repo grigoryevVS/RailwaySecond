@@ -55,15 +55,14 @@ public class StationService {
      * if such station doesn't exist in working route, and it could be deleted
      * without any harm to our schedule.
      *
-     * @param key - concrete identifier of station,
+     * @param station - concrete station,
      *            which need to be deleted.
      * @return - true if such station successfully deleted.
      * false - if such station included in some routes.
      */
     @SuppressWarnings("unchecked")
-    public boolean deleteStation(Long key) {
-        Station station = stationDao.findByPK(Station.class, key);
-        if (!distanceDao.isStationDistance(key)) {
+    public boolean deleteStation(Station station) {
+        if (!distanceDao.isStationDistance(station.getStationId())) {
             stationDao.delete(station);
             return true;
         }

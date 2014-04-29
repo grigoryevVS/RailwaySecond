@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.javaschool.dto.ScheduleDto;
 import ru.javaschool.dto.ScheduleFilterDto;
 import ru.javaschool.model.entities.Schedule;
@@ -76,7 +78,7 @@ public class ScheduleController {
      * @param model - - model of view.
      * @return - target url
      */
-    @RequestMapping(value = "/createSchedule", method = RequestMethod.POST)
+    @RequestMapping(value = "/createSchedule")
     public String createSchedule(Model model) {
         model.addAttribute("schedule", new Schedule());
         model.addAttribute("trainList", trainService.getAllTrains());
@@ -94,15 +96,21 @@ public class ScheduleController {
     public String addSchedule(@ModelAttribute("schedule") Schedule schedule,
                               @ModelAttribute("trainName") String trainName,
                               @ModelAttribute("routeName") String routeName,
-                              @ModelAttribute("dateTrip") String dateTrip) {
+                              @ModelAttribute("dateTrip") String dateTrip, BindingResult result, RedirectAttributes redAttr) {
+        if (result.hasErrors()) {
+            redAttr.addFlashAttribute("msg", "Wrong data!");
+            return "redirect:/scheduleView/createSchedule";
+        }
         ScheduleDto scheduleDto = new ScheduleDto();
         scheduleDto.setTrainName(trainName);
         scheduleDto.setRouteName(routeName);
         scheduleDto.setDate(dateTrip);
-        if (scheduleService.wrapAndCreateSchedule(scheduleDto)) {
+        String validateResult = scheduleService.unWrapAndCreateSchedule(scheduleDto);
+        if (validateResult.equals("Success!")) {
             return "redirect:/scheduleView/schedule";
         } else
-            return "redirect:/scheduleView/schedule"; // TODO error hanDle.
+            redAttr.addFlashAttribute("msg", validateResult);
+        return "redirect:/scheduleView/createSchedule";
     }
 
     /**
@@ -112,9 +120,15 @@ public class ScheduleController {
      * @return - redirect url.
      */
     @RequestMapping("/delete/{scheduleId}")
-    public String deleteSchedule(@PathVariable("scheduleId") Long scheduleId) {
-        scheduleService.deleteSchedule(scheduleId);
-        return "redirect:/scheduleView/schedule";
+    public String deleteSchedule(@PathVariable("scheduleId") Long scheduleId, RedirectAttributes redAttr) {
+        Schedule schedule = scheduleService.findSchedule(scheduleId);
+        if (schedule != null) {
+            if (!scheduleService.deleteSchedule(schedule)) {
+                redAttr.addFlashAttribute("msg", "There are some tickets on this schedule, you can't delete it!");
+            }
+            return "redirect:/scheduleView/schedule";
+        }
+        return "error404";
     }
 
     /**
@@ -127,8 +141,12 @@ public class ScheduleController {
     @RequestMapping("/updateSchedule/{scheduleId}")
     public String updateSchedule(@PathVariable("scheduleId") Long scheduleId,
                                  Model model) {
-        model.addAttribute("schedule", scheduleService.findSchedule(scheduleId));
-        return "scheduleView/updateSchedule";
+        Schedule schedule = scheduleService.findSchedule(scheduleId);
+        if (schedule != null) {
+            model.addAttribute("schedule", schedule);
+            return "scheduleView/updateSchedule";
+        }
+        return "error404";
     }
 
     /**
@@ -144,7 +162,7 @@ public class ScheduleController {
     }
 
     @RequestMapping(value = "/scheduleFilter")
-    public String createFilter( Model model) {
+    public String createFilter(Model model) {
         ScheduleFilterDto filter = new ScheduleFilterDto();
         model.addAttribute("filter", filter);
         model.addAttribute("stationListFrom", stationService.getAllStations());
@@ -162,16 +180,18 @@ public class ScheduleController {
 
     /**
      * Get stations to the js autocomplete method
+     *
      * @param stationName Name of station
      * @return List of station
      */
     @RequestMapping(value = "/getStations", method = RequestMethod.GET)
-    public @ResponseBody
+    public
+    @ResponseBody
     List<Station> getStationsForJS(@RequestParam String stationName) {
         List<Station> result = new ArrayList<Station>();
         List<Station> stations = stationService.getAllStations();
-        for(Station station : stations) {
-            if(station.getName().contains(stationName)) {
+        for (Station station : stations) {
+            if (station.getName().contains(stationName)) {
                 result.add(station);
             }
         }

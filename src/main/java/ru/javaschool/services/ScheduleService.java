@@ -1,14 +1,18 @@
 package ru.javaschool.services;
 
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javaschool.dao.RouteDao;
 import ru.javaschool.dao.ScheduleDao;
+import ru.javaschool.dao.StationDistanceDao;
 import ru.javaschool.dao.TrainDao;
 import ru.javaschool.dto.ScheduleDto;
 import ru.javaschool.dto.ScheduleFilterDto;
+import ru.javaschool.model.entities.Route;
 import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.model.entities.StationDistance;
 import ru.javaschool.model.entities.Ticket;
@@ -16,6 +20,7 @@ import ru.javaschool.model.entities.Ticket;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,6 +35,9 @@ public class ScheduleService {
 
     @Autowired
     private TrainDao trainDao;
+
+    @Autowired
+    private StationDistanceDao distanceDao;
 
     /**
      * Get list of schedules.
@@ -66,12 +74,11 @@ public class ScheduleService {
      * if there are no bought tickets on it.
      * If it is, we can't delete it.
      *
-     * @param key - identifier of target schedule.
+     * @param schedule - target schedule.
      * @return - true, if delete successful, else return false.
      */
-    public boolean deleteSchedule(Long key) {
-        Schedule schedule = scheduleDao.findByPK(Schedule.class, key);
-        if (schedule.getTicketList().isEmpty()) {
+    public boolean deleteSchedule(Schedule schedule) {
+        if (schedule.getTicketList().isEmpty()) {   // && проверка что расписание уже не прошлое, если прошлое то делит вместе с билетами.
             scheduleDao.delete(schedule);
             return true;
         }
@@ -108,20 +115,53 @@ public class ScheduleService {
      * @param scheduleDto - scheduleDto object
      * @return - true, if creating target schedule successful, else return false.
      */
-    public boolean wrapAndCreateSchedule(ScheduleDto scheduleDto) {
+    public String unWrapAndCreateSchedule(ScheduleDto scheduleDto) {
         Schedule schedule = new Schedule();
-        schedule.setRoute(routeDao.findByName(scheduleDto.getRouteName()));
+        Route route = routeDao.findByName(scheduleDto.getRouteName());
+        schedule.setRoute(route);
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateToCheck;
         try {
-            schedule.setDateTrip(sdf.parse(scheduleDto.getDate()));
+            dateToCheck = sdf.parse(scheduleDto.getDate());
         } catch (ParseException e) {
             e.printStackTrace();
+            return "Wrong date format!";
         }
-        schedule.setTrain(trainDao.findByName(scheduleDto.getTrainName()));
-        schedule.setTicketList(new ArrayList<Ticket>());
-        schedule = scheduleDao.create(schedule);
-        return schedule != null;
+        StationDistance sd = distanceDao.getStationsInRoute(route).get(0);
+        Date timeToCheck = sd.getAppearTime();
+        if (isCorrectDate(dateToCheck, timeToCheck)) {
+            schedule.setDateTrip(dateToCheck);
+            schedule.setTrain(trainDao.findByName(scheduleDto.getTrainName()));
+            schedule.setTicketList(new ArrayList<Ticket>());
+            scheduleDao.create(schedule);
+            return "Success!";
+        } else {
+            return "Date must be in the future!";
+        }
+    }
 
+    /**
+     * Check departure date and time to create or not schedule
+     *
+     * @param dateToCheck - dateTrip
+     * @param timeToCheck - appearTimeFrom station( just first one)
+     * @return - true if correct future date, false - if date in the past.
+     */
+    public boolean isCorrectDate(Date dateToCheck, Date timeToCheck) {
+        LocalDate localDate = new LocalDate();
+        int compareResult = localDate.toDate().compareTo(dateToCheck);
+        if (compareResult > 0) {
+            return false;
+        } else if (compareResult < 0) {
+            return true;
+        } else {
+            DateTime departureTime = new DateTime(timeToCheck);
+            departureTime.plus(dateToCheck.getTime());
+            DateTime currentTime = new DateTime();
+            return (currentTime.getHourOfDay() < departureTime.getHourOfDay() || currentTime.getMinuteOfDay()
+                    < departureTime.getMinuteOfDay() || currentTime.getSecondOfDay() < departureTime.getSecondOfDay());
+        }
     }
 
     /**

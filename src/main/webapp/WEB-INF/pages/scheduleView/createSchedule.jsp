@@ -26,6 +26,11 @@
     <label for="dateTrip">Date trip</label>
     <input type="date" id="dateTrip" name="dateTrip" required/>
     <input type="submit" value="Create"/>
+    <c:if test="${msg != null}">
+        <h4 style="color: red">
+                ${msg}
+        </h4>
+    </c:if>
 </form:form>
 </body>
 </html>

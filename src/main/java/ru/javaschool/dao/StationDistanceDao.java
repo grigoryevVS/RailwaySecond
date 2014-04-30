@@ -45,12 +45,22 @@ public class StationDistanceDao extends GenericDao<StationDistance, Long> {
 
     /**
      * Get station distances, which are included in target route.
+     *
      * @param route - target route
      * @return - list of station distances.
      */
     @SuppressWarnings("unchecked")
     public List<StationDistance> getStationsInRoute(Route route) {
         return sessionFactory.getCurrentSession().createQuery("from StationDistance where route='" + route + "'").list();
-        //sessionFactory.getCurrentSession().createQuery("select  s from StationDistance as s join s.route as r where r=:route").setParameter("route", route).list()
+    }
+
+    /**
+     * Get stationDistance by name of target station
+     *
+     * @param arrivalStationName - arrival station name
+     * @return - stationDistance instance.
+     */
+    public StationDistance getStationByName(String arrivalStationName) {
+        return (StationDistance) sessionFactory.getCurrentSession().createQuery("from StationDistance where station.name='" + arrivalStationName + "'").uniqueResult();
     }
 }

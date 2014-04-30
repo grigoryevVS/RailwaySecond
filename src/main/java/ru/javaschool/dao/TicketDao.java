@@ -21,8 +21,8 @@ public class TicketDao extends GenericDao<Ticket, Long> {
      * Checks that ticket was already bought such passenger on concrete schedule.
      * One passenger can have only one ticket on concrete schedule.
      *
-     * @param schedule  - target schedule
-     * @param user - target passenger.
+     * @param schedule - target schedule
+     * @param user     - target passenger.
      * @return - true, if such passenger already have ticket, else return false.
      */
     @SuppressWarnings("unchecked")
@@ -64,14 +64,37 @@ public class TicketDao extends GenericDao<Ticket, Long> {
         return passengerList;
     }
 
-
-    public Ticket getTicket(Long userId,Long scheduleId) {
+    /**
+     * Get ticket by user identifier and schedule identifier
+     *
+     * @param userId     - target userId
+     * @param scheduleId - target scheduleId
+     * @return - instance of ticket.
+     */
+    public Ticket getTicket(Long userId, Long scheduleId) {
         String queryString = "from Ticket where user.userId=" + userId + " and schedule.scheduleId=" + scheduleId;
         return (Ticket) sessionFactory.getCurrentSession().createQuery(queryString).uniqueResult();
     }
 
+    /**
+     * Get users ticket
+     *
+     * @param userId - target user identifier
+     * @return - list of tickets
+     */
     @SuppressWarnings("unchecked")
     public List<Ticket> findByUser(Long userId) {
         return sessionFactory.getCurrentSession().createQuery("from Ticket where user.userId=" + userId).list();
+    }
+
+    /**
+     * Get ticket list by schedule identifier
+     *
+     * @param sch - target schedule
+     * @return - list of tickets
+     */
+    @SuppressWarnings("unchecked")
+    public List<Ticket> findBySchedule(Schedule sch) {
+        return sessionFactory.getCurrentSession().createQuery("from Ticket where schedule.scheduleId=" + sch.getScheduleId()).list();
     }
 }

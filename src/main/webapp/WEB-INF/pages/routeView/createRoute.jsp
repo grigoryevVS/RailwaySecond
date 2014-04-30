@@ -1,16 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Create new route</title>
     <%@ include file="/WEB-INF/pages/layout/headerStyles.jsp" %>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/routeValid.js"></script>
 </head>
 <body>
+<%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 <form:form method="post" action="${pageContext.request.contextPath}/routeView/add" commandName="route">
     <form:label path="title">Name</form:label>
     <form:input path="title"/>
@@ -43,7 +40,15 @@
                 <td>${stationDistanceDto.appearenceTime}</td>
             </tr>
         </c:forEach>
+        <form:form method="post" action="${pageContext.request.contextPath}/routeView/clearDistanceList" commandName="distanceList">
+            <input type="submit" value="Clear distanceList"/>
+        </form:form>
     </table>
+    <c:if test="${msg != null}">
+        <h4 style="color: red">
+                ${msg}
+        </h4>
+    </c:if>
 </c:if>
 </body>
 </html>

@@ -14,7 +14,10 @@ import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.model.entities.StationDistance;
 
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,29 +47,6 @@ public class RouteService {
     public List<Route> getAllRoutes() {
         return routeDao.findAll(Route.class);
     }
-
-//    /**
-//     * This method creates a new route, if such name is
-//     * not exist in the database yet.
-//     * First create route, then create all stationDistances of this route.
-//     *
-//     * @param route - concrete route, which we need to create.
-//     * @return - true if insert successful, else another way.
-//     */
-//    @SuppressWarnings("unchecked")
-//    public boolean createRoute(Route route) {
-//        if (routeDao.isRouteExist(route.getTitle())) {
-//            return false;
-//        }
-//        List<StationDistance> distanceList = route.getStationDistances();
-//        if (distanceList != null && distanceList.size() > 1) {
-//            routeDao.create(route);
-//            for (StationDistance sd : distanceList) {
-//                distanceDao.create(sd);
-//            }
-//        }
-//        return true;
-//    }
 
     /**
      * Delete route from the database,
@@ -150,12 +130,15 @@ public class RouteService {
      */
     public List<StationDistanceDto> getStationDistances(Long routeId) {
         Route route = routeDao.findByPK(Route.class, routeId);
-        List<StationDistance> sdList = distanceDao.getStationsInRoute(route);
-        List<StationDistanceDto> dtoList = new ArrayList<>();
-        for (StationDistance sd : sdList) {
-            dtoList.add(new StationDistanceDto(sd));
+        if (route != null) {
+            List<StationDistance> sdList = distanceDao.getStationsInRoute(route);
+            List<StationDistanceDto> dtoList = new ArrayList<>();
+            for (StationDistance sd : sdList) {
+                dtoList.add(new StationDistanceDto(sd));
+            }
+            return dtoList;
         }
-        return dtoList;
+        return new ArrayList<>();
     }
 
     /**
@@ -167,9 +150,11 @@ public class RouteService {
      */
     public boolean createRoute(Route route, List<StationDistanceDto> distanceList) {
         // if not exist yet
+        if (route.getTitle().equals("")) {
+            return false;
+        }
         if (!routeDao.isRouteExist(route.getTitle())) {
 
-            //Route insertedRoute = routeDao.findByPK(Route.class, route.getRouteId());
             List<StationDistance> stationDistances = new ArrayList<>();
             // creating stationDistances
             Long sequenceNumber = (long) 1;
@@ -188,10 +173,40 @@ public class RouteService {
             for (StationDistance sd : stationDistances) {
                 distanceDao.create(sd);
             }
-            //route.setStationDistances(stationDistances);
-            //routeDao.update(route);
             return true;
         }
         return false;
+    }
+
+    /**
+     * Validation of correctness next station in the route.
+     *
+     * @param distanceList - list of stations in the route
+     * @param distanceDto  - dto object with data
+     * @return - result string of validation
+     */
+    public String isCorrectStation(List<StationDistanceDto> distanceList, StationDistanceDto distanceDto) {
+        if (!distanceList.isEmpty()) {
+            StationDistanceDto previousStation = distanceList.get(distanceList.size() - 1);
+            if (previousStation.getStationName().equals(distanceDto.getStationName())) {
+                return "Previous station exactly the same!";
+            }
+            String targetTime = distanceDto.getAppearenceTime();
+            String previousTime = previousStation.getAppearenceTime();
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            Date target;
+            Date previous;
+            try {
+                target = sdf.parse(targetTime);
+                previous = sdf.parse(previousTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return "Wrong format time!";
+            }
+            if (previous.after(target) || previous.equals(target)) {
+                return "Next station appearance time must be later then time of previous station!";
+            }
+        }
+        return "ok";
     }
 }

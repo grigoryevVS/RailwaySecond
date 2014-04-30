@@ -51,6 +51,7 @@ public class TicketController {
      */
     @RequestMapping("buyTicket/{scheduleId}")
     public String buyTicket(@PathVariable("scheduleId") Long scheduleId, Model model, RedirectAttributes redAttr) {
+
         User user = userService.getUserByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
         Schedule schedule = scheduleService.findSchedule(scheduleId);
         if (schedule != null) {
@@ -77,6 +78,7 @@ public class TicketController {
      */
     @RequestMapping("passengers/{scheduleId}")
     public String passengers(@PathVariable("scheduleId") Long scheduleId, Model model) {
+
         Schedule schedule = scheduleService.findSchedule(scheduleId);
         if (schedule != null) {
             model.addAttribute("userList", ticketService.getAllRegisteredOnTrain(schedule));
@@ -96,6 +98,7 @@ public class TicketController {
      */
     @RequestMapping(value = "passengers/deletePassenger/{userId}/{scheduleId}")
     public String deletePassengerFromTrain(@PathVariable("userId") Long userId, @PathVariable("scheduleId") Long scheduleId) {
+
         Ticket ticket = ticketService.getTicket(userId, scheduleId);
         if (ticket != null) {
             ticketService.deleteTicket(ticket);

@@ -7,13 +7,11 @@ import org.joda.time.Duration;
 import org.joda.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ru.javaschool.dto.ScheduleDto;
 import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.model.entities.StationDistance;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public class ScheduleDao extends GenericDao<Schedule, Long> {
@@ -32,51 +30,7 @@ public class ScheduleDao extends GenericDao<Schedule, Long> {
      */
     @SuppressWarnings("unchecked")
     public List<Schedule> getScheduleListByDate(String date) {
-        return sessionFactory.getCurrentSession().createQuery("from Schedule where DATE_FORMAT(dateTrip,'%Y-%m-%d')='"+ date + "'").list();
-    }
-
-    /**
-     * This method getting set of schedules, with constraints from and/or to stations.
-     *
-     * @param from - station from will depart target train.
-     * @param to   - station where will arrive target train.
-     * @return - set of schedules, which are satisfy the conditions.
-     */
-    public Set<Schedule> getScheduleSetByStation(String from, String to) {
-
-        List<Schedule> scheduleList = new ArrayList<Schedule>();
-        Set<Schedule> resultSet = new HashSet<Schedule>();
-        String stationFrom = "";
-        String stationTo = "";
-        if (!(to.equals("not selected"))) {
-            for (Schedule s : scheduleList) {
-                List<StationDistance> distanceList = s.getRoute().getStationDistances();
-                for (StationDistance sd : distanceList) {
-                    if (stationFrom.equals("") && sd.getStation().getName().equals(from)) {
-                        stationFrom = sd.getStation().getName();
-                    }
-                    if (stationTo.equals("") && sd.getStation().getName().equals(to)) {
-                        stationTo = sd.getStation().getName();
-                    }
-                }
-                if (!stationFrom.equals("") && (!stationTo.equals(""))) {
-                    resultSet.add(s);
-                }
-            }
-        } else {
-            for (Schedule s : scheduleList) {
-                List<StationDistance> distanceList = s.getRoute().getStationDistances();
-                for (StationDistance sd : distanceList) {
-                    if (stationFrom.equals("") && sd.getStation().getName().equals(from)) {
-                        stationFrom = sd.getStation().getName();
-                    }
-                }
-                if (!stationFrom.equals("")) {
-                    resultSet.add(s);
-                }
-            }
-        }
-        return resultSet;
+        return sessionFactory.getCurrentSession().createQuery("from Schedule where DATE_FORMAT(dateTrip,'%Y-%m-%d')='" + date + "'").list();
     }
 
     /**
@@ -96,24 +50,26 @@ public class ScheduleDao extends GenericDao<Schedule, Long> {
      * Get schedule list, which contains target route
      * method need to choose, what schedules need to be
      * updated, if target route was updated.
+     *
      * @param routeId - identifier of target route
      * @return - list of concrete schedules to update.
      */
     @SuppressWarnings("unchecked")
-    public List<Schedule> getScheduleListByRoute(Long routeId){
+    public List<Schedule> getScheduleListByRoute(Long routeId) {
         return sessionFactory.getCurrentSession().createQuery("from Schedule where route.routeId=" + routeId).list();
     }
 
     /**
      * Help method, to check, if target schedule list
      * contains schedules, on which tickets has been bought already.
+     *
      * @param scheduleList - target schedule list.
      * @return - true, if we can update schedules,
-     *          false - if someone already bought ticket on any of items of target schedule list.
+     * false - if someone already bought ticket on any of items of target schedule list.
      */
     public boolean isTicketListEmpty(List<Schedule> scheduleList) {
         for (Schedule sch : scheduleList) {
-            if(!sch.getTicketList().isEmpty()){
+            if (!sch.getTicketList().isEmpty()) {
                 return false;
             }
         }
@@ -127,6 +83,7 @@ public class ScheduleDao extends GenericDao<Schedule, Long> {
      * @return - true if it's too late to buy tickets on it, else return false.
      */
     public boolean isTooLate(Schedule schedule) {
+
         Duration interval = new Duration(600 * 1000L);
         DateTime departureTime = new DateTime(schedule.getDateTrip());
         DateTime currentTime = new DateTime();
@@ -137,8 +94,40 @@ public class ScheduleDao extends GenericDao<Schedule, Long> {
         return duration.isShorterThan(interval);
     }
 
+    /**
+     * Get list of schedule by train
+     *
+     * @param trainId - train identifier
+     * @return - list of schedule
+     */
     @SuppressWarnings("unchecked")
     public List<Schedule> getScheduleListByTrain(Long trainId) {
         return sessionFactory.getCurrentSession().createQuery("from Schedule where train.trainId=" + trainId).list();
+    }
+
+    /**
+     * Check of uniqueness schedule. Need to be dateTrip, trains name and route title unique together
+     *
+     * @param scheduleDto - target dto instance
+     * @return - true, if schedule unique within target day. else return false
+     */
+    @SuppressWarnings("unchecked")
+    public boolean isUniqueSchedule(ScheduleDto scheduleDto) {
+        List<Schedule> scheduleList = sessionFactory.getCurrentSession().createQuery("from Schedule where dateTrip='" + scheduleDto.getDate() +
+                "' and train.name='" + scheduleDto.getTrainName() + "' and route.title='" + scheduleDto.getRouteName() + "'").list();
+        return scheduleList.isEmpty();
+    }
+
+    /**
+     * Get list of schedule by train
+     *
+     * @param trainName - target train name
+     * @return - list of schedule
+     */
+    @SuppressWarnings("unchecked")
+    public List<Schedule> getScheduleListTodayByTrain(String trainName) {
+        String queryString = "from Schedule where train.name='" + trainName + "'";
+        return sessionFactory.getCurrentSession().createQuery(queryString).list();
+
     }
 }

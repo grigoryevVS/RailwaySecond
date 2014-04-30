@@ -72,6 +72,7 @@ public class TrainController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addTrain(@Valid @ModelAttribute("train") Train train, RedirectAttributes redAttr, BindingResult result) {
+
         if (result.hasErrors()) {
             redAttr.addFlashAttribute("msg", "Wrong data!");
             return "redirect:/trainView/createTrain";
@@ -92,12 +93,13 @@ public class TrainController {
      */
     @RequestMapping(value = "/delete/{trainId}")
     public String deleteTrain(@PathVariable("trainId") Long trainId, RedirectAttributes redAttr) {
+
         Train train = trainService.findTrain(trainId);
         if (train != null) {
             if (!trainService.deleteTrain(trainId)) {
                 redAttr.addFlashAttribute("msg", "Train " + train.getName() + " exist in schedule, you can't delete it!");
                 return "redirect:/trainView/trains";
-            } else{
+            } else {
                 redAttr.addFlashAttribute("msg", "Delete train " + train.getName() + " successful!");
                 return "redirect:/trainView/trains";
             }
@@ -113,8 +115,8 @@ public class TrainController {
      * @return -  url.
      */
     @RequestMapping(value = "/updateTrain/{trainId}")
-    public String updateTrain(@PathVariable("trainId") Long trainId,
-                              Model model) {
+    public String updateTrain(@PathVariable("trainId") Long trainId, Model model) {
+
         Train train = trainService.findTrain(trainId);
         if (train == null) {
             return "error404";
@@ -130,18 +132,18 @@ public class TrainController {
      * @return - redirecting url.
      */
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
-    public String refreshTrain( @Valid @ModelAttribute("train") Train train, BindingResult result,
-                                RedirectAttributes redAttr) {
+    public String refreshTrain(@Valid @ModelAttribute("train") Train train, BindingResult result, RedirectAttributes redAttr) {
+
         if (result.hasErrors()) {
             redAttr.addFlashAttribute("msg", "Wrong data!");
             return "redirect:/trainView/updateTrain/" + train.getTrainId();
         }
         Train checkTrain = trainService.getTrainByName(train.getName());
-        if( checkTrain != null && checkTrain.getTrainId() != train.getTrainId()){
+        if (checkTrain != null && checkTrain.getTrainId() != train.getTrainId()) {
             redAttr.addFlashAttribute("msg", "Such train name is already exist!");
             return "redirect:/trainView/updateTrain/" + train.getTrainId();
         }
-        if(!trainService.updateTrain(train)){
+        if (!trainService.updateTrain(train)) {
             redAttr.addFlashAttribute("msg", "Capacity must be more than bought tickets on it! now there are " + trainService.maxBoughtTicketsOnTrain(train.getTrainId()) + " sold tickets!");
             return "redirect:/trainView/updateTrain/" + train.getTrainId();
         }

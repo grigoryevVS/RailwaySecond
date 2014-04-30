@@ -21,4 +21,9 @@ public class StartController {
     public String errorPage() {
         return "error403";
     }
+
+    @RequestMapping("/")
+    public String indexPageSub() {
+        return "index";
+    }
 }

@@ -6,16 +6,10 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.javaschool.dao.RouteDao;
-import ru.javaschool.dao.ScheduleDao;
-import ru.javaschool.dao.StationDistanceDao;
-import ru.javaschool.dao.TrainDao;
+import ru.javaschool.dao.*;
 import ru.javaschool.dto.ScheduleDto;
 import ru.javaschool.dto.ScheduleFilterDto;
-import ru.javaschool.model.entities.Route;
-import ru.javaschool.model.entities.Schedule;
-import ru.javaschool.model.entities.StationDistance;
-import ru.javaschool.model.entities.Ticket;
+import ru.javaschool.model.entities.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,12 +44,12 @@ public class ScheduleService {
         List<Schedule> scheduleList = scheduleDao.findAll(Schedule.class);
         if (!scheduleList.isEmpty()) {
             for (Schedule sch : scheduleList) {
-                // TODO check date - if old, delete schedule!
-                scheduleDtos.add(new ScheduleDto(sch));
+                if (sch.getDateTrip().after(new LocalDate().minusDays(1).toDate())) {
+                    scheduleDtos.add(new ScheduleDto(sch));
+                }
             }
         }
         return scheduleDtos;
-
     }
 
     /**
@@ -88,15 +82,44 @@ public class ScheduleService {
     /**
      * Update schedule.
      *
-     * @param schedule - target schedule to update.
+     * @param scheduleDto - target schedule to update.
      * @return - true if update successful, else return false.
      */
-    public boolean updateSchedule(Schedule schedule) {
-        if (schedule.getTicketList().isEmpty()) {
-            scheduleDao.update(schedule);
-            return true;
+    public String updateSchedule(ScheduleDto scheduleDto) {
+        Schedule schedule = scheduleDao.findByPK(Schedule.class, scheduleDto.getId());
+        if (schedule == null) {
+            return "Wrong sch!";
         }
-        return false;
+        if (schedule.getTicketList().isEmpty()) {
+            Route route = routeDao.findByName(scheduleDto.getRouteName());
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date dateToCheck;
+            try {
+                dateToCheck = sdf.parse(scheduleDto.getDate());
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return "Wrong date format!";
+            }
+            StationDistance sd = distanceDao.getStationsInRoute(route).get(0);
+            Date timeToCheck = sd.getAppearTime();
+            if (isCorrectDate(dateToCheck, timeToCheck)) {
+                if (isUniqueWithinDay(scheduleDto)) {
+                    if (getArrivalStation(scheduleDto).equals("none")) {
+                        schedule.setRoute(route);
+                        schedule.setDateTrip(dateToCheck);
+                        schedule.setTrain(trainDao.findByName(scheduleDto.getTrainName()));
+                        schedule.setTicketList(new ArrayList<Ticket>());
+                        scheduleDao.update(schedule);
+                        return "Success!";
+                    }
+                    return "This train finished at station " + getArrivalStation(scheduleDto);
+                }
+                return "Such schedule already exist in this day.";
+            }
+            return "Date must be in the future!";
+        }
+        return "There are some tickets on it!";
     }
 
     /**
@@ -118,7 +141,6 @@ public class ScheduleService {
     public String unWrapAndCreateSchedule(ScheduleDto scheduleDto) {
         Schedule schedule = new Schedule();
         Route route = routeDao.findByName(scheduleDto.getRouteName());
-        schedule.setRoute(route);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date dateToCheck;
@@ -131,14 +153,100 @@ public class ScheduleService {
         StationDistance sd = distanceDao.getStationsInRoute(route).get(0);
         Date timeToCheck = sd.getAppearTime();
         if (isCorrectDate(dateToCheck, timeToCheck)) {
-            schedule.setDateTrip(dateToCheck);
-            schedule.setTrain(trainDao.findByName(scheduleDto.getTrainName()));
-            schedule.setTicketList(new ArrayList<Ticket>());
-            scheduleDao.create(schedule);
-            return "Success!";
-        } else {
-            return "Date must be in the future!";
+            if (isUniqueWithinDay(scheduleDto)) {
+                if (getArrivalStation(scheduleDto).equals("none")) {
+                    schedule.setRoute(route);
+                    schedule.setDateTrip(dateToCheck);
+                    schedule.setTrain(trainDao.findByName(scheduleDto.getTrainName()));
+                    schedule.setTicketList(new ArrayList<Ticket>());
+                    scheduleDao.create(schedule);
+                    return "Success!";
+                }
+                return getArrivalStation(scheduleDto);
+            }
+            return "Such schedule already exist in this day.";
         }
+        return "Date must be in the future!";
+    }
+
+    /**
+     * This method implements validation of schedule.
+     * Date, train and time validity.
+     *
+     * @param scheduleDto - target dto object
+     * @return - result message
+     */
+    public String getArrivalStation(ScheduleDto scheduleDto) {
+        // find all schedule with target train
+        List<Schedule> schedules = scheduleDao.getScheduleListTodayByTrain(scheduleDto.getTrainName());
+        Route route = routeDao.findByName(scheduleDto.getRouteName());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        // target date
+        Date dateToCheck;
+        try {
+            dateToCheck = sdf.parse(scheduleDto.getDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "Wrong date format!";
+        }
+        List<Schedule> scheduleList = new ArrayList<>();
+        // if departure day equals to the departure day of target schedule add to result scheduleList
+        if (!schedules.isEmpty()) {
+            for (Schedule sch : schedules) {
+                if (dateToCheck.compareTo(sch.getDateTrip()) == 0) {
+                    scheduleList.add(sch);
+                }
+            }
+        }
+        // if schedules with target train not exist, return that it is.
+        else {
+            return "none";
+        }
+        StationDistance sd = distanceDao.getStationsInRoute(route).get(0);  // target  departure station
+        Date dateFrom = sd.getAppearTime();
+        // if there were no schedules with this train within target day return that it is.
+        if (scheduleList.isEmpty()) {
+            return "none";
+        }
+        // check if arrival time of previous stations after target departure time, if it is wrong, save name of the previous station.
+        else {
+            Date controlDate = null;
+            String resultStation = "Wrong!";
+            for (Schedule schedule : scheduleList) {
+                List<StationDistance> distanceList = distanceDao.getStationsInRoute(schedule.getRoute());
+                StationDistance stationTo = distanceList.get(distanceList.size() - 1);
+                Date timeTo = stationTo.getAppearTime();
+                if (controlDate == null) {
+                    controlDate = timeTo;
+                }
+                if (controlDate.before(timeTo)) {
+                    controlDate = timeTo;
+                    resultStation = stationTo.getStation().getName();
+                }
+            }
+            // if previous stations name not equals targets departure station, return different stations
+            // else check time, if departure time after previous station arrival time - good case, add, else return message wrong time.
+            if (sd.getStation().getName().equals(resultStation)) {
+                if (controlDate != null) {
+                    if (controlDate.before(dateFrom)) {
+                        return "none";
+                    }
+                    return "Wrong time, need to be later then previous route arrival time!";
+                }
+                return "Wrong!";
+            }
+            return "Different previous station " + resultStation;
+        }
+    }
+
+    /**
+     * Check uniqueness of schedule within target day.
+     *
+     * @param scheduleDto - target object
+     * @return - true if schedule unique ( i.e. train and route ) within target day. else return false
+     */
+    private boolean isUniqueWithinDay(ScheduleDto scheduleDto) {
+        return scheduleDao.isUniqueSchedule(scheduleDto);
     }
 
     /**
@@ -148,7 +256,7 @@ public class ScheduleService {
      * @param timeToCheck - appearTimeFrom station( just first one)
      * @return - true if correct future date, false - if date in the past.
      */
-    public boolean isCorrectDate(Date dateToCheck, Date timeToCheck) {
+    private boolean isCorrectDate(Date dateToCheck, Date timeToCheck) {
         LocalDate localDate = new LocalDate();
         int compareResult = localDate.toDate().compareTo(dateToCheck);
         if (compareResult > 0) {
@@ -182,13 +290,12 @@ public class ScheduleService {
         }
         // for second check, if we set station from.
         if (!filter.getStationFromName().equals("")) {
-            List<Schedule> res = new ArrayList<Schedule>();
+            List<Schedule> res = new ArrayList<>();
             for (Schedule schedule : scheduleListDate) {
                 boolean flag = false;
-                // TODO get stationDistances for route
                 List<StationDistance> distanceList = schedule.getRoute().getStationDistances();
                 for (StationDistance s : distanceList)
-                    // check conditions, that its not the last station in the route, and its equal to the constraint
+                    // check conditions, that its not the last station in the route, and it is equal to the constraint
                     if (s.getSequenceNumber() != distanceList.size() &&
                             s.getStation().getName().equals(filter.getStationFromName()))
                         flag = true;
@@ -199,7 +306,7 @@ public class ScheduleService {
         }
         // the last check constraint of the station to.
         if (!filter.getStationToName().equals("")) {
-            List<Schedule> res = new ArrayList<Schedule>();
+            List<Schedule> res = new ArrayList<>();
             for (Schedule schedule : scheduleListDate) {
                 boolean flag = false;
                 List<StationDistance> distanceList = schedule.getRoute().getStationDistances();
@@ -215,10 +322,9 @@ public class ScheduleService {
         List<ScheduleDto> scheduleDtos = new ArrayList<>();
         if (!scheduleListDate.isEmpty()) {
             for (Schedule sch : scheduleListDate) {
-                scheduleDtos.add(new ScheduleDto(sch));
+                scheduleDtos.add(new ScheduleDto(sch, filter));
             }
         }
         return scheduleDtos;
-
     }
 }

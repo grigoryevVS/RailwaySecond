@@ -64,6 +64,7 @@ public class UserController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addUser(@Valid @ModelAttribute("user") User user,
                           BindingResult result, final RedirectAttributes redirectAttributes) {
+
         user.setRole("ROLE_USER");
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("msg", "Wrong data");
@@ -72,10 +73,12 @@ public class UserController {
         if (!userService.isRegistrationSuccess(user)) {
             redirectAttributes.addFlashAttribute("msg", "Such client/login is already exist!");
             return "redirect:/userView/registration";
-        } else {
-            redirectAttributes.addAttribute("msg", "Successful registration!");
-            return "userView/login";
         }
+        if (!userService.isCorrectAge(user)) {
+            redirectAttributes.addFlashAttribute("msg", "Incorrect birthDate! age must be < 110 years!");
+            return "redirect:/userView/registration";
+        }
+        return "userView/login";
     }
 
     /**
@@ -106,6 +109,7 @@ public class UserController {
      */
     @RequestMapping(value = "/editor/{login}")
     public String viewUser(@PathVariable("login") String login, Model model) {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getName().equals(login)) {
             User user = userService.getUserByLogin(login);
@@ -127,13 +131,14 @@ public class UserController {
      */
     @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
     public String updateUser(@Valid @ModelAttribute("user") User user, Model model, BindingResult result) {
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (user.getLogin().equals(auth.getName())) {
             user.setRole(userService.getUserByLogin(user.getLogin()).getRole());
             model.addAttribute("user", user);
             if (result.hasErrors()) {
                 model.addAttribute("message", "Wrong data");
-                return "redirect:/userView/editor/" + user.getLogin(); // TODO check this out
+                return "redirect:/userView/editor/" + user.getLogin();
             }
             userService.updateUser(user);
             return "userView/editor";

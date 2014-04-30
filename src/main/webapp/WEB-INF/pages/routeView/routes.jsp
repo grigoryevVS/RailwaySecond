@@ -11,7 +11,12 @@
     </table>
 </form:form>
 
-<h3>Routes</h3>
+<h4>Routes</h4>
+<c:if test="${msg != null}">
+    <h4 style="color: red">
+            ${msg}
+    </h4>
+</c:if>
 <c:if test="${!empty routeList}">
     <table>
         <tr>

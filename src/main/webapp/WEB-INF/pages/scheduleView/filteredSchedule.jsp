@@ -2,6 +2,11 @@
 <%@ include file="/WEB-INF/pages/layout/headerStyles.jsp" %>
 <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 <h3>Filtered schedule</h3>
+<c:if test="${msg != null}">
+    <div style="color: red">
+            ${msg}
+    </div>
+</c:if>
 <c:if test="${!empty scheduleList}">
     <table>
         <tr>

@@ -1,6 +1,8 @@
 package ru.javaschool.services;
 
 
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,5 +85,19 @@ public class UserService {
      */
     public User getUserByLogin(String name) {
         return userDao.getUserByLogin(name);
+    }
+
+    /**
+     * Check validity of birth date
+     *
+     * @param user - target user
+     * @return - true if his birth date correct, else return false
+     */
+    public boolean isCorrectAge(User user) {
+        Duration interval = new Duration(3468960000000L);
+        DateTime birthDate = new DateTime(user.getBirthDate());
+        DateTime currentTime = new DateTime();
+        Duration duration = new Duration(birthDate, currentTime);
+        return duration.isShorterThan(interval);
     }
 }

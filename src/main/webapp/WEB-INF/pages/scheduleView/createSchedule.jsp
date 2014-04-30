@@ -1,8 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=utf8"
-         pageEncoding="utf8" %>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <%@ include file="/WEB-INF/pages/layout/headerStyles.jsp" %>
@@ -10,6 +5,7 @@
     <title>Create new schedule</title>
 </head>
 <body>
+<%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 <form:form method="post" action="${pageContext.request.contextPath}/scheduleView/add" commandName="schedule">
     <label for="trainName">Select train</label>
     <select id="trainName" name="trainName" required/>

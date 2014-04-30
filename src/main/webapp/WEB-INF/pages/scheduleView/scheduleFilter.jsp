@@ -20,6 +20,11 @@
     <form:input path="date" type="date"/>
 
     <input type="submit" value="Search" />
+    <c:if test="${msg != null}">
+        <div style="color: red">
+                ${msg}
+        </div>
+    </c:if>
 </form:form>
 </body>
 </html>

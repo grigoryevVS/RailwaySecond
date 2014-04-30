@@ -12,7 +12,7 @@ public class Ticket implements Serializable{
     private long ticketId;
     @ManyToOne
     private User user;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER )
     private Schedule schedule;
 
     public long getTicketId() {

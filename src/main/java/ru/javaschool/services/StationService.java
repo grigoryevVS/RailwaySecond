@@ -56,7 +56,7 @@ public class StationService {
      * without any harm to our schedule.
      *
      * @param station - concrete station,
-     *            which need to be deleted.
+     *                which need to be deleted.
      * @return - true if such station successfully deleted.
      * false - if such station included in some routes.
      */

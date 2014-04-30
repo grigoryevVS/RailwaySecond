@@ -68,6 +68,7 @@ public class StationController {
      */
     @RequestMapping(value = "/add")
     public String addStation(@Valid @ModelAttribute("station") Station station, RedirectAttributes redAttr) {
+
         if (stationService.createStation(station)) {
             return "redirect:/stationView/stations";
         } else {
@@ -126,7 +127,7 @@ public class StationController {
             redAttr.addFlashAttribute("msg", "Wrong data!");
             return "redirect:/stationView/updateStation/" + station.getStationId();
         }
-        if(stationService.getStationByName(station.getName()) != null){
+        if (stationService.getStationByName(station.getName()) != null) {
             redAttr.addFlashAttribute("msg", "Such station name is already exist!");
             return "redirect:/stationView/updateStation/" + station.getStationId();
         }

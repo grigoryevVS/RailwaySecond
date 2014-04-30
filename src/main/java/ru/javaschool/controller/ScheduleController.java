@@ -108,9 +108,10 @@ public class ScheduleController {
         String validateResult = scheduleService.unWrapAndCreateSchedule(scheduleDto);
         if (validateResult.equals("Success!")) {
             return "redirect:/scheduleView/schedule";
-        } else
+        } else {
             redAttr.addFlashAttribute("msg", validateResult);
-        return "redirect:/scheduleView/createSchedule";
+            return "redirect:/scheduleView/createSchedule";
+        }
     }
 
     /**
@@ -141,9 +142,12 @@ public class ScheduleController {
     @RequestMapping("/updateSchedule/{scheduleId}")
     public String updateSchedule(@PathVariable("scheduleId") Long scheduleId,
                                  Model model) {
+
         Schedule schedule = scheduleService.findSchedule(scheduleId);
         if (schedule != null) {
             model.addAttribute("schedule", schedule);
+            model.addAttribute("trainList", trainService.getAllTrains());
+            model.addAttribute("routeList", routeService.getAllRoutes());
             return "scheduleView/updateSchedule";
         }
         return "error404";
@@ -156,11 +160,33 @@ public class ScheduleController {
      * @return - redirect url.
      */
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
-    public String refreshSchedule(@ModelAttribute("schedule") Schedule schedule) {
-        scheduleService.updateSchedule(schedule);
-        return "redirect:/scheduleView/schedule";
+    public String refreshSchedule(@ModelAttribute("schedule") Schedule schedule,
+                                  @ModelAttribute("scheduleId") Long scheduleId,
+                                  @ModelAttribute("trainName") String trainName,
+                                  @ModelAttribute("routeName") String routeName,
+                                  @ModelAttribute("dateTrip") String dateTrip, RedirectAttributes redAttr) {
+
+        ScheduleDto scheduleDto = new ScheduleDto();
+        scheduleDto.setTrainName(trainName);
+        scheduleDto.setRouteName(routeName);
+        scheduleDto.setDate(dateTrip);
+        scheduleDto.setId(scheduleId);
+        String validateResult = scheduleService.updateSchedule(scheduleDto);
+        if (validateResult.equals("Success!")) {
+            redAttr.addFlashAttribute("msg", "Update successful!");
+            return "redirect:/scheduleView/schedule";
+        } else {
+            redAttr.addFlashAttribute("msg", validateResult);
+            return "redirect:/scheduleView/updateSchedule/" + schedule.getScheduleId();
+        }
     }
 
+    /**
+     * Schedule filter.
+     *
+     * @param model - view
+     * @return - view
+     */
     @RequestMapping(value = "/scheduleFilter")
     public String createFilter(Model model) {
         ScheduleFilterDto filter = new ScheduleFilterDto();
@@ -170,9 +196,21 @@ public class ScheduleController {
         return "scheduleView/scheduleFilter";
     }
 
+    /**
+     * Get schedule list in accordance with the filter
+     *
+     * @param filter  - target filter of schedule
+     * @param model   - model of view
+     * @param redAttr - parameters to get in redirect pages( validation messages)
+     * @return - view
+     */
     @RequestMapping(value = "/filteredSchedule")
-    public String filteredSchedule(@ModelAttribute("filter") ScheduleFilterDto filter, Model model) {
+    public String filteredSchedule(@ModelAttribute("filter") ScheduleFilterDto filter, Model model, RedirectAttributes redAttr) {
         List<ScheduleDto> schedList = scheduleService.getFilteredSchedule(filter);
+        if (schedList.isEmpty()) {
+            redAttr.addFlashAttribute("msg", "There are no trains with such filter!");
+            return "redirect:/scheduleView/scheduleFilter";
+        }
         model.addAttribute("scheduler", new ScheduleDto());
         model.addAttribute("scheduleList", schedList);
         return "scheduleView/filteredSchedule";
@@ -190,13 +228,14 @@ public class ScheduleController {
     List<Station> getStationsForJS(@RequestParam String stationName) {
         List<Station> result = new ArrayList<Station>();
         List<Station> stations = stationService.getAllStations();
-        for (Station station : stations) {
-            if (station.getName().contains(stationName)) {
-                result.add(station);
+        if (!stations.isEmpty()) {
+            for (Station station : stations) {
+                if (station.getName().contains(stationName)) {
+                    result.add(station);
+                }
             }
         }
         return result;
     }
-
 }
 

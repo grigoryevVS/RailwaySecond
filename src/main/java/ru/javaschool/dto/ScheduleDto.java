@@ -26,11 +26,47 @@ public class ScheduleDto {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<StationDistance> sdList = schedule.getRoute().getStationDistances();
         this.id = schedule.getScheduleId();
-        if(!sdList.isEmpty()){
-        this.stationFrom = sdList.get(0).getStation().getName();
-        this.appearTimeFrom = String.valueOf((sdList.get(0).getAppearTime()));
-        this.stationTo = sdList.get(sdList.size() - 1).getStation().getName();
-        this.appearTimeTo = String.valueOf((sdList.get(sdList.size() - 1).getAppearTime()));
+        if (!sdList.isEmpty()) {
+            this.stationFrom = sdList.get(0).getStation().getName();
+            this.appearTimeFrom = String.valueOf((sdList.get(0).getAppearTime()));
+            this.stationTo = sdList.get(sdList.size() - 1).getStation().getName();
+            this.appearTimeTo = String.valueOf((sdList.get(sdList.size() - 1).getAppearTime()));
+        }
+        this.trainName = schedule.getTrain().getName();
+        this.date = sdf.format(schedule.getDateTrip());
+        this.routeName = schedule.getRoute().getTitle();
+        this.emptySeats = schedule.getTrain().getNumberOfSeats() - schedule.getTicketList().size();
+    }
+
+    public ScheduleDto(Schedule schedule, ScheduleFilterDto filter) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        List<StationDistance> sdList = schedule.getRoute().getStationDistances();
+        boolean fromEmpty = false;
+        boolean toEmpty = false;
+        this.id = schedule.getScheduleId();
+        if (!sdList.isEmpty()) {
+            StationDistance sdFrom = new StationDistance();
+            StationDistance sdTo = new StationDistance();
+            if (filter.getStationFromName().equals("")) {
+                sdFrom = sdList.get(0);
+                fromEmpty = true;
+            }
+            if (filter.getStationToName().equals("")) {
+                sdTo = sdList.get(sdList.size() - 1);
+                toEmpty = true;
+            }
+            for (StationDistance sd : sdList) {
+                if (!fromEmpty && sd.getStation().getName().equals(filter.getStationFromName())) {
+                    sdFrom = sd;
+                }
+                if (!toEmpty && sd.getStation().getName().equals(filter.getStationToName())) {
+                    sdTo = sd;
+                }
+            }
+            this.stationFrom = sdFrom.getStation().getName();
+            this.appearTimeFrom = String.valueOf((sdFrom.getAppearTime()));
+            this.stationTo = sdTo.getStation().getName();
+            this.appearTimeTo = String.valueOf(sdTo.getAppearTime());
         }
         this.trainName = schedule.getTrain().getName();
         this.date = sdf.format(schedule.getDateTrip());

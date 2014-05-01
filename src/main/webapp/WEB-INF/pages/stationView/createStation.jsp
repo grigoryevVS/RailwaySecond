@@ -1,7 +1,6 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <%@ include file="/WEB-INF/pages/layout/headerStyles.jsp" %>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/stationValid.js"></script>
     <title>Create new station</title>
 </head>

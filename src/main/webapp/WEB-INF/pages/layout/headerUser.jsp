@@ -17,8 +17,8 @@
                     <li><a href="${pageContext.request.contextPath}/trainView/trainIndex">Trains</a></li>
                     <li><a href="${pageContext.request.contextPath}/routeView/routeIndex">Routes</a></li>
                     <li><a href="${pageContext.request.contextPath}/scheduleView/scheduleIndex">Schedule</a></li>
-                    <li><a href="${pageContext.request.contextPath}/userView/login">Login</a></li>
-                    <li><a href="${pageContext.request.contextPath}/userView/registration">Sign up</a></li>
+                    <li><a href="${pageContext.request.contextPath}/userView/editor/${pageContext.request.userPrincipal.name}">Account</a> </li>
+                    <li><a href="${pageContext.request.contextPath}/userView/logout">Logout</a></li>
                 </ul>
             </div>
         </div>

@@ -1,6 +1,5 @@
 <html>
 <head>
-    <%@ include file="/WEB-INF/pages/layout/headerStyles.jsp" %>
     <meta http-equiv="Content-Type" content="text/html; charset=utf8">
     <title>Update schedule</title>
 </head>

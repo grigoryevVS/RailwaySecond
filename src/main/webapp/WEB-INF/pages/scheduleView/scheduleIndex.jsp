@@ -1,5 +1,3 @@
-<%--<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>--%>
-<%@ include file="/WEB-INF/pages/layout/headerStyles.jsp" %>
 <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
 <h4>Schedule</h4>
@@ -9,7 +7,7 @@
     </h4>
 </c:if>
 <c:if test="${!empty scheduleList}">
-    <table>
+    <table class="table table-bordered">
         <tr>
             <th>ScheduleId</th>
             <th>StationFrom</th>
@@ -32,7 +30,7 @@
                 <td>${scheduler.date}</td>
                 <td>${scheduler.routeName}</td>
                 <td>${scheduler.emptySeats}</td>
-                <%@ include file="/WEB-INF/pages/layout/clientHrefSchedule.jsp" %>
+                <td><a href="buyTicket/${scheduler.id}">buy ticket</a></td>
             </tr>
         </c:forEach>
     </table>

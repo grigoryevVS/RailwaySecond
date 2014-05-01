@@ -7,7 +7,6 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf8">
-    <%@ include file="/WEB-INF/pages/layout/headerStyles.jsp" %>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/registrationValid.js"></script>
     <title>Registration</title>
 </head>

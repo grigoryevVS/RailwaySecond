@@ -1,38 +1,56 @@
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+</head>
 
-<form:form method="get" action="${pageContext.request.contextPath}/routeView/createRoute" commandName="route">
-    <table>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="Add route"/>
-            </td>
-        </tr>
-    </table>
-</form:form>
+<body>
 
-<h4>Routes</h4>
-<c:if test="${msg != null}">
-    <h4 style="color: red">
-            ${msg}
-    </h4>
-</c:if>
-<c:if test="${!empty routeList}">
-    <table>
-        <tr>
-            <th>RouteId</th>
-            <th>Name</th>
-            <th>&nbsp;</th>
-        </tr>
-        <c:forEach items="${routeList}" var="route">
-            <tr>
-                <td>${route.routeId}</td>
-                <td>${route.title}</td>
-                <td><a href="updateRoute/${route.routeId}">update</a></td>
-                <td><a href="delete/${route.routeId}">delete</a></td>
-                <td><a href="details/${route.routeId}">details</a></td>
-            </tr>
-        </c:forEach>
-    </table>
-</c:if>
+<div class="container">
+
+    <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
+
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+
+        <form:form method="get" action="${pageContext.request.contextPath}/routeView/createRoute" commandName="route">
+            <input class="btn btn-large btn-success" align="center" type="submit" value="Add route"/>
+        </form:form>
+
+        <h4>Routes</h4>
+        <c:if test="${msg != null}">
+            <h4 style="color: red">
+                    ${msg}
+            </h4>
+        </c:if>
+        <c:if test="${!empty routeList}">
+            <table class="table table-bordered text-center">
+                <tr>
+                    <th>RouteId</th>
+                    <th>Name</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                    <th>View details</th>
+                </tr>
+                <c:forEach items="${routeList}" var="route">
+                    <tr>
+                        <td>${route.routeId}</td>
+                        <td>${route.title}</td>
+                        <td><a class="btn-small btn-danger" href="updateRoute/${route.routeId}">update</a></td>
+                        <td><a class="btn-small btn-danger" href="delete/${route.routeId}">delete</a></td>
+                        <td><a class="btn-small btn-info" href="details/${route.routeId}">details</a></td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </c:if>
+    </div>
+
+    <hr>
+
+    <%@ include file="/WEB-INF/pages/layout/footer.jsp" %>
+
+</div>
+
+</body>
+</html>
 

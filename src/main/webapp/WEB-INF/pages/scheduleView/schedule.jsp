@@ -1,8 +1,6 @@
-<%--<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>--%>
-<%@ include file="/WEB-INF/pages/layout/headerStyles.jsp" %>
 <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 <form:form method="post" action="createSchedule" commandName="schedule">
-    <table>
+    <table class="table table-bordered text-center">
         <tr>
             <td colspan="2">
                 <input type="submit" value="Add schedule"/>
@@ -18,7 +16,7 @@
     </h4>
 </c:if>
 <c:if test="${!empty scheduleList}">
-    <table>
+    <table class="table table-bordered text-center" >
         <tr>
             <th>ScheduleId</th>
             <th>StationFrom</th>

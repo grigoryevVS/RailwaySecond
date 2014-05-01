@@ -1025,7 +1025,7 @@ pre code {
 }
 
 form {
-    margin: 0 0 20px;
+    margin: 0 0 1px;
 }
 
 fieldset {
@@ -2002,6 +2002,7 @@ table {
 }
 
 .table {
+    font-size: medium;
     width: 100%;
     margin-bottom: 20px;
 }
@@ -2046,7 +2047,7 @@ table {
 }
 
 .table-bordered {
-    border: 1px solid #dddddd;
+    border: 1px solid #080808;
     border-collapse: separate;
     *border-collapse: collapse;
     border-left: 0;
@@ -2055,9 +2056,18 @@ table {
     border-radius: 4px;
 }
 
-.table-bordered th,
+.table-bordered th{
+    border-left: 1px solid #080808;
+    border-top: 1px solid #080808;
+    text-align: center;
+    background-color: lightgray;
+}
+
+.table-bordered tr,
 .table-bordered td {
-    border-left: 1px solid #dddddd;
+    border-left: 1px solid #080808;
+    border-top: 1px solid #080808;
+    text-align: center;
 }
 
 .table-bordered caption + thead tr:first-child th,
@@ -3427,7 +3437,7 @@ input[type="button"].btn-block {
     color: #ffffff;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
     background-color: #da4f49;
-    *background-color: #bd362f;
+    *background-color: #da5538;
     background-image: -moz-linear-gradient(top, #ee5f5b, #bd362f);
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ee5f5b), to(#bd362f));
     background-image: -webkit-linear-gradient(top, #ee5f5b, #bd362f);

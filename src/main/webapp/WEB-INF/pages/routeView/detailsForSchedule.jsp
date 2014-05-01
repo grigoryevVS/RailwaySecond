@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Route ${route.routeId}</title>
+    <title>Route</title>
 </head>
 
 <body>
@@ -15,18 +16,15 @@
         <c:choose>
             <c:when test="${pageContext.request.userPrincipal.name != null}">
                 <sec:authorize ifAnyGranted="ROLE_ADMIN">
-                    <a class="btn btn-info" href="${pageContext.request.contextPath}/routeView/routes">Back to the
-                        list</a>
+                    <a class="btn btn-info" href="/RailWay/scheduleView/schedule">Back to full schedule</a>
                 </sec:authorize>
                 <sec:authorize ifAnyGranted="ROLE_USER">
-                    <a class="btn btn-info" href="${pageContext.request.contextPath}/routeView/routeIndex">Back to the
-                        list</a>
+                    <a class="btn btn-info" href="/RailWay/scheduleView/scheduleIndex">Back to full schedule</a>
                 </sec:authorize>
             </c:when>
             <c:otherwise>
                 <sec:authorize ifAnyGranted="ROLE_ANONYMOUS">
-                    <a class="btn btn-info" href="${pageContext.request.contextPath}/routeView/routeIndex">Back to the
-                        list</a>
+                    <a class="btn btn-info" href="/RailWay/scheduleView/scheduleIndex">Back to full schedule</a>
                 </sec:authorize>
             </c:otherwise>
         </c:choose>

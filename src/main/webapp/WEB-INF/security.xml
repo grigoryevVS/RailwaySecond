@@ -13,6 +13,7 @@
         <intercept-url pattern="/routeView/createRoute" access="ROLE_ADMIN"/>
         <intercept-url pattern="/routeView/routes" access="ROLE_ADMIN"/>
         <intercept-url pattern="/routeView/updateRoute" access="ROLE_ADMIN"/>
+        <intercept-url pattern="/routeView/detailsFromSchedule" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
 
         <intercept-url pattern="/stationView/stationIndex" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
         <intercept-url pattern="/stationView/**" access="ROLE_ADMIN"/>

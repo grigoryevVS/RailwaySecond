@@ -5,11 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.javaschool.dto.StationDistanceDto;
 import ru.javaschool.model.entities.Route;
+import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.services.RouteService;
+import ru.javaschool.services.ScheduleService;
 import ru.javaschool.services.StationService;
 
 import javax.servlet.http.HttpSession;
@@ -29,6 +34,9 @@ public class RouteController {
 
     @Autowired
     private StationService stationService;
+
+    @Autowired
+    private ScheduleService scheduleService;
 
     /**
      * Get route list.
@@ -74,6 +82,21 @@ public class RouteController {
         } else {
             return "error404";
         }
+    }
+
+    @RequestMapping("/detailsFromSchedule/{id}")
+    public String getStationsBySchedule(@PathVariable("id") Long id, Model model) {
+        Schedule schedule = scheduleService.findSchedule(id);
+        if (schedule != null) {
+            Long routeId = schedule.getRoute().getRouteId();
+            List<StationDistanceDto> distanceList = routeService.getStationDistances(routeId);
+            if (!distanceList.isEmpty()) {
+                model.addAttribute("stationDistanceDto", new StationDistanceDto());
+                model.addAttribute("stationDistances", distanceList);
+                return "routeView/detailsForSchedule";
+            }
+        }
+        return "error404";
     }
 
     /**

@@ -3,6 +3,7 @@ package ru.javaschool.dto;
 
 import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.model.entities.StationDistance;
+import ru.javaschool.services.ScheduleService;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -18,6 +19,8 @@ public class ScheduleDto {
     private String appearTimeFrom;
     private String appearTimeTo;
     private int emptySeats;
+
+    private ScheduleService scheduleService;
 
     public ScheduleDto() {
     }

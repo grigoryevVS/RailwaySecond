@@ -1,39 +1,117 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf8">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/registrationValid.js"></script>
+    <meta charset="utf-8">
     <title>Registration</title>
 </head>
+
 <body>
-<%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
-<c:if test="${msg != null}">
-    <div style="color: red">
-            ${msg}
+
+<div class="container">
+
+    <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
+
+    <div class="row-fluid">
+        <div class="span6 offset3">
+
+            <div class="area">
+                <form:form class="form-horizontal" method="post" action="add" commandName="user">
+                <div class="heading">
+
+                    <div class="row-fluid">
+                        <div class="span4">
+                            <h4 class="form-heading">Sign Up</h4>
+                        </div>
+                        <div class="span4">
+                            <c:if test="${msg != null}">
+                                <div class="error">
+                                        ${msg}
+                                </div>
+                            </c:if>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <form:label class="control-label" path="login">Login</form:label>
+
+                    <div class="controls">
+                        <form:input path="login" placeholder="Unique login" type="text"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <form:label class="control-label" path="password">Password</form:label>
+
+                    <div class="controls">
+                        <form:input path="password" placeholder="Unique login" type="password"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <form:label class="control-label" path="firstName">First Name</form:label>
+
+                    <div class="controls">
+                        <form:input path="firstName" placeholder="Your first name" type="text"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <form:label class="control-label" path="lastName">Last Name</form:label>
+
+                    <div class="controls">
+                        <form:input path="lastName" placeholder="Your last name" type="text"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <form:label class="control-label" path="birthDate">Birth Date</form:label>
+
+                    <div class="controls">
+                        <form:input path="birthDate" type="date"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <input class="btn btn-success" type="submit" value="Sign up"/>
+                        <button class="btn btn-success" type="reset">Reset</button>
+                    </div>
+                </div>
+            </div>
+            </form:form>
+        </div>
     </div>
-</c:if>
-<form:form method="post" action="add" commandName="user">
-    <form:label path="login">Login</form:label>
-    <form:input path="login"/>
 
-    <form:label path="password">Password</form:label>
-    <form:input path="password"/>
 
-    <form:label path="firstName">FirstName</form:label>
-    <form:input path="firstName"/>
+    <%--<!-- Jumbotron -->--%>
+    <%--<div class="jumbotron">--%>
 
-    <form:label path="lastName">LastName</form:label>
-    <form:input path="lastName"/>
 
-    <form:label path="birthDate">BirthDate</form:label>
-    <form:input path="birthDate" type="date"/>
+    <%--<form:form method="post" action="add" commandName="user">--%>
+    <%--<div class="table">--%>
+    <%--<form:label for="login" path="login">Login</form:label>--%>
+    <%--<form:input path="login"/>--%>
+    <%--<form:label path="password">Password</form:label>--%>
+    <%--<form:input path="password"/>--%>
+    <%--<form:label path="firstName">FirstName</form:label>--%>
+    <%--<form:input path="firstName"/>--%>
+    <%--<form:label path="lastName">LastName</form:label>--%>
+    <%--<form:input path="lastName"/>--%>
+    <%--<form:label path="birthDate">BirthDate</form:label>--%>
+    <%--<form:input path="birthDate" type="date"/>--%>
 
-    <input type="submit" value="Sign up"/>
-</form:form>
+
+    <%--</div>--%>
+    <%--<input class="btn btn-danger" type="submit" value="Sign up"/>--%>
+    <%--</form:form>--%>
+
+
+    <hr>
+
+    <%@ include file="/WEB-INF/pages/layout/footer.jsp" %>
+
+</div>
+
 </body>
 </html>

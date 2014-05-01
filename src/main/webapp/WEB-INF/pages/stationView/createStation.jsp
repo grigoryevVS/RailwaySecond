@@ -1,20 +1,39 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/stationValid.js"></script>
+    <meta charset="utf-8">
     <title>Create new station</title>
 </head>
+
 <body>
-<%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
-<form:form method="post" action="${pageContext.request.contextPath}/stationView/add" commandName="station">
-    <form:label path="name">Name</form:label>
-    <form:input path="name" />
-    <input type="submit" value="Create" />
-    <c:if test="${msg != null}">
-        <div style="color: red">
-                ${msg}
+
+<div class="container">
+
+    <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
+
+    <a class="btn-large btn-info" href="${pageContext.request.contextPath}/stationView/stations">Back to stations</a>
+
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+        <div>
+        <form:form method="post" action="${pageContext.request.contextPath}/stationView/add" commandName="station">
+            <form:label path="name"><h4>Name</h4></form:label>
+            <form:input path="name" />
         </div>
-    </c:if>
-</form:form>
+            <input class="btn btn-success" type="submit" value="Create" />
+            <c:if test="${msg != null}">
+                <div style="color: red">
+                        ${msg}
+                </div>
+            </c:if>
+        </form:form>
+    </div>
+
+    <hr>
+
+    <%@ include file="/WEB-INF/pages/layout/footer.jsp" %>
+
+</div>
+
 </body>
 </html>

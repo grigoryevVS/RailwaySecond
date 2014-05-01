@@ -8,7 +8,7 @@ $(document).ready(function () {
             },
             password: {
                 required: true,
-                minlength: 2,
+                minlength: 3,
                 maxlength: 50
             },
 
@@ -29,7 +29,7 @@ $(document).ready(function () {
         messages: {
             login: {
                 required: "can't be empty",
-                minlength: "Min 1 character",
+                minlength: "Min 2 character",
                 maxlength: "Max 30 characters"
             },
             password: {

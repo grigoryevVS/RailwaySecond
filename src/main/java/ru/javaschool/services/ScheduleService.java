@@ -6,10 +6,16 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.javaschool.dao.*;
+import ru.javaschool.dao.RouteDao;
+import ru.javaschool.dao.ScheduleDao;
+import ru.javaschool.dao.StationDistanceDao;
+import ru.javaschool.dao.TrainDao;
 import ru.javaschool.dto.ScheduleDto;
 import ru.javaschool.dto.ScheduleFilterDto;
-import ru.javaschool.model.entities.*;
+import ru.javaschool.model.entities.Route;
+import ru.javaschool.model.entities.Schedule;
+import ru.javaschool.model.entities.StationDistance;
+import ru.javaschool.model.entities.Ticket;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -322,9 +328,19 @@ public class ScheduleService {
         List<ScheduleDto> scheduleDtos = new ArrayList<>();
         if (!scheduleListDate.isEmpty()) {
             for (Schedule sch : scheduleListDate) {
-                scheduleDtos.add(new ScheduleDto(sch, filter));
+                if (sch.getDateTrip().after(new LocalDate().minusDays(1).toDate())) {
+                    scheduleDtos.add(new ScheduleDto(sch, filter));
+                }
             }
         }
+//
+//        if (!scheduleList.isEmpty()) {
+//            for (Schedule sch : scheduleList) {
+//                if (sch.getDateTrip().after(new LocalDate().minusDays(1).toDate())) {
+//                    scheduleDtos.add(new ScheduleDto(sch));
+//                }
+//            }
+//        }
         return scheduleDtos;
     }
 }

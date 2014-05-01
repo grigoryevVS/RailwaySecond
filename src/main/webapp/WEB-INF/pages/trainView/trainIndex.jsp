@@ -1,21 +1,41 @@
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+</head>
 
-<h3>Trains</h3>
-<c:if  test="${!empty trainList}">
-    <table>
-        <tr>
-            <th>TrainId</th>
-            <th>Name</th>
-            <th>Capacity</th>
-            <th>&nbsp;</th>
-        </tr>
-        <c:forEach items="${trainList}" var="train">
-            <tr>
-                <td>${train.trainId}</td>
-                <td>${train.name}</td>
-                <td>${train.numberOfSeats}</td>
-            </tr>
-        </c:forEach>
-    </table>
-</c:if>
+<body>
+
+<div class="container">
+
+    <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
+
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+        <h3>Trains</h3>
+        <c:if  test="${!empty trainList}">
+            <table class="table table-bordered">
+                <tr>
+                    <th>TrainId</th>
+                    <th>Name</th>
+                    <th>Capacity</th>
+                </tr>
+                <c:forEach items="${trainList}" var="train">
+                    <tr>
+                        <td>${train.trainId}</td>
+                        <td>${train.name}</td>
+                        <td>${train.numberOfSeats}</td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </c:if>
+    </div>
+
+    <hr>
+
+    <%@ include file="/WEB-INF/pages/layout/footer.jsp" %>
+
+</div>
+
+</body>
+</html>

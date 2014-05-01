@@ -207,6 +207,7 @@ public class ScheduleController {
     @RequestMapping(value = "/filteredSchedule")
     public String filteredSchedule(@ModelAttribute("filter") ScheduleFilterDto filter, Model model, RedirectAttributes redAttr) {
         List<ScheduleDto> schedList = scheduleService.getFilteredSchedule(filter);
+
         if (schedList.isEmpty()) {
             redAttr.addFlashAttribute("msg", "There are no trains with such filter!");
             return "redirect:/scheduleView/scheduleFilter";

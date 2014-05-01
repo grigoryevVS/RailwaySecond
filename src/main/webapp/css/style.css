@@ -5,10 +5,13 @@
 
 .error{
     color: red;
+    float: left;
+    font-size: large;
 }
 
 body {
-    background-color: #e0e1ff;
+    background-color:  floralwhite;
+
     padding-top: 20px;
     padding-bottom: 60px;
 }
@@ -99,3 +102,10 @@ body {
     line-height: 100%;
 }
 
+.bug {
+    float: right;
+}
+
+.bug2 {
+    float: left;
+}

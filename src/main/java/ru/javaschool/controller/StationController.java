@@ -67,7 +67,12 @@ public class StationController {
      * @return - redirect url.
      */
     @RequestMapping(value = "/add")
-    public String addStation(@Valid @ModelAttribute("station") Station station, RedirectAttributes redAttr) {
+    public String addStation(@ModelAttribute("station") Station station, RedirectAttributes redAttr) {
+
+        if (station == null || station.getName().equals("")) {
+            redAttr.addFlashAttribute("msg", "Name can't be empty!");
+            return "redirect:/stationView/createStation";
+        }
 
         if (stationService.createStation(station)) {
             return "redirect:/stationView/stations";

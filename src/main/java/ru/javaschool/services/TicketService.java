@@ -1,6 +1,7 @@
 package ru.javaschool.services;
 
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +44,7 @@ public class TicketService {
      * @return - true if buying ticket successful, else return false.
      */
     public String buyTicket(User user, Schedule schedule) {
+        if(isCorrectDate(schedule)){
         if (!ticketDao.isExistPassenger(schedule, user)) {
             if (!ticketDao.isTrainFull(schedule)) {
                 if (!scheduleDao.isTooLate(schedule)) {
@@ -59,6 +61,12 @@ public class TicketService {
         }
         return "Sorry, but you've" +
                 " already bought ticket on train " + schedule.getTrain().getName() + " at " + schedule.getDateTrip();
+        }
+        return "Input date in the past!";
+    }
+
+    private boolean isCorrectDate(Schedule schedule) {
+        return schedule.getDateTrip().after(new LocalDate().minusDays(1).toDate());
     }
 
     /**

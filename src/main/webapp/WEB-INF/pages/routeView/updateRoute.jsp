@@ -11,6 +11,7 @@
 
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
+        <a class="btn-large btn-info" href="${pageContext.request.contextPath}/routeView/routes">Back to route</a>
     <!-- Jumbotron -->
     <div class="jumbotron">
 
@@ -20,15 +21,12 @@
             <form:input cssClass="autocomplete-suggestion" path="title"/>
             <form:hidden path="routeId"/>
         </div>
-
-        <a class="btn btn-info" href="${pageContext.request.contextPath}/routeView/routes">Back to the list</a>
-        <input class="btn btn-warning" type="submit" value="Update"/>
+        <input class="btn-large btn-danger" type="submit" value="Update"/>
         <c:if test="${msg != null}">
             <h4 style="color: red">
                     ${msg}
             </h4>
         </c:if>
-
         </form:form>
     </div>
 

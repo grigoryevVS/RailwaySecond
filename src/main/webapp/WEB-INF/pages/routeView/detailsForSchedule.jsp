@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,22 +12,14 @@
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <div>
+        <a class="btn btn-info" href="/RailWay/scheduleView/scheduleIndex">Back to full schedule</a>
         <c:choose>
             <c:when test="${pageContext.request.userPrincipal.name != null}">
                 <sec:authorize ifAnyGranted="ROLE_ADMIN">
-                    <a class="btn btn-info" href="/RailWay/scheduleView/schedule">Back to full schedule</a>
-                </sec:authorize>
-                <sec:authorize ifAnyGranted="ROLE_USER">
-                    <a class="btn btn-info" href="/RailWay/scheduleView/scheduleIndex">Back to full schedule</a>
+                    <a class="btn btn-info" href="/RailWay/scheduleView/schedule">Back to schedule management</a>
                 </sec:authorize>
             </c:when>
-            <c:otherwise>
-                <sec:authorize ifAnyGranted="ROLE_ANONYMOUS">
-                    <a class="btn btn-info" href="/RailWay/scheduleView/scheduleIndex">Back to full schedule</a>
-                </sec:authorize>
-            </c:otherwise>
         </c:choose>
-
     </div>
 
     <!-- Jumbotron -->

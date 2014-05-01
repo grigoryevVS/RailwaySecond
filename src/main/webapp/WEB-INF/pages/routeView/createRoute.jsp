@@ -21,7 +21,7 @@
                 <form:input path="title"/>
             </div>
             <div class="row">
-                <input class="btn btn-success" align="center" type="submit" value="Create"/>
+                <input class="btn btn-danger" align="center" type="submit" value="Create"/>
                 <a class="btn btn-info" href="${pageContext.request.contextPath}/routeView/routes">Back to the list</a>
             </div>
             </form:form>
@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <input class="btn btn-success" align="center" type="submit" value="Add station"/>
+                    <input class="btn btn-danger" align="center" type="submit" value="Add station"/>
                 </div>
             </div>
         </form>
@@ -74,7 +74,7 @@
                 <div class="span4">
                     <form:form method="post" action="${pageContext.request.contextPath}/routeView/clearDistanceList"
                                commandName="distanceList">
-                        <input class="btn-small btn-success" align="center" type="submit" value="Clear distanceList"/>
+                        <input class="btn-small btn-danger" align="center" type="submit" value="Clear distanceList"/>
                     </form:form>
                 </div>
                 <div class="span6 offset1">

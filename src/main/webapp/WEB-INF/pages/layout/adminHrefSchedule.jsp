@@ -1,9 +1,9 @@
 <c:choose>
 <c:when test="${pageContext.request.userPrincipal.name != null}">
     <sec:authorize ifAnyGranted="ROLE_ADMIN">
-        <td><a href="updateSchedule/${scheduler.id}">update</a></td>
-        <td><a href="delete/${scheduler.id}">delete</a></td>
-        <td><a href="passengers/${scheduler.id}">passengers</a></td>
+        <td><a class="btn-small btn-danger"  href="updateSchedule/${scheduler.id}">update</a></td>
+        <td><a class="btn-small btn-danger" href="delete/${scheduler.id}">delete</a></td>
+        <td><a class="btn-small btn-info" href="passengers/${scheduler.id}">tickets</a></td>
     </sec:authorize>
 </c:when>
 </c:choose>

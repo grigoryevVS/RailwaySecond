@@ -1,37 +1,60 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/registrationValid.js"></script>
+    <meta charset="utf-8">
     <title>Log in</title>
 </head>
+
 <body>
-<%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
-<h2>Authentication</h2>
-<form method="POST" action="<c:url value="/j_spring_security_check" />">
-    <table id="login-box">
-        <tr>
-            <td align="right">login</td>
-            <td><input id="login" type="text" name="j_username"/></td>
-        </tr>
-        <tr>
-            <td align="right">password</td>
-            <td><input id="password" type="password" name="j_password"/></td>
-        </tr>
-        <tr>
-            <td align="right">Remember</td>
-            <td><input type="checkbox" name="_spring_security_remember_me"/></td>
-        </tr>
-        <tr>
-            <td colspan="2" align="right"><input type="submit" value="login"/>
-                <input type="reset" value="Reset"/></td>
-        </tr>
-    </table>
-</form>
-<c:if test="${msg != null}">
-    <div>
-            ${msg}
+
+<div class="container">
+
+    <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
+
+    <div class="row-fluid">
+        <div class="span6 offset3">
+            <div class="area">
+                <form class="form-horizontal" method="POST" action="<c:url value="/j_spring_security_check" />">
+                    <div class="heading">
+                        <h4 class="form-heading">Sign In</h4>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="login">Login</label>
+
+                        <div class="controls">
+                            <input id="login" placeholder="Your login" type="text" name="j_username">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="password">Password</label>
+
+                        <div class="controls">
+                            <input id="password" placeholder="Your password" type="password" name="j_password">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <label class="checkbox">
+                                <input type="checkbox" name="_spring_security_remember_me"/>
+                                Remember
+                            </label>
+                            <input class="btn btn-success" type="submit" value="login"/>
+                            <input class="btn btn-success" type="reset" value="Reset"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-</c:if>
+
+    <hr>
+
+    <%@ include file="/WEB-INF/pages/layout/footer.jsp" %>
+
+</div>
+
 </body>
 </html>

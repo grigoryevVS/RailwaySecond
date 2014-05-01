@@ -73,6 +73,16 @@ public class TrainController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addTrain(@Valid @ModelAttribute("train") Train train, RedirectAttributes redAttr, BindingResult result) {
 
+        if (train == null || train.getName().equals("")) {
+            redAttr.addFlashAttribute("msg", "Name can't be empty!");
+            return "redirect:/trainView/createTrain";
+        }
+
+        if (0 >= train.getNumberOfSeats() || train.getNumberOfSeats() > 400) {
+            redAttr.addFlashAttribute("msg", "Trains capacity must be between 1-400");
+            return "redirect:/trainView/createTrain";
+        }
+
         if (result.hasErrors()) {
             redAttr.addFlashAttribute("msg", "Wrong data!");
             return "redirect:/trainView/createTrain";

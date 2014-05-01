@@ -44,8 +44,6 @@
                 buy tickets to our trains that goes around
                 the country without interruption for over 20 years now.
             </p>
-
-            <p><a class="btn" href="#">View details &raquo;</a></p>
         </div>
         <div class="span8">
             <img src="/RailWay/images/just2.jpg">

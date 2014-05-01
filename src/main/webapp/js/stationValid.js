@@ -5,14 +5,14 @@ $(document).ready(function () {
             name: {
                 required: true,
                 minlength: 2,
-                maxlength: 20
+                maxlength: 10
             }
         },
         messages: {
             name: {
                 required: "can't be empty",
                 minlength: "Min 2 character",
-                maxlength: "Max 20 characters"
+                maxlength: "Max 10 characters"
             }
         }
     });

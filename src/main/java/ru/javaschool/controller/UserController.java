@@ -62,20 +62,20 @@ public class UserController {
      * @return - target view of registration.
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addUser(@Valid @ModelAttribute("user") User user,
-                          BindingResult result, final RedirectAttributes redirectAttributes) {
+    public String addUser(@ModelAttribute("user") User user, final RedirectAttributes redirectAttributes) {
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("msg", "Wrong data");
+            return "redirect:/userView/registration";
+        }
 
         user.setRole("ROLE_USER");
-        if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("msg", "Wrong data");
+
+        if (!userService.isCorrectAge(user)) {
+            redirectAttributes.addFlashAttribute("msg", "Incorrect birthDate! age must be < 110 years!");
             return "redirect:/userView/registration";
         }
         if (!userService.isRegistrationSuccess(user)) {
             redirectAttributes.addFlashAttribute("msg", "Such client/login is already exist!");
-            return "redirect:/userView/registration";
-        }
-        if (!userService.isCorrectAge(user)) {
-            redirectAttributes.addFlashAttribute("msg", "Incorrect birthDate! age must be < 110 years!");
             return "redirect:/userView/registration";
         }
         return "userView/login";

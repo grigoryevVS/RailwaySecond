@@ -3,7 +3,6 @@ package ru.javaschool.model.entities;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -26,9 +25,8 @@ public class User implements Serializable{
     @Size(min=2, max=30)
     @Column( nullable = false, length = 20)
     private String lastName;
-    @NotNull
     @Past
-    @Column( nullable = false)
+    @Column
     @Temporal(TemporalType.DATE)
     private Date birthDate;
     @NotEmpty

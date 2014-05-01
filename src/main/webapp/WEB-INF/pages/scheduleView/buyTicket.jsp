@@ -1,53 +1,75 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
     <title>Buy ticket</title>
 </head>
+
 <body>
-<%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
-<h4 align="center">Congratulation</h4>
 
-<h5 align="center">Ticket data</h5>
-<c:if test="${!empty ticket}">
-    <h6 align="center">Information about schedule</h6>
-    <table class="data" align="center">
-        <tr>
-            <th>Train</th>
-            <th>Route</th>
-            <th>Date trip</th>
-            <th>Departure station</th>
-            <th>Departure time</th>
-            <th>Arriving station</th>
-            <th>Arriving time</th>
-        </tr>
-        <tr>
-            <td>${ticket.trainName}</td>
-            <td>${ticket.routeName}</td>
-            <td>${ticket.date}</td>
-            <td>${ticket.stationFrom}</td>
-            <td>${ticket.appearTimeFrom}</td>
-            <td>${ticket.stationTo}</td>
-            <td>${ticket.appearTimeTo}</td>
-        </tr>
-    </table>
+<div class="container">
 
-    <h6 align="center">Information about passenger</h6>
-    <table class="data" align="center">
-        <tr>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Birth date</th>
-        </tr>
-        <tr>
-            <td>${ticket.firstName}</td>
-            <td>${ticket.lastName}</td>
-            <td>${ticket.birthDate}</td>
-        </tr>
-    </table>
-</c:if>
+    <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-<input type="submit" value="Confirm" />
-<a align="center" href="${pageContext.request.contextPath}/scheduleView/scheduleIndex">Back to schedule</a>
+    <a class="btn btn-info" href="${pageContext.request.contextPath}/scheduleView/scheduleIndex">Back to schedule</a>
+
+    <div class="jumbotron">
+        <table class="table table-bordered">
+            <tr>
+                <td>
+                    <h3>Ticket data</h3>
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+
+                    <c:if test="${!empty ticket}">
+
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>First name</th>
+                                <th>Last name</th>
+                                <th>Birth date</th>
+                            </tr>
+                            <tr>
+                                <td>${ticket.firstName}</td>
+                                <td>${ticket.lastName}</td>
+                                <td>${ticket.birthDate}</td>
+                            </tr>
+                        </table>
+
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Train</th>
+                                <th>Route</th>
+                                <th>Date trip</th>
+                                <th>Departure station</th>
+                                <th>Departure time</th>
+                                <th>Arriving station</th>
+                                <th>Arriving time</th>
+                            </tr>
+                            <tr>
+                                <td>${ticket.trainName}</td>
+                                <td>${ticket.routeName}</td>
+                                <td>${ticket.date}</td>
+                                <td>${ticket.stationFrom}</td>
+                                <td>${ticket.appearTimeFrom}</td>
+                                <td>${ticket.stationTo}</td>
+                                <td>${ticket.appearTimeTo}</td>
+                            </tr>
+                        </table>
+                    </c:if>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <hr>
+
+    <%@ include file="/WEB-INF/pages/layout/footer.jsp" %>
+
+</div>
+
 </body>
 </html>

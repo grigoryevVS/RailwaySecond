@@ -13,7 +13,7 @@
     <!-- Jumbotron -->
     <div class="jumbotron">
         <form:form method="post" action="createTrain" commandName="train">
-            <input class="btn btn-danger" type="submit" value="Add train"/>
+            <input class="btn btn-success" type="submit" value="Add train"/>
         </form:form>
 
 
@@ -37,8 +37,8 @@
                         <td>${train.trainId}</td>
                         <td>${train.name}</td>
                         <td>${train.numberOfSeats}</td>
-                        <td><a class="btn-small btn-danger" href="updateTrain/${train.trainId}">update</a></td>
-                        <td><a class="btn-small btn-danger" href="delete/${train.trainId}">delete</a></td>
+                        <td><a class="btn-small btn-success" href="updateTrain/${train.trainId}">update</a></td>
+                        <td><a class="btn-small btn-success" href="delete/${train.trainId}">delete</a></td>
                     </tr>
                 </c:forEach>
             </table>

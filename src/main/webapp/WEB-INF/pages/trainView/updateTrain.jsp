@@ -20,7 +20,7 @@
             <form:input path="numberOfSeats" />
             <form:hidden path="trainId"/>
 
-            <input type="submit" value="Update" />
+            <input class="btn btn-success" type="submit" value="Update" />
             <c:if test="${msg != null}">
                 <div style="color: red">
                         ${msg}

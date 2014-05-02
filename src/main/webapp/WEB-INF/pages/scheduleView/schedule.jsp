@@ -16,7 +16,7 @@
     <!-- Jumbotron -->
     <div class="jumbotron">
         <form:form method="post" action="createSchedule" commandName="schedule">
-            <input class="btn btn-danger" type="submit" value="Add timetable"/>
+            <input class="btn btn-success" type="submit" value="Add timetable"/>
         </form:form>
 
         <h4>Timetable</h4>

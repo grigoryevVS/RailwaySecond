@@ -1964,6 +1964,7 @@ legend + .control-group {
     width: 160px;
     padding-top: 5px;
     text-align: right;
+    font-size: ;
 }
 
 .form-horizontal .controls {
@@ -3208,10 +3209,10 @@ button.close {
 .btn {
     display: inline-block;
     *display: inline;
-    padding: 4px 12px;
+    padding: 6px 14px;
     margin-bottom: 0;
     *margin-left: .3em;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 20px;
     color: #333333;
     text-align: center;
@@ -3313,8 +3314,8 @@ button.close {
 }
 
 .btn-small {
-    padding: 2px 10px;
-    font-size: 11.9px;
+    padding: 3px 10px;
+    font-size: 12.9px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;

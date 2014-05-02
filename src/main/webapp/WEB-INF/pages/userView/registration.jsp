@@ -83,30 +83,6 @@
         </div>
     </div>
 
-
-    <%--<!-- Jumbotron -->--%>
-    <%--<div class="jumbotron">--%>
-
-
-    <%--<form:form method="post" action="add" commandName="user">--%>
-    <%--<div class="table">--%>
-    <%--<form:label for="login" path="login">Login</form:label>--%>
-    <%--<form:input path="login"/>--%>
-    <%--<form:label path="password">Password</form:label>--%>
-    <%--<form:input path="password"/>--%>
-    <%--<form:label path="firstName">FirstName</form:label>--%>
-    <%--<form:input path="firstName"/>--%>
-    <%--<form:label path="lastName">LastName</form:label>--%>
-    <%--<form:input path="lastName"/>--%>
-    <%--<form:label path="birthDate">BirthDate</form:label>--%>
-    <%--<form:input path="birthDate" type="date"/>--%>
-
-
-    <%--</div>--%>
-    <%--<input class="btn btn-danger" type="submit" value="Sign up"/>--%>
-    <%--</form:form>--%>
-
-
     <hr>
 
     <%@ include file="/WEB-INF/pages/layout/footer.jsp" %>

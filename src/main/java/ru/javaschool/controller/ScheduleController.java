@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import ru.javaschool.services.ScheduleService;
 import ru.javaschool.services.StationService;
 import ru.javaschool.services.TrainService;
 
+import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,7 +56,7 @@ public class ScheduleController {
     @RequestMapping("/schedule")
     public String getScheduleList(Model model) {
         model.addAttribute("scheduler", new ScheduleDto());
-        model.addAttribute("scheduleList", scheduleService.getAllSchedule());
+        model.addAttribute("scheduleList", scheduleService.getFullSchedule());
         return "scheduleView/schedule";
     }
 
@@ -65,9 +67,9 @@ public class ScheduleController {
      * @return - target url
      */
     @RequestMapping("/scheduleIndex")
-    public String index(Model model) {
-        model.addAttribute("scheduler", new ScheduleDto());
-        model.addAttribute("scheduleList", scheduleService.getAllSchedule());
+    public String index(ModelMap model) {
+        model.put("scheduler", new ScheduleDto());
+        model.put("scheduleList", scheduleService.getAllSchedule());
         return "scheduleView/scheduleIndex";
     }
 
@@ -93,10 +95,10 @@ public class ScheduleController {
      * @return - redirect url.
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addSchedule(@ModelAttribute("schedule") Schedule schedule,
+    public String addSchedule(@ModelAttribute("schedule") Schedule schedule, BindingResult result,
                               @ModelAttribute("trainName") String trainName,
                               @ModelAttribute("routeName") String routeName,
-                              @ModelAttribute("dateTrip") String dateTrip, BindingResult result, RedirectAttributes redAttr) {
+                              @ModelAttribute("dateTrip") String dateTrip,  RedirectAttributes redAttr) {
         if (result.hasErrors()) {
             redAttr.addFlashAttribute("msg", "Wrong data!");
             return "redirect:/scheduleView/createSchedule";
@@ -140,9 +142,7 @@ public class ScheduleController {
      * @return - target url.
      */
     @RequestMapping("/updateSchedule/{scheduleId}")
-    public String updateSchedule(@PathVariable("scheduleId") Long scheduleId,
-                                 Model model) {
-
+    public String updateSchedule(@PathVariable("scheduleId") Long scheduleId, Model model) {
         Schedule schedule = scheduleService.findSchedule(scheduleId);
         if (schedule != null) {
             model.addAttribute("schedule", schedule);
@@ -160,12 +160,15 @@ public class ScheduleController {
      * @return - redirect url.
      */
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
-    public String refreshSchedule(@ModelAttribute("schedule") Schedule schedule,
+    public String refreshSchedule(@Valid @ModelAttribute("schedule") Schedule schedule, BindingResult result,
                                   @ModelAttribute("scheduleId") Long scheduleId,
                                   @ModelAttribute("trainName") String trainName,
                                   @ModelAttribute("routeName") String routeName,
                                   @ModelAttribute("dateTrip") String dateTrip, RedirectAttributes redAttr) {
 
+        if (result.hasErrors()) {
+            return "error404";
+        }
         ScheduleDto scheduleDto = new ScheduleDto();
         scheduleDto.setTrainName(trainName);
         scheduleDto.setRouteName(routeName);
@@ -205,15 +208,21 @@ public class ScheduleController {
      * @return - view
      */
     @RequestMapping(value = "/filteredSchedule")
-    public String filteredSchedule(@ModelAttribute("filter") ScheduleFilterDto filter, Model model, RedirectAttributes redAttr) {
+    public String filteredSchedule(@Valid @ModelAttribute("filter") ScheduleFilterDto filter, BindingResult result, ModelMap model,
+                                   RedirectAttributes redAttr) {
+
+        if (result.hasErrors()) {
+            return "redirect:/scheduleView/scheduleIndex";
+        }
+
         List<ScheduleDto> schedList = scheduleService.getFilteredSchedule(filter);
 
         if (schedList.isEmpty()) {
             redAttr.addFlashAttribute("msg", "There are no trains with such filter!");
             return "redirect:/scheduleView/scheduleFilter";
         }
-        model.addAttribute("scheduler", new ScheduleDto());
-        model.addAttribute("scheduleList", schedList);
+        model.put("scheduler", new ScheduleDto());
+        model.put("scheduleList", schedList);
         return "scheduleView/filteredSchedule";
     }
 

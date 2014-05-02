@@ -7,6 +7,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/trainValid.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/registrationValid.js"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap.css" media="all">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" media="all">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" media="all">
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page session="false" %>

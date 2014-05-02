@@ -3,6 +3,7 @@ package ru.javaschool.services;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,6 +99,7 @@ public class UserService {
         DateTime birthDate = new DateTime(user.getBirthDate());
         DateTime currentTime = new DateTime();
         Duration duration = new Duration(birthDate, currentTime);
-        return duration.isShorterThan(interval);
+        LocalDate today = new LocalDate();
+        return today.toDate().after(user.getBirthDate()) && duration.isShorterThan(interval);
     }
 }

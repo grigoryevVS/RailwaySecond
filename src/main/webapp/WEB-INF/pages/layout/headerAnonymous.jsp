@@ -15,7 +15,7 @@
                     <li><a href="${pageContext.request.contextPath}/stationView/stationIndex">Stations</a></li>
                     <li><a href="${pageContext.request.contextPath}/trainView/trainIndex">Trains</a></li>
                     <li><a href="${pageContext.request.contextPath}/routeView/routeIndex">Routes</a></li>
-                    <li><a href="${pageContext.request.contextPath}/scheduleView/scheduleIndex">Full timetable</a></li>
+                    <li><a href="${pageContext.request.contextPath}/scheduleView/scheduleFilter">Timetable</a></li>
                     <li><a href="${pageContext.request.contextPath}/userView/login">Login</a></li>
                     <li><a href="${pageContext.request.contextPath}/userView/registration">Sign up</a></li>
                 </ul>

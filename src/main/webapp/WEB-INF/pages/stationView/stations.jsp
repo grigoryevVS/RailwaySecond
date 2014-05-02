@@ -14,7 +14,7 @@
     <!-- Jumbotron -->
     <div class="jumbotron">
         <form:form method="post" action="createStation" commandName="station">
-            <input class="btn btn-danger" type="submit" value="Add station"/>
+            <input class="btn btn-success" type="submit" value="Add station"/>
         </form:form>
 
 
@@ -36,8 +36,8 @@
                     <tr>
                         <td>${station.stationId}</td>
                         <td>${station.name}</td>
-                        <td><a class="btn-small btn-danger" href="updateStation/${station.stationId}">update</a></td>
-                        <td><a class="btn-small btn-danger" href="delete/${station.stationId}">delete</a></td>
+                        <td><a class="btn-small btn-success" href="updateStation/${station.stationId}">update</a></td>
+                        <td><a class="btn-small btn-success" href="delete/${station.stationId}">delete</a></td>
                     </tr>
                 </c:forEach>
             </table>

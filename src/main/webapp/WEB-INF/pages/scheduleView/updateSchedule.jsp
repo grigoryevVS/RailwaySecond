@@ -29,7 +29,7 @@
             <form:hidden path="scheduleId"/>
             <label for="dateTrip">Date trip</label>
             <input type="date" id="dateTrip" name="dateTrip" required/>
-            <input class="btn btn-danger" type="submit" value="Update"/>
+            <input class="btn btn-success" type="submit" value="Update"/>
             <c:if test="${msg != null}">
                 <h4 style="color: red">
                         ${msg}

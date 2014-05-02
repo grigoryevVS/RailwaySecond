@@ -15,7 +15,7 @@
 
     <!-- Jumbotron -->
     <div class="jumbotron">
-        <h3>Filtered schedule</h3>
+        <h3>Timetable</h3>
         <c:if test="${msg != null}">
             <div style="color: red">
                     ${msg}
@@ -29,6 +29,7 @@
                     <th>TimeFrom</th>
                     <th>To</th>
                     <th>TimeTo</th>
+                    <th>Route</th>
                     <th>Train</th>
                     <th>Date</th>
                     <th>Seats</th>
@@ -42,6 +43,7 @@
                         <td>${scheduler.appearTimeFrom}</td>
                         <td>${scheduler.stationTo}</td>
                         <td>${scheduler.appearTimeTo}</td>
+                        <td>${scheduler.routeName}</td>
                         <td>${scheduler.trainName}</td>
                         <td>${scheduler.date}</td>
                         <td>${scheduler.emptySeats}</td>

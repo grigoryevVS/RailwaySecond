@@ -343,4 +343,21 @@ public class ScheduleService {
 //        }
         return scheduleDtos;
     }
+
+    /**
+     * Get list of schedules.
+     *
+     * @return - list of schedules.
+     */
+    @SuppressWarnings("unchecked")
+    public List<ScheduleDto> getFullSchedule() {
+        List<ScheduleDto> scheduleDtos = new ArrayList<>();
+        List<Schedule> scheduleList = scheduleDao.findAll(Schedule.class);
+        if (!scheduleList.isEmpty()) {
+            for (Schedule sch : scheduleList) {
+                scheduleDtos.add(new ScheduleDto(sch));
+            }
+        }
+        return scheduleDtos;
+    }
 }

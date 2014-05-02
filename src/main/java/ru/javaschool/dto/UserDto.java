@@ -1,19 +1,30 @@
 package ru.javaschool.dto;
 
 
+import org.hibernate.validator.constraints.NotEmpty;
 import ru.javaschool.model.entities.User;
 
+import javax.validation.constraints.Size;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class UserDto {
 
     private Long id;
+    @NotEmpty
+    @Size(min=1, max=30)
     private String login;
+    @NotEmpty
+    @Size(min=4, max=50)
     private String password;
+    @NotEmpty
+    @Size(min=2, max=30)
     private String firstName;
+    @NotEmpty
+    @Size(min=2, max=30)
     private String lastName;
     private String role;
+    @NotEmpty
     private String birthDate;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 

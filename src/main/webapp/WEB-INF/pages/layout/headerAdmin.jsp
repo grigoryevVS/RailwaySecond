@@ -20,8 +20,8 @@
                     <li><a href="${pageContext.request.contextPath}/stationView/stations">Stations</a></li>
                     <li><a href="${pageContext.request.contextPath}/trainView/trains">Trains</a></li>
                     <li><a href="${pageContext.request.contextPath}/routeView/routes">Routes</a></li>
-                    <li><a href="${pageContext.request.contextPath}/scheduleView/scheduleIndex">Full timetable</a></li>
-                    <li><a href="${pageContext.request.contextPath}/scheduleView/schedule">Manage</a></li>
+                    <li><a href="${pageContext.request.contextPath}/scheduleView/scheduleFilter">Timetable</a></li>
+                    <li><a href="${pageContext.request.contextPath}/scheduleView/schedule">Management</a></li>
                     <li><a href="${pageContext.request.contextPath}/userView/editor/${pageContext.request.userPrincipal.name}">Account</a> </li>
                     <li><a href="${pageContext.request.contextPath}/userView/logout">Logout</a></li>
                 </ul>

@@ -1,10 +1,15 @@
 package ru.javaschool.dto;
 
 
+import javax.validation.constraints.NotNull;
+
 public class ScheduleFilterDto {
 
+    @NotNull
     private String date;
+    @NotNull
     private String stationFromName;
+    @NotNull
     private String StationToName;
 
     public ScheduleFilterDto() {

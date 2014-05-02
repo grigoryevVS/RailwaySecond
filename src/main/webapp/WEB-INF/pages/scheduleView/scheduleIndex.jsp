@@ -15,7 +15,7 @@
 
     <!-- Jumbotron -->
     <div class="jumbotron">
-        <h4>Schedule</h4>
+        <h4>Timetable</h4>
         <c:if test="${msg != null}">
             <h4 style="color: red">
                 ${msg}

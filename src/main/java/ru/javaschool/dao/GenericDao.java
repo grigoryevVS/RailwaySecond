@@ -32,7 +32,7 @@ public abstract class GenericDao<T extends Serializable, PK extends Serializable
 
     @SuppressWarnings("unchecked")
     public void update(final T t) {
-        sessionFactory.getCurrentSession().merge(t);
+        sessionFactory.getCurrentSession().update(t);
     }
 
     public void delete(final T t){

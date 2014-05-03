@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <%@include file="../layout/styles.jsp" %>
     <meta charset="utf-8">
     <title>Route</title>
 </head>
@@ -8,20 +9,8 @@
 <body>
 
 <div class="container">
-
+    <c:set var="activeMenu" value="timetable" />
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
-
-    <div>
-        <a class="btn btn-info" href="/RailWay/scheduleView/scheduleIndex">Back to full schedule</a>
-        <a class="btn btn-info" href="/RailWay/scheduleView/scheduleFilter">Back to fiter</a>
-        <c:choose>
-            <c:when test="${pageContext.request.userPrincipal.name != null}">
-                <sec:authorize ifAnyGranted="ROLE_ADMIN">
-                    <a class="btn btn-info" href="/RailWay/scheduleView/schedule">Back to schedule management</a>
-                </sec:authorize>
-            </c:when>
-        </c:choose>
-    </div>
 
     <!-- Jumbotron -->
     <div class="jumbotron">

@@ -6,6 +6,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/stationValid.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/trainValid.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/registrationValid.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/routeValid.js"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap.css" media="all">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" media="all">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" media="all">

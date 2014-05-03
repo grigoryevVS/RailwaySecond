@@ -1,10 +1,9 @@
 package ru.javaschool.model.entities;
 
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
 import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +16,7 @@ public class Schedule implements Serializable {
     @Id
     @GeneratedValue
     private long scheduleId;
-    @NotEmpty
+    @NotNull
     @Future
     @Column
     @Temporal(TemporalType.DATE)

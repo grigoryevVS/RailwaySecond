@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <%@include file="../layout/styles.jsp" %>
     <meta charset="utf-8">
     <title>Route ${route.routeId}</title>
 </head>
@@ -9,6 +10,7 @@
 
 <div class="container">
 
+    <c:set var="activeMenu" value="routes"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <div>

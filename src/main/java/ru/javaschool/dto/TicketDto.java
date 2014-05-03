@@ -25,21 +25,33 @@ public class TicketDto {
     public TicketDto() {
     }
 
-    public TicketDto(User user, Schedule schedule) {
+    public TicketDto(User user, Schedule schedule, ScheduleFilterDto filter) {
 
         List<StationDistance> sdList = schedule.getRoute().getStationDistances();
-
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         this.birthDate = sdf.format(user.getBirthDate());
-        this.stationFrom = sdList.get(0).getStation().getName();
-        this.stationTo = sdList.get(sdList.size() - 1).getStation().getName();
         this.trainName = schedule.getTrain().getName();
         this.date = sdf.format(schedule.getDateTrip());
         this.routeName = schedule.getRoute().getTitle();
-        this.departureTime = String.valueOf((sdList.get(0).getAppearTime()));
-        this.arrivalTime = String.valueOf((sdList.get(sdList.size() - 1).getAppearTime()));
+        if (filter == null) {
+            this.stationFrom = sdList.get(0).getStation().getName();
+            this.stationTo = sdList.get(sdList.size() - 1).getStation().getName();
+            this.departureTime = String.valueOf((sdList.get(0).getAppearTime()));
+            this.arrivalTime = String.valueOf((sdList.get(sdList.size() - 1).getAppearTime()));
+        } else {
+            if (!filter.getStationFromName().equals("")) {
+                this.stationFrom = filter.getStationFromName();
+            } else {
+                this.stationFrom = sdList.get(0).getStation().getName();
+            }
+            if (filter.getStationToName().equals("")) {
+                this.stationTo = filter.getStationToName();
+            } else {
+                this.stationTo = sdList.get(sdList.size() - 1).getStation().getName();
+            }
+        }
     }
 
     public String getFirstName() {

@@ -3,6 +3,8 @@ package ru.javaschool.dto;
 
 import ru.javaschool.model.entities.StationDistance;
 
+import java.text.SimpleDateFormat;
+
 public class StationDistanceDto {
 
     private String routeName;
@@ -17,7 +19,8 @@ public class StationDistanceDto {
         this.routeName = sd.getRoute().getTitle();
         this.sequenceNumber = sd.getSequenceNumber();
         this.stationName = sd.getStation().getName();
-        this.appearenceTime = String.valueOf((sd.getAppearTime()));
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        this.appearenceTime = sdf.format((sd.getAppearTime()));
     }
 
     public String getRouteName() {

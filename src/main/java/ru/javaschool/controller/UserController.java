@@ -15,6 +15,7 @@ import ru.javaschool.model.entities.User;
 import ru.javaschool.services.UserService;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -128,29 +129,43 @@ public class UserController {
     /**
      * Save of new user
      *
-     * @param user new User
+     * @param userDto new User
      * @return view
      */
     @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
-    public String updateUser(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
+    public String updateUser(@Valid @ModelAttribute("user") UserDto userDto, BindingResult result, Model model, RedirectAttributes redAttr) {
 
+        User user = userService.getUserByLogin(userDto.getLogin());
         if (user == null) {
-            return "redirect:/userView/editor";
+            redAttr.addFlashAttribute("msg", "Login incorrect!");
+            return "error404";
         }
         if (result.hasErrors()) {
-            model.addAttribute("message", "Wrong data");
-            return "redirect:/userView/editor";
+            redAttr.addFlashAttribute("msg", "Wrong data");
+            return "redirect:/userView/editor/" + user.getLogin();
         }
+        user.setPassword(userDto.getPassword());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            user.setBirthDate(sdf.parse(userDto.getBirthDate()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (user.getLogin().equals(auth.getName())) {
-            User resultUser = userService.getUserByLogin(user.getLogin());
-            if (resultUser != null) {
-                resultUser.setPassword(user.getPassword());
-                model.addAttribute("user", resultUser);
-                userService.updateUser(resultUser);
-                return "userView/editor";
+
+            if (!userService.isCorrectAge(user)) {
+                redAttr.addFlashAttribute("msg", "Incorrect birthDate! age must be < 110 years and not minus!");
+                return "redirect:/userView/editor/" + user.getLogin();
             }
-            return "error404";
+            if (!userService.updateUser(user)) {
+                redAttr.addFlashAttribute("msg", "Such client/login is already exist!");
+                return "redirect:/userView/editor/" + user.getLogin();
+            }
+            model.addAttribute("user", user);
+            return "userView/editor";
         }
         return "redirect:/error403";
     }

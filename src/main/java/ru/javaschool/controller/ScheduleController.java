@@ -18,6 +18,7 @@ import ru.javaschool.services.ScheduleService;
 import ru.javaschool.services.StationService;
 import ru.javaschool.services.TrainService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class ScheduleController {
      * @param schedule - target schedule to be created
      * @return - redirect url.
      */
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add")
     public String addSchedule(@ModelAttribute("schedule") Schedule schedule, BindingResult result,
                               @ModelAttribute("trainName") String trainName,
                               @ModelAttribute("routeName") String routeName,
@@ -188,13 +189,23 @@ public class ScheduleController {
      * @return - view
      */
     @RequestMapping(value = "/scheduleFilter")
-    public String createFilter( Model model) {
-
-
-        ScheduleFilterDto filter = new ScheduleFilterDto();
-        model.addAttribute("filter", filter);
+    public String createFilter(HttpSession session, Model model) {
+        if (session.getAttribute("filter") == null) {
+            session.setAttribute("filter", new ScheduleFilterDto());
+        }
+        if (session.getAttribute("msg") != null) {
+            model.addAttribute("msg", session.getAttribute("msg"));
+            //session.removeAttribute("msg");
+        }
+        List<ScheduleDto> schedList = scheduleService.getFilteredSchedule((ScheduleFilterDto) session.getAttribute("filter"));
+        if (session.getAttribute("scheduleList") == null) {
+            session.setAttribute("scheduleList", schedList);
+        }
+        model.addAttribute("scheduleList", schedList);
+        model.addAttribute("filter", session.getAttribute("filter"));
         model.addAttribute("stationListFrom", stationService.getAllStations());
         model.addAttribute("stationListTo", stationService.getAllStations());
+        model.addAttribute("scheduleList", session.getAttribute("scheduleList"));
 
         return "scheduleView/scheduleFilter";
     }
@@ -204,26 +215,33 @@ public class ScheduleController {
      *
      * @param filter  - target filter of schedule
      * @param model   - model of view
-     * @param redAttr - parameters to get in redirect pages( validation messages)
      * @return - view
      */
     @RequestMapping(value = "/filteredSchedule")
-    public String filteredSchedule(@Valid @ModelAttribute("filter") ScheduleFilterDto filter, BindingResult result, ModelMap model,
-                                   RedirectAttributes redAttr) {
+    public String filteredSchedule(HttpSession session, @Valid @ModelAttribute("filter") ScheduleFilterDto filter,
+                                   BindingResult result, ModelMap model) {
 
+        session.setAttribute("filter", filter);
 
         if (result.hasErrors()) {
-            return "redirect:/scheduleView/scheduleIndex";
-        }
-
-        List<ScheduleDto> schedList = scheduleService.getFilteredSchedule(filter);
-
-        if (schedList.isEmpty()) {
-            redAttr.addFlashAttribute("msg", "There are no trains with such filter!");
+            session.setAttribute("msg", "Wrong data!");
             return "redirect:/scheduleView/scheduleFilter";
         }
+
+        List<ScheduleDto> schedList = scheduleService.getFilteredSchedule((ScheduleFilterDto) session.getAttribute("filter"));
         model.put("scheduler", new ScheduleDto());
         model.put("scheduleList", schedList);
+        session.setAttribute("scheduleList", schedList);
+
+        if (schedList == null) {
+            session.setAttribute("msg", "Wrong credentials!");
+            return "redirect:/scheduleView/scheduleFilter";
+        }
+
+        if (schedList.isEmpty()) {
+            session.setAttribute("msg", "There are no trains with such filter!");
+            return "redirect:/scheduleView/scheduleFilter";
+        }
         return "scheduleView/filteredSchedule";
     }
 

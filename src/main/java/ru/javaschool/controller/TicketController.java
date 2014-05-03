@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.javaschool.dto.ScheduleDto;
+import ru.javaschool.dto.ScheduleFilterDto;
 import ru.javaschool.dto.TicketDto;
 import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.model.entities.Ticket;
@@ -19,8 +21,10 @@ import ru.javaschool.services.ScheduleService;
 import ru.javaschool.services.TicketService;
 import ru.javaschool.services.UserService;
 
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/scheduleView")
@@ -50,19 +54,22 @@ public class TicketController {
      * @return - view of successfully bought ticket, or validation message.
      */
     @RequestMapping("buyTicket/{scheduleId}")
-    public String buyTicket(@PathVariable("scheduleId") Long scheduleId, Model model, RedirectAttributes redAttr) {
+    public String buyTicket(@PathVariable("scheduleId") Long scheduleId, Model model, RedirectAttributes redAttr, HttpSession session) {
 
         User user = userService.getUserByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
         Schedule schedule = scheduleService.findSchedule(scheduleId);
         if (schedule != null) {
-            String validateResult = ticketService.buyTicket(user, schedule);
+            ScheduleFilterDto filter = (ScheduleFilterDto) session.getAttribute("filter");
+            String validateResult = ticketService.buyTicket(user, schedule, (ScheduleFilterDto) session.getAttribute("filter"));
             if (validateResult.equals("Buy ticket success!")) {
-                TicketDto ticketDto = new TicketDto(user, schedule);
+                List<ScheduleDto> schedList = scheduleService.getFilteredSchedule((ScheduleFilterDto) session.getAttribute("filter"));
+                session.setAttribute("scheduleList", schedList);
+                TicketDto ticketDto = new TicketDto(user, schedule, (ScheduleFilterDto) session.getAttribute("filter"));
                 model.addAttribute("ticket", ticketDto);
                 return "scheduleView/buyTicket";
             } else {
                 redAttr.addFlashAttribute("msg", validateResult);
-                return "redirect:/scheduleView/scheduleIndex";
+                return "redirect:/scheduleView/scheduleFilter";
             }
         } else {
             return "error404";

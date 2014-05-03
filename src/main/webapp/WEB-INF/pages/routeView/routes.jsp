@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <%@include file="../layout/styles.jsp" %>
     <meta charset="utf-8">
 </head>
 
 <body>
 
 <div class="container">
-
+    <c:set var="activeMenu" value="routes" />
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <!-- Jumbotron -->
@@ -19,7 +20,7 @@
 
         <h4>Routes</h4>
         <c:if test="${msg != null}">
-            <h4 style="color: red">
+            <h4 class="msg">
                     ${msg}
             </h4>
         </c:if>

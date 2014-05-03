@@ -20,7 +20,7 @@ body {
 /* Custom container */
 .container {
     margin: 0 auto;
-    max-width: 1000px;
+    width: 1000px;
 }
 
 .container > hr {
@@ -126,4 +126,12 @@ label {
 
 .btn-my {
     margin: 14px;
+}
+
+.msg {
+    display: inline-block;
+    *display: inline;
+    padding-left: 5px;
+    vertical-align: middle;
+    *zoom: 1;
 }

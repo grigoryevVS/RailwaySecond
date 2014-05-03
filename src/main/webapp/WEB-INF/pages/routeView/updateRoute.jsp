@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <%@include file="../layout/styles.jsp" %>
     <meta charset="utf-8">
     <title>update route routeId ${route.routeId}</title>
 </head>
@@ -8,7 +9,7 @@
 <body>
 
 <div class="container">
-
+    <c:set var="activeMenu" value="routes" />
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
         <a class="btn-large btn-info" href="${pageContext.request.contextPath}/routeView/routes">Back to route</a>

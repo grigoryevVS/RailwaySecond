@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <%@include file="../layout/styles.jsp" %>
     <meta charset="utf-8">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/stationValid.js"></script>
     <title>update station stationId ${station.stationId}</title>
 </head>
 
 <body>
 
 <div class="container">
-
+    <c:set var="activeMenu" value="stations" />
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <div class="jumbotron">

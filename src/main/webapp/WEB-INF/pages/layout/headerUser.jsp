@@ -17,13 +17,13 @@
         <div class="navbar-inner">
             <div class="container">
                 <ul class="nav">
-                    <li class="active"><a href="${pageContext.request.contextPath}/index">Home</a></li>
-                    <%--<li><a href="${pageContext.request.contextPath}/routeView/routeIndex">Routes</a></li>--%>
-                    <li><a href="${pageContext.request.contextPath}/scheduleView/scheduleFilter">Timetable</a></li>
-                    <li>
+                    <li <c:if test="${activeMenu eq 'home'}">class="active"</c:if>><a href="${pageContext.request.contextPath}/index">Home</a></li>
+                    <li <c:if test="${activeMenu eq 'stations'}">class="active"</c:if>><a href="${pageContext.request.contextPath}/stationView/stationIndex">Stations</a></li>
+                    <li <c:if test="${activeMenu eq 'timetable'}">class="active"</c:if>><a href="${pageContext.request.contextPath}/scheduleView/scheduleFilter">Timetable</a></li>
+                    <li <c:if test="${activeMenu eq 'editor'}">class="active"</c:if>>
                         <a href="${pageContext.request.contextPath}/userView/editor/${pageContext.request.userPrincipal.name}">Account</a>
                     </li>
-                    <li><a href="${pageContext.request.contextPath}/userView/logout">Logout</a></li>
+                    <li <c:if test="${activeMenu eq 'logout'}">class="active"</c:if>><a href="${pageContext.request.contextPath}/userView/logout">Logout</a></li>
                 </ul>
             </div>
         </div>

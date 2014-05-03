@@ -64,7 +64,7 @@ public class UserService {
         List<Ticket> tickets = user.getTicketList();
         List<TicketDto> ticketDtos = new ArrayList<>();
         for (Ticket t : tickets) {
-            ticketDtos.add(new TicketDto(t.getUser(), t.getSchedule()));
+            //ticketDtos.add(new TicketDto(t.getUser(), t.getSchedule()));
         }
         return ticketDtos;
     }
@@ -74,8 +74,15 @@ public class UserService {
      *
      * @param user - target
      */
-    public void updateUser(User user) {
-        userDao.update(user);
+    public boolean updateUser(User user) {
+        if (!userDao.loginCheckForUpdate(user)) {
+            if (userDao.isUpdateAccess(user)) {
+                userDao.update(user);
+                return true;
+            }
+        }
+        return false;
+
     }
 
     /**

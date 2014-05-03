@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <%@include file="../layout/styles.jsp" %>
     <meta charset="utf-8">
     <title>Create new schedule</title>
 </head>
@@ -8,7 +9,7 @@
 <body>
 
 <div class="container">
-
+    <c:set var="activeMenu" value="management" />
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <!-- Jumbotron -->

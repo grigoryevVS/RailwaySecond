@@ -47,4 +47,24 @@ public class UserDao extends GenericDao<User, Long>{
         User user = (User) sessionFactory.getCurrentSession().createQuery("from User where login='" + login + "'").uniqueResult();
         return user != null;
     }
+
+    @SuppressWarnings("unchecked")
+    public boolean isUpdateAccess(User passenger) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String queryString = "from User where firstName='" + passenger.getFirstName() + "'" + " and lastName='" +
+                passenger.getLastName() + "'" + " AND DATE_FORMAT(birthDate,'%Y-%m-%d')='" +
+                sdf.format(passenger.getBirthDate())+"'";
+        List<User> passengerList = sessionFactory.getCurrentSession().createQuery(queryString).list();
+        for (User user : passengerList) {
+            if (!user.getUserId().equals(passenger.getUserId())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean loginCheckForUpdate(User user) {
+        User result = (User) sessionFactory.getCurrentSession().createQuery("from User where login='" + user.getLogin() + "'").uniqueResult();
+        return !result.getUserId().equals(user.getUserId());
+    }
 }

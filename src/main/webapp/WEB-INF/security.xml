@@ -36,7 +36,6 @@
         <logout logout-url="/userView/logout" logout-success-url="/index"/>
 
         <anonymous username="guest" granted-authority="ROLE_ANONYMOUS" />
-        <remember-me />
     </http>
 
     <beans:bean id="webexpressionHandler"

@@ -12,10 +12,7 @@ import ru.javaschool.dao.StationDistanceDao;
 import ru.javaschool.dao.TrainDao;
 import ru.javaschool.dto.ScheduleDto;
 import ru.javaschool.dto.ScheduleFilterDto;
-import ru.javaschool.model.entities.Route;
-import ru.javaschool.model.entities.Schedule;
-import ru.javaschool.model.entities.StationDistance;
-import ru.javaschool.model.entities.Ticket;
+import ru.javaschool.model.entities.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -111,7 +108,10 @@ public class ScheduleService {
             Date timeToCheck = sd.getAppearTime();
             if (isCorrectDate(dateToCheck, timeToCheck)) {
                 if (isUniqueWithinDay(scheduleDto)) {
-                    if (getArrivalStation(scheduleDto).equals("none")) {
+
+                    String arrivalCheck = getArrivalStation(scheduleDto);
+                    String departureCheck = getDepartureStation(scheduleDto);
+                    if (arrivalCheck.equals("none") ||departureCheck.equals("none")) {
                         schedule.setRoute(route);
                         schedule.setDateTrip(dateToCheck);
                         schedule.setTrain(trainDao.findByName(scheduleDto.getTrainName()));
@@ -119,7 +119,7 @@ public class ScheduleService {
                         scheduleDao.update(schedule);
                         return "Success!";
                     }
-                    return "This train finished at station " + getArrivalStation(scheduleDto);
+                    return "Train can go to the " + departureCheck + " or from the " + arrivalCheck + " !";
                 }
                 return "Such schedule already exist in this day.";
             }
@@ -160,15 +160,17 @@ public class ScheduleService {
         Date timeToCheck = sd.getAppearTime();
         if (isCorrectDate(dateToCheck, timeToCheck)) {
             if (isUniqueWithinDay(scheduleDto)) {
-                if (getArrivalStation(scheduleDto).equals("none")) {
+                String arrivalCheck = getArrivalStation(scheduleDto);
+                String departureCheck = getDepartureStation(scheduleDto);
+                if (arrivalCheck.equals("none") || departureCheck.equals("none")) {
                     schedule.setRoute(route);
                     schedule.setDateTrip(dateToCheck);
                     schedule.setTrain(trainDao.findByName(scheduleDto.getTrainName()));
                     schedule.setTicketList(new ArrayList<Ticket>());
                     scheduleDao.create(schedule);
-                    return "Success!";
+                    return  "Success!";
                 }
-                return getArrivalStation(scheduleDto);
+                return "Train can go to the " + departureCheck + " or from the " + arrivalCheck + " !";
             }
             return "Such schedule already exist in this day.";
         }
@@ -242,7 +244,80 @@ public class ScheduleService {
                 }
                 return "Wrong!";
             }
-            return "Different previous station " + resultStation;
+            return " station " + resultStation;
+        }
+    }
+
+
+    /**
+     * This method implements validation of schedule.
+     * Date, train and time validity.
+     *
+     * @param scheduleDto - target dto object
+     * @return - result message
+     */
+    public String getDepartureStation(ScheduleDto scheduleDto) {
+        // find all schedule with target train
+        List<Schedule> schedules = scheduleDao.getScheduleListTodayByTrain(scheduleDto.getTrainName());
+        Route route = routeDao.findByName(scheduleDto.getRouteName());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        // target date
+        Date dateToCheck;
+        try {
+            dateToCheck = sdf.parse(scheduleDto.getDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "Wrong date format!";
+        }
+        List<Schedule> scheduleList = new ArrayList<>();
+        // if departure day equals to the departure day of target schedule add to result scheduleList
+        if (!schedules.isEmpty()) {
+            for (Schedule sch : schedules) {
+                if (dateToCheck.compareTo(sch.getDateTrip()) == 0) {
+                    scheduleList.add(sch);
+                }
+            }
+        }
+        // if schedules with target train not exist, return that it is.
+        else {
+            return "none";
+        }
+        List<StationDistance> distanceListDepart = distanceDao.getStationsInRoute(route);
+        StationDistance sd = distanceListDepart.get(distanceListDepart.size() - 1);  // target  arrival station
+        Date targetTimeTo = sd.getAppearTime();
+        // if there were no schedules with this train within target day return that it is.
+        if (scheduleList.isEmpty()) {
+            return "none";
+        }
+        // check if departure time of next stations before target arrival time, if it is wrong, save name of the next station.
+        else {
+            Date controlTime = null;
+            String resultStation = "Wrong!";
+            for (Schedule schedule : scheduleList) {
+                List<StationDistance> distanceList = distanceDao.getStationsInRoute(schedule.getRoute());
+                StationDistance previousStationFrom = distanceList.get(0);  // previous station departure
+                Date previousTimeFrom = previousStationFrom.getAppearTime();        // previousTime departure
+                if (controlTime == null) {
+                    controlTime = previousTimeFrom;
+                    resultStation = previousStationFrom.getStation().getName();     //  departure station of next schedule
+                }
+                if (controlTime.after(previousTimeFrom) || controlTime.equals(previousTimeFrom)) {   // or equals
+                    controlTime = previousTimeFrom;
+                    resultStation = previousStationFrom.getStation().getName();
+                }
+            }
+            // if previous stations name not equals targets departure station, return different stations
+            // else check time, if departure time after previous station arrival time - good case, add, else return message wrong time.
+            if (sd.getStation().getName().equals(resultStation)) {
+                if (controlTime != null) {
+                    if (controlTime.after(targetTimeTo)) {
+                        return "none";
+                    }
+                    return "Wrong time, need to be later then previous route arrival time!";
+                }
+                return "Wrong!";
+            }
+            return " station " + resultStation;
         }
     }
 
@@ -334,14 +409,6 @@ public class ScheduleService {
                 }
             }
         }
-//
-//        if (!scheduleList.isEmpty()) {
-//            for (Schedule sch : scheduleList) {
-//                if (sch.getDateTrip().after(new LocalDate().minusDays(1).toDate())) {
-//                    scheduleDtos.add(new ScheduleDto(sch));
-//                }
-//            }
-//        }
         return scheduleDtos;
     }
 

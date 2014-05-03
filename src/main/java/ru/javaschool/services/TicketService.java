@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javaschool.dao.ScheduleDao;
 import ru.javaschool.dao.StationDistanceDao;
 import ru.javaschool.dao.TicketDao;
+import ru.javaschool.dto.ScheduleFilterDto;
 import ru.javaschool.model.entities.Schedule;
+import ru.javaschool.model.entities.StationDistance;
 import ru.javaschool.model.entities.Ticket;
 import ru.javaschool.model.entities.User;
 
@@ -43,24 +45,37 @@ public class TicketService {
      * @param user     - target passenger.
      * @return - true if buying ticket successful, else return false.
      */
-    public String buyTicket(User user, Schedule schedule) {
-        if(isCorrectDate(schedule)){
-        if (!ticketDao.isExistPassenger(schedule, user)) {
-            if (!ticketDao.isTrainFull(schedule)) {
-                if (!scheduleDao.isTooLate(schedule)) {
-                    Ticket ticket = new Ticket();
-                    ticket.setUser(user);
-                    schedule.getRoute().setStationDistances(distanceDao.getStationsInRoute(schedule.getRoute()));
-                    ticket.setSchedule(schedule);
-                    ticketDao.create(ticket);
-                    return "Buy ticket success!";
+    public String buyTicket(User user, Schedule schedule, ScheduleFilterDto filter) {
+        if (isCorrectDate(schedule)) {
+            if (!ticketDao.isExistPassenger(schedule, user)) {
+                if (!ticketDao.isTrainFull(schedule)) {
+                    if (!scheduleDao.isTooLate(schedule)) {
+                        Ticket ticket = new Ticket();
+                        ticket.setUser(user);
+                        schedule.getRoute().setStationDistances(distanceDao.getStationsInRoute(schedule.getRoute()));
+                        ticket.setSchedule(schedule);
+                        List<StationDistance> distanceList = schedule.getRoute().getStationDistances();
+                        if (filter != null) {
+                            if (!filter.getStationFromName().equals("")) {
+                                ticket.setStationFrom(filter.getStationFromName());
+                            } else {
+                                ticket.setStationFrom(distanceList.get(0).getStation().getName());
+                            }
+                            if (!filter.getStationToName().equals("")) {
+                                ticket.setStationTo(filter.getStationToName());
+                            } else {
+                                ticket.setStationTo(distanceList.get(distanceList.size() - 1).getStation().getName());
+                            }
+                        }
+                        ticketDao.create(ticket);
+                        return "Buy ticket success!";
+                    }
+                    return "Sorry, it's too late, only 10 minutes before departure!";
                 }
-                return "Sorry, it's too late, only 10 minutes before departure!";
+                return "Sorry, the train is full!";
             }
-            return "Sorry, the train is full!";
-        }
-        return "Sorry, but you've" +
-                " already bought ticket on train " + schedule.getTrain().getName() + " at " + schedule.getDateTrip();
+            return "Sorry, but you've" +
+                    " already bought ticket on train " + schedule.getTrain().getName() + " at " + schedule.getDateTrip();
         }
         return "Input date in the past!";
     }

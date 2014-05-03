@@ -10,6 +10,10 @@ public class Ticket implements Serializable{
     @Id
     @GeneratedValue
     private long ticketId;
+    @Column
+    private String stationFrom;
+    @Column
+    private String stationTo;
     @ManyToOne
     private User user;
     @ManyToOne(optional = false, fetch = FetchType.EAGER )
@@ -37,6 +41,22 @@ public class Ticket implements Serializable{
 
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
+    }
+
+    public String getStationFrom() {
+        return stationFrom;
+    }
+
+    public void setStationFrom(String stationFrom) {
+        this.stationFrom = stationFrom;
+    }
+
+    public String getStationTo() {
+        return stationTo;
+    }
+
+    public void setStationTo(String stationTo) {
+        this.stationTo = stationTo;
     }
 
     @Override

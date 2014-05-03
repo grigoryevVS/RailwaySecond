@@ -88,7 +88,7 @@ public class TrainService {
         }
         List<Schedule> scheduleList = scheduleDao.getScheduleListByTrain(train.getTrainId());
         for (Schedule schedule : scheduleList) {
-            if (capacity <= schedule.getTicketList().size()) {
+            if (capacity < schedule.getTicketList().size()) {
                 return false;
             }
         }

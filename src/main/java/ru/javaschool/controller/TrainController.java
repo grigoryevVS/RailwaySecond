@@ -70,7 +70,7 @@ public class TrainController {
      * @param train - concrete train, which we need to input.
      * @return - redirection url, which will be appear i the browser.
      */
-    @RequestMapping(value = "/add")
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addTrain(@Valid @ModelAttribute("train") Train train, BindingResult result, RedirectAttributes redAttr) {
 
         if (result.hasErrors()) {
@@ -88,7 +88,7 @@ public class TrainController {
         }
         if (trainService.createTrain(train)) {
             redAttr.addFlashAttribute("msg", "Create train " + train.getName() + " successful!");
-            return "trainView/trains";
+            return "redirect:/trainView/trains";
         } else {
             redAttr.addFlashAttribute("msg", "Such train is already exist or wrong capacity of train, it must be between 1-400");
             return "redirect:/trainView/createTrain";

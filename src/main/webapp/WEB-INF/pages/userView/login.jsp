@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <%@include file="../layout/styles.jsp" %>
     <meta charset="utf-8">
     <title>Log in</title>
 </head>
@@ -8,7 +9,7 @@
 <body>
 
 <div class="container">
-
+    <c:set var="activeMenu" value="login" />
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <div class="row-fluid">
@@ -37,10 +38,6 @@
 
                     <div class="control-group">
                         <div class="controls">
-                            <label class="checkbox">
-                                <input type="checkbox" name="_spring_security_remember_me"/>
-                                Remember
-                            </label>
                             <input class="btn btn-success" type="submit" value="login"/>
                             <a class="btn btn-success" href="${pageContext.request.contextPath}/userView/registration">Sign Up</a>
                         </div>

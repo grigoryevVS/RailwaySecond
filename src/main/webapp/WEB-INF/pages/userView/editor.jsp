@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <%@include file="../layout/styles.jsp" %>
     <meta charset="utf-8">
     <title>User ${user.firstName} ${user.lastName} editor</title>
 </head>
@@ -8,7 +9,7 @@
 <body>
 
 <div class="container">
-
+    <c:set var="activeMenu" value="editor" />
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <div class="row-fluid">
@@ -55,7 +56,7 @@
                         <form:label class="control-label" path="firstName">First Name</form:label>
 
                         <div class="controls">
-                            <form:input path="firstName" readonly="true" type="text"/>
+                            <form:input path="firstName" type="text"/>
                         </div>
                     </div>
 
@@ -63,7 +64,7 @@
                         <form:label class="control-label" path="lastName">Last Name</form:label>
 
                         <div class="controls">
-                            <form:input path="lastName" readonly="true" type="text"/>
+                            <form:input path="lastName" type="text"/>
                         </div>
                     </div>
 
@@ -71,7 +72,7 @@
                         <form:label class="control-label" path="birthDate">Birth Date</form:label>
 
                         <div class="controls">
-                            <form:input path="birthDate" readonly="true" type="date"/>
+                            <form:input path="birthDate" type="date"/>
                         </div>
                     </div>
 
@@ -87,37 +88,6 @@
             </form:form>
         </div>
     </div>
-
-    <%--<!-- Jumbotron -->--%>
-    <%--<div class="jumbotron">--%>
-        <%--<div>--%>
-            <%--<h2>User ${user.firstName} ${user.lastName}</h2>--%>
-            <%--<form:form method="post" action="${pageContext.request.contextPath}/userView/updateUser" commandName="user">--%>
-                <%--<form:label path="login">Login</form:label>--%>
-                <%--<form:input path="login" readonly="true" />--%>
-
-                <%--<form:label path="password">Password</form:label>--%>
-                <%--<form:input path="password" type="password"/>--%>
-
-                <%--<form:label path="firstName">First name</form:label>--%>
-                <%--<form:input path="firstName" readonly="true"/>--%>
-
-                <%--<form:label path="lastName">Last name</form:label>--%>
-                <%--<form:input path="lastName" readonly="true"/>--%>
-
-                <%--<form:label path="birthDate">Birth date</form:label>--%>
-                <%--<form:input path="birthDate" readonly="true" type="date"/>--%>
-
-                <%--<form:hidden path="userId"/>--%>
-
-                <%--<input  class="btn btn-danger" type="submit" value="Change account data" />--%>
-                <%--<c:if test="${message != null}">--%>
-                    <%--<h6 style="color: red">${message}</h6>--%>
-                <%--</c:if>--%>
-            <%--</form:form>--%>
-
-        <%--</div>--%>
-    <%--</div>--%>
 
     <hr>
 

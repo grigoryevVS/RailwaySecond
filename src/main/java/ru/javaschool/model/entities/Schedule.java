@@ -19,7 +19,7 @@ public class Schedule implements Serializable {
     private long scheduleId;
     @NotEmpty
     @Future
-    @Column(nullable = false)
+    @Column
     @Temporal(TemporalType.DATE)
     private Date dateTrip;
     @ManyToOne

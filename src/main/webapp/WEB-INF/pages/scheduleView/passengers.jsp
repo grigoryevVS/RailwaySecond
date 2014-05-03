@@ -29,7 +29,7 @@
                         <td>${user.firstName}</td>
                         <td>${user.lastName}</td>
                         <td>${user.birthDate}</td>
-                        <td><a class="btn-small btn-success" href="deletePassenger/${user.userId}/${schedule.scheduleId}">delete</a></td>
+                        <td><a class="btn-small btn-success" onclick="return isDelete()" href="deletePassenger/${user.userId}/${schedule.scheduleId}">delete</a></td>
                     </tr>
                 </c:forEach>
             </table>

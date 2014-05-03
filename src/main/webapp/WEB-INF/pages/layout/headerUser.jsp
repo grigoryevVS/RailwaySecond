@@ -18,9 +18,7 @@
             <div class="container">
                 <ul class="nav">
                     <li class="active"><a href="${pageContext.request.contextPath}/index">Home</a></li>
-                    <li><a href="${pageContext.request.contextPath}/stationView/stationIndex">Stations</a></li>
-                    <li><a href="${pageContext.request.contextPath}/trainView/trainIndex">Trains</a></li>
-                    <li><a href="${pageContext.request.contextPath}/routeView/routeIndex">Routes</a></li>
+                    <%--<li><a href="${pageContext.request.contextPath}/routeView/routeIndex">Routes</a></li>--%>
                     <li><a href="${pageContext.request.contextPath}/scheduleView/scheduleFilter">Timetable</a></li>
                     <li>
                         <a href="${pageContext.request.contextPath}/userView/editor/${pageContext.request.userPrincipal.name}">Account</a>

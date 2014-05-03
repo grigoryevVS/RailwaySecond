@@ -32,21 +32,22 @@
                     <th>Date</th>
                     <th>Train</th>
                     <th>Seats</th>
-                    <th>Details</th>
-                    <th>Buy ticket</th>
+                    <th></th>
                 </tr>
                 <c:forEach items="${scheduleList}" var="scheduler">
                     <tr>
                         <td>${scheduler.id}</td>
                         <td>${scheduler.stationFrom}</td>
-                        <td>${scheduler.appearTimeFrom}</td>
+                        <td>${scheduler.departureTime}</td>
                         <td>${scheduler.stationTo}</td>
-                        <td>${scheduler.appearTimeTo}</td>
+                        <td>${scheduler.arrivalTime}</td>
                         <td>${scheduler.date}</td>
                         <td>${scheduler.trainName}</td>
                         <td>${scheduler.emptySeats}</td>
-                        <td><a class="btn-small btn-info" href="/RailWay/routeView/detailsFromSchedule/${scheduler.id}">Details</a></td>
-                        <td><a class="btn-small btn-success" href="buyTicket/${scheduler.id}">buy ticket</a></td>
+                        <td>
+                            <a class="btn-small btn-info" href="/RailWay/routeView/detailsFromSchedule/${scheduler.id}">Details</a>
+                            <a class="btn-small btn-success" href="buyTicket/${scheduler.id}">buy ticket</a>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>

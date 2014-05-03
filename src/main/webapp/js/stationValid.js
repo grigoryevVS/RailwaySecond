@@ -17,3 +17,7 @@ $(document).ready(function () {
         }
     });
 });
+
+function isDelete() {
+    return confirm("Delete element?");
+}

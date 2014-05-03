@@ -11,10 +11,16 @@
 
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
+        <%--<form class="form-horizontal" id="data" method="post" action="${pageContext.request.contextPath}/scheduleView/filteredSchedule" commandName="filter">--%>
+
+
+        <%--</form>--%>
+
+
     <!-- Jumbotron -->
-    <div class="jumbotron">
-        <h2>Search train</h2>
-        <form:form method="post" action="${pageContext.request.contextPath}/scheduleView/filteredSchedule" commandName="filter">
+    <div class="filter" align="center" style="background-color: lightgrey">
+        <h3>Search train</h3>
+        <form:form cssClass="form-inline" id="data" method="post" action="${pageContext.request.contextPath}/scheduleView/filteredSchedule" commandName="filter">
             <form:label path="stationFromName">Departure station</form:label>
             <form:input path="stationFromName" id="stationFromName" />
 
@@ -24,13 +30,19 @@
             <form:label path="date">Date</form:label>
             <form:input path="date" type="date"/>
 
-            <input class="btn btn-success" type="submit" value="Search" />
+            <input class="btn btn-success" type="submit" value="Search" onclick="getTimetable(); return false;" />
             <c:if test="${msg != null}">
-                <div style="color: red">
+                <h4 style="color: red">
                         ${msg}
-                </div>
+                </h4>
             </c:if>
         </form:form>
+    </div>
+
+    <hr>
+
+    <div id="table">
+
     </div>
 
     <hr>

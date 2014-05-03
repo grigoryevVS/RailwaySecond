@@ -10,17 +10,12 @@
 <div class="container">
 
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
-
-    <a class="btn-large btn-info" href="${pageContext.request.contextPath}/stationView/stations">Back to stations</a>
-
-    <!-- Jumbotron -->
     <div class="jumbotron">
-        <div>
-        <form:form method="post" action="${pageContext.request.contextPath}/stationView/add" commandName="station">
+
+        <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/stationView/add" commandName="station">
             <form:label path="name"><h4>Name</h4></form:label>
             <form:input path="name" />
-        </div>
-            <input class="btn btn-success" type="submit" value="Create" />
+            <input class="btn-large btn-success" type="submit" value="Create" />
             <c:if test="${msg != null}">
                 <div style="color: red">
                         ${msg}

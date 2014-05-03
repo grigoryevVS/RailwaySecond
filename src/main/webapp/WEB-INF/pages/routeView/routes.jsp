@@ -14,7 +14,7 @@
     <div class="jumbotron">
 
         <form:form method="get" action="${pageContext.request.contextPath}/routeView/createRoute" commandName="route">
-            <input class="btn btn-large btn-danger" align="center" type="submit" value="Add route"/>
+            <input class="btn btn-large btn-success" align="center" type="submit" value="Add route"/>
         </form:form>
 
         <h4>Routes</h4>
@@ -26,19 +26,17 @@
         <c:if test="${!empty routeList}">
             <table class="table table-bordered text-center">
                 <tr>
-                    <th>RouteId</th>
                     <th>Name</th>
-                    <th>Update route</th>
-                    <th>Delete route</th>
-                    <th>View details</th>
+                    <th>Management</th>
                 </tr>
                 <c:forEach items="${routeList}" var="route">
                     <tr>
-                        <td>${route.routeId}</td>
                         <td>${route.title}</td>
-                        <td><a class="btn-small btn-danger" href="updateRoute/${route.routeId}"> update </a></td>
-                        <td><a class="btn-small btn-danger" href="delete/${route.routeId}"> delete </a></td>
-                        <td><a class="btn-small btn-info" href="details/${route.routeId}">details</a></td>
+                        <td>
+                            <a class="btn-my btn-small btn-success" href="updateRoute/${route.routeId}"> update </a>
+                            <a class="btn-my btn-small btn-success" onclick="return isDelete()" href="delete/${route.routeId}"> delete </a>
+                            <a class="btn-my btn-small btn-info" href="details/${route.routeId}">details</a>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>

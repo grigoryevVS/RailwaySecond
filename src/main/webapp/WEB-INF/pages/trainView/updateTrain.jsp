@@ -13,18 +13,18 @@
 
     <!-- Jumbotron -->
     <div class="jumbotron">
-        <form:form method="post" action="${pageContext.request.contextPath}/trainView/refresh" commandName="train">
+        <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/trainView/refresh" commandName="train">
             <form:label path="name">Name</form:label>
             <form:input path="name" />
             <form:label path="name">Capacity</form:label>
             <form:input path="numberOfSeats" />
             <form:hidden path="trainId"/>
 
-            <input class="btn btn-success" type="submit" value="Update" />
+            <input class="btn-large btn-success" type="submit" value="Update" />
             <c:if test="${msg != null}">
-                <div style="color: red">
+                <h4 style="color: red">
                         ${msg}
-                </div>
+                </h4>
             </c:if>
 
         </form:form>

@@ -14,9 +14,6 @@ $(document).ready(function () {
             };
         }
     });
-});
-
-$(document).ready(function () {
 
     $('#stationToName').autocomplete({
         serviceUrl: '/RailWay/scheduleView/getStations',
@@ -33,5 +30,27 @@ $(document).ready(function () {
             };
         }
     });
+
 });
+function getTimetable() {
+    var sta1 = $('#stationFromName').val();
+    var sta2 = $('#stationToName').val();
+    var date = $('#date').val();
+
+
+
+    $.ajax({
+        type: "POST",
+        url: "/RailWay/scheduleView/filteredSchedule",
+        data: { stationToName: sta2, stationFromName: sta1, date: date},
+        success : function(data) {
+            var find = $(data).find('table');
+            $('#table').html(find);
+        },
+        error : function() {
+            alert("error");
+        }
+    });
+
+};
 

@@ -13,6 +13,7 @@
 
     <div>
         <a class="btn btn-info" href="/RailWay/scheduleView/scheduleIndex">Back to full schedule</a>
+        <a class="btn btn-info" href="/RailWay/scheduleView/scheduleFilter">Back to fiter</a>
         <c:choose>
             <c:when test="${pageContext.request.userPrincipal.name != null}">
                 <sec:authorize ifAnyGranted="ROLE_ADMIN">

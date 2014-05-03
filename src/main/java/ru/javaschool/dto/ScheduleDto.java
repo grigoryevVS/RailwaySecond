@@ -1,6 +1,7 @@
 package ru.javaschool.dto;
 
 
+import ru.javaschool.model.entities.Route;
 import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.model.entities.StationDistance;
 import ru.javaschool.services.ScheduleService;
@@ -16,9 +17,10 @@ public class ScheduleDto {
     private String trainName;
     private String date;
     private String routeName;
-    private String appearTimeFrom;
-    private String appearTimeTo;
+    private String departureTime;
+    private String arrivalTime;
     private int emptySeats;
+    SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
 
     private ScheduleService scheduleService;
 
@@ -27,13 +29,14 @@ public class ScheduleDto {
 
     public ScheduleDto(Schedule schedule) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Route route = schedule.getRoute();
         List<StationDistance> sdList = schedule.getRoute().getStationDistances();
         this.id = schedule.getScheduleId();
         if (!sdList.isEmpty()) {
             this.stationFrom = sdList.get(0).getStation().getName();
-            this.appearTimeFrom = String.valueOf((sdList.get(0).getAppearTime()));
+            this.departureTime = sdfTime.format((sdList.get(0).getAppearTime()));
             this.stationTo = sdList.get(sdList.size() - 1).getStation().getName();
-            this.appearTimeTo = String.valueOf((sdList.get(sdList.size() - 1).getAppearTime()));
+            this.arrivalTime = sdfTime.format((sdList.get(sdList.size() - 1).getAppearTime()));
         }
         this.trainName = schedule.getTrain().getName();
         this.date = sdf.format(schedule.getDateTrip());
@@ -67,9 +70,9 @@ public class ScheduleDto {
                 }
             }
             this.stationFrom = sdFrom.getStation().getName();
-            this.appearTimeFrom = String.valueOf((sdFrom.getAppearTime()));
+            this.departureTime = sdfTime.format((sdFrom.getAppearTime()));
             this.stationTo = sdTo.getStation().getName();
-            this.appearTimeTo = String.valueOf(sdTo.getAppearTime());
+            this.arrivalTime = sdfTime.format(sdTo.getAppearTime());
         }
         this.trainName = schedule.getTrain().getName();
         this.date = sdf.format(schedule.getDateTrip());
@@ -125,20 +128,20 @@ public class ScheduleDto {
         this.routeName = routeName;
     }
 
-    public String getAppearTimeFrom() {
-        return appearTimeFrom;
+    public String getDepartureTime() {
+        return departureTime;
     }
 
-    public void setAppearTimeFrom(String appearTimeFrom) {
-        this.appearTimeFrom = appearTimeFrom;
+    public void setDepartureTime(String departureTime) {
+        this.departureTime = departureTime;
     }
 
-    public String getAppearTimeTo() {
-        return appearTimeTo;
+    public String getArrivalTime() {
+        return arrivalTime;
     }
 
-    public void setAppearTimeTo(String appearTimeTo) {
-        this.appearTimeTo = appearTimeTo;
+    public void setArrivalTime(String arrivalTime) {
+        this.arrivalTime = arrivalTime;
     }
 
     public int getEmptySeats() {

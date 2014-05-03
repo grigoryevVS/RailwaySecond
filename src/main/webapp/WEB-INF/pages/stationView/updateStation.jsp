@@ -12,20 +12,17 @@
 
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-    <!-- Jumbotron -->
     <div class="jumbotron">
-        <form:form method="post" action="${pageContext.request.contextPath}/stationView/refresh" commandName="station">
-            <form:label path="name">Name</form:label>
+        <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/stationView/refresh" commandName="station">
+            <form:label path="name"><h4>Name</h4></form:label>
             <form:input path="name" />
             <form:hidden path="stationId"/>
-
-            <input class="btn btn-success" type="submit" value="Update" />
+            <input class="btn-large btn-success" type="submit" value="Update" />
             <c:if test="${msg != null}">
-                <div style="color: red">
+                <h4 style="color: red">
                         ${msg}
-                </div>
+                </h4>
             </c:if>
-
         </form:form>
     </div>
 

@@ -33,9 +33,9 @@
                             <td>${ticketDto.routeName}</td>
                             <td>${ticketDto.date}</td>
                             <td>${ticketDto.stationFrom}</td>
-                            <td>${ticketDto.appearTimeFrom}</td>
+                            <td>${ticketDto.departureTime}</td>
                             <td>${ticketDto.stationTo}</td>
-                            <td>${ticketDto.appearTimeTo}</td>
+                            <td>${ticketDto.arrivalTime}</td>
                         </tr>
                     </c:forEach>
                 </table>

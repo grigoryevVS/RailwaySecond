@@ -19,8 +19,8 @@ public class TicketDto {
     private String trainName;
     private String date;
     private String routeName;
-    private String appearTimeFrom;
-    private String appearTimeTo;
+    private String departureTime;
+    private String arrivalTime;
 
     public TicketDto() {
     }
@@ -38,8 +38,8 @@ public class TicketDto {
         this.trainName = schedule.getTrain().getName();
         this.date = sdf.format(schedule.getDateTrip());
         this.routeName = schedule.getRoute().getTitle();
-        this.appearTimeFrom = String.valueOf((sdList.get(0).getAppearTime()));
-        this.appearTimeTo = String.valueOf((sdList.get(sdList.size() - 1).getAppearTime()));
+        this.departureTime = String.valueOf((sdList.get(0).getAppearTime()));
+        this.arrivalTime = String.valueOf((sdList.get(sdList.size() - 1).getAppearTime()));
     }
 
     public String getFirstName() {
@@ -106,19 +106,19 @@ public class TicketDto {
         this.routeName = routeName;
     }
 
-    public String getAppearTimeFrom() {
-        return appearTimeFrom;
+    public String getDepartureTime() {
+        return departureTime;
     }
 
-    public void setAppearTimeFrom(String appearTimeFrom) {
-        this.appearTimeFrom = appearTimeFrom;
+    public void setDepartureTime(String departureTime) {
+        this.departureTime = departureTime;
     }
 
-    public String getAppearTimeTo() {
-        return appearTimeTo;
+    public String getArrivalTime() {
+        return arrivalTime;
     }
 
-    public void setAppearTimeTo(String appearTimeTo) {
-        this.appearTimeTo = appearTimeTo;
+    public void setArrivalTime(String arrivalTime) {
+        this.arrivalTime = arrivalTime;
     }
 }

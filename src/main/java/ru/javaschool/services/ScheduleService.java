@@ -209,7 +209,7 @@ public class ScheduleService {
             return "none";
         }
         StationDistance sd = distanceDao.getStationsInRoute(route).get(0);  // target  departure station
-        Date dateFrom = sd.getAppearTime();
+        Date targetDateFrom = sd.getAppearTime();
         // if there were no schedules with this train within target day return that it is.
         if (scheduleList.isEmpty()) {
             return "none";
@@ -220,21 +220,22 @@ public class ScheduleService {
             String resultStation = "Wrong!";
             for (Schedule schedule : scheduleList) {
                 List<StationDistance> distanceList = distanceDao.getStationsInRoute(schedule.getRoute());
-                StationDistance stationTo = distanceList.get(distanceList.size() - 1);
-                Date timeTo = stationTo.getAppearTime();
+                StationDistance previousStationTo = distanceList.get(distanceList.size() - 1);  // previous station
+                Date previousTimeTo = previousStationTo.getAppearTime();        // previousTime
                 if (controlDate == null) {
-                    controlDate = timeTo;
+                    controlDate = previousTimeTo;
+                    resultStation = previousStationTo.getStation().getName();
                 }
-                if (controlDate.before(timeTo)) {
-                    controlDate = timeTo;
-                    resultStation = stationTo.getStation().getName();
+                if (controlDate.before(previousTimeTo) || controlDate.equals(previousTimeTo)) {   // or equals
+                    controlDate = previousTimeTo;
+                    resultStation = previousStationTo.getStation().getName();
                 }
             }
             // if previous stations name not equals targets departure station, return different stations
             // else check time, if departure time after previous station arrival time - good case, add, else return message wrong time.
             if (sd.getStation().getName().equals(resultStation)) {
                 if (controlDate != null) {
-                    if (controlDate.before(dateFrom)) {
+                    if (controlDate.before(targetDateFrom)) {
                         return "none";
                     }
                     return "Wrong time, need to be later then previous route arrival time!";

@@ -75,7 +75,6 @@
                 <div class="control-group">
                     <div class="controls">
                         <input class="btn btn-success" type="submit" value="Sign up"/>
-                        <button class="btn btn-success" type="reset">Reset</button>
                     </div>
                 </div>
             </div>

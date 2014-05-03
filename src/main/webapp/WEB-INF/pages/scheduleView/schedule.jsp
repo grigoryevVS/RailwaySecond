@@ -11,8 +11,6 @@
 
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-    <a class="btn btn-info" href="${pageContext.request.contextPath}/scheduleView/scheduleFilter">Filter timetable</a>
-
     <!-- Jumbotron -->
     <div class="jumbotron">
         <form:form method="post" action="createSchedule" commandName="schedule">
@@ -28,31 +26,30 @@
         <c:if test="${!empty scheduleList}">
             <table class="table table-bordered text-center">
                 <tr>
-                    <th>Id</th>
-                    <th>From</th>
-                    <th>TimeFrom</th>
-                    <th>To</th>
-                    <th>TimeTo</th>
                     <th>Train</th>
-                    <th>Date</th>
+                    <th>Route</th>
+                    <th>From</th>
+                    <th>time</th>
+                    <th>To</th>
+                    <th>Arriving time</th>
+                    <th>Date trip</th>
                     <th>Seats</th>
-                    <th>Update</th>
-                    <th>Delete</th>
-                    <th>Tickets</th>
-                    <th>Details</th>
+                    <th>Management</th>
                 </tr>
                 <c:forEach items="${scheduleList}" var="scheduler">
                     <tr>
-                        <td>${scheduler.id}</td>
-                        <td>${scheduler.stationFrom}</td>
-                        <td>${scheduler.appearTimeFrom}</td>
-                        <td>${scheduler.stationTo}</td>
-                        <td>${scheduler.appearTimeTo}</td>
                         <td>${scheduler.trainName}</td>
+                        <td>${scheduler.routeName}</td>
+                        <td>${scheduler.stationFrom}</td>
+                        <td>${scheduler.departureTime}</td>
+                        <td>${scheduler.stationTo}</td>
+                        <td>${scheduler.arrivalTime}</td>
                         <td>${scheduler.date}</td>
                         <td>${scheduler.emptySeats}</td>
-                        <%@ include file="/WEB-INF/pages/layout/adminHrefSchedule.jsp" %>
-                        <td><a class="btn-small btn-info" href="/RailWay/routeView/detailsFromSchedule/${scheduler.id}">details</a></td>
+                        <td>
+                            <%@ include file="/WEB-INF/pages/layout/adminHrefSchedule.jsp" %>
+                            <a class="btn-small btn-info" href="/RailWay/routeView/detailsFromSchedule/${scheduler.id}">details</a>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>

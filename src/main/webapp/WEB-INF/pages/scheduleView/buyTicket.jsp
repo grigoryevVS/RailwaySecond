@@ -22,10 +22,7 @@
             </tr>
             <tr>
                 <td>
-
-
                     <c:if test="${!empty ticket}">
-
                         <table class="table table-bordered">
                             <tr>
                                 <th>First name</th>
@@ -54,9 +51,9 @@
                                 <td>${ticket.routeName}</td>
                                 <td>${ticket.date}</td>
                                 <td>${ticket.stationFrom}</td>
-                                <td>${ticket.appearTimeFrom}</td>
+                                <td>${ticket.departureTime}</td>
                                 <td>${ticket.stationTo}</td>
-                                <td>${ticket.appearTimeTo}</td>
+                                <td>${ticket.arrivalTime}</td>
                             </tr>
                         </table>
                     </c:if>

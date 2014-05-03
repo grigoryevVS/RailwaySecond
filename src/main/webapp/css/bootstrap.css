@@ -99,7 +99,7 @@ sub {
 }
 
 img {
-    width: auto\9;
+    width: auto;
     height: auto;
     max-width: 100%;
     vertical-align: middle;
@@ -1964,7 +1964,7 @@ legend + .control-group {
     width: 160px;
     padding-top: 5px;
     text-align: right;
-    font-size: ;
+    font-size: 16px;
 }
 
 .form-horizontal .controls {
@@ -2317,7 +2317,6 @@ table th[class*="span"],
 .dropdown-submenu:focus > a > [class^="icon-"],
 .dropdown-submenu:hover > a > [class*=" icon-"],
 .dropdown-submenu:focus > a > [class*=" icon-"] {
-    background-image: url("../img/glyphicons-halflings-white.png");
 }
 
 .icon-glass {
@@ -3212,7 +3211,7 @@ button.close {
     padding: 6px 14px;
     margin-bottom: 0;
     *margin-left: .3em;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 20px;
     color: #333333;
     text-align: center;
@@ -3301,8 +3300,8 @@ button.close {
 }
 
 .btn-large {
-    padding: 11px 19px;
-    font-size: 17.5px;
+    padding: 10px 16px;
+    font-size: 16px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
@@ -3314,8 +3313,8 @@ button.close {
 }
 
 .btn-small {
-    padding: 3px 10px;
-    font-size: 12.9px;
+    padding: 6px 10px;
+    font-size: 14px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -3333,7 +3332,7 @@ button.close {
 
 .btn-mini {
     padding: 0 6px;
-    font-size: 10.5px;
+    font-size: 11px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -3470,7 +3469,7 @@ input[type="button"].btn-block {
 .btn-success {
     color: #ffffff;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    background-color: #5bb75b;
+    background-color: #4c984c;
     *background-color: #51a351;
     background-image: -moz-linear-gradient(top, #62c462, #51a351);
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#62c462), to(#51a351));
@@ -3503,7 +3502,7 @@ input[type="button"].btn-block {
 .btn-info {
     color: #ffffff;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    background-color: #49afcd;
+    background-color: #468ca9;
     *background-color: #2f96b4;
     background-image: -moz-linear-gradient(top, #5bc0de, #2f96b4);
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#5bc0de), to(#2f96b4));
@@ -3677,15 +3676,15 @@ input[type="submit"].btn.btn-mini {
 }
 
 .btn-group > .btn-mini {
-    font-size: 10.5px;
+    font-size: 11px;
 }
 
 .btn-group > .btn-small {
-    font-size: 11.9px;
+    font-size: 12px;
 }
 
 .btn-group > .btn-large {
-    font-size: 17.5px;
+    font-size: 17px;
 }
 
 .btn-group > .btn:first-child {
@@ -5643,7 +5642,7 @@ a.thumbnail:focus {
 .badge {
     display: inline-block;
     padding: 2px 4px;
-    font-size: 11.844px;
+    font-size: 12px;
     font-weight: bold;
     line-height: 14px;
     color: #ffffff;

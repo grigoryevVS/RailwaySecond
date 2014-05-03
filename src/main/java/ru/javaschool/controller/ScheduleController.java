@@ -160,15 +160,12 @@ public class ScheduleController {
      * @return - redirect url.
      */
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
-    public String refreshSchedule(@Valid @ModelAttribute("schedule") Schedule schedule, BindingResult result,
+    public String refreshSchedule(@ModelAttribute("schedule") Schedule schedule,
                                   @ModelAttribute("scheduleId") Long scheduleId,
                                   @ModelAttribute("trainName") String trainName,
                                   @ModelAttribute("routeName") String routeName,
                                   @ModelAttribute("dateTrip") String dateTrip, RedirectAttributes redAttr) {
 
-        if (result.hasErrors()) {
-            return "error404";
-        }
         ScheduleDto scheduleDto = new ScheduleDto();
         scheduleDto.setTrainName(trainName);
         scheduleDto.setRouteName(routeName);
@@ -191,11 +188,14 @@ public class ScheduleController {
      * @return - view
      */
     @RequestMapping(value = "/scheduleFilter")
-    public String createFilter(Model model) {
+    public String createFilter( Model model) {
+
+
         ScheduleFilterDto filter = new ScheduleFilterDto();
         model.addAttribute("filter", filter);
         model.addAttribute("stationListFrom", stationService.getAllStations());
         model.addAttribute("stationListTo", stationService.getAllStations());
+
         return "scheduleView/scheduleFilter";
     }
 
@@ -210,6 +210,7 @@ public class ScheduleController {
     @RequestMapping(value = "/filteredSchedule")
     public String filteredSchedule(@Valid @ModelAttribute("filter") ScheduleFilterDto filter, BindingResult result, ModelMap model,
                                    RedirectAttributes redAttr) {
+
 
         if (result.hasErrors()) {
             return "redirect:/scheduleView/scheduleIndex";

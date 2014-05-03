@@ -11,16 +11,15 @@
 
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-    <!-- Jumbotron -->
     <div class="jumbotron">
-        <form:form method="post" action="${pageContext.request.contextPath}/scheduleView/refresh" commandName="schedule">
-            <label for="trainName">Select train</label>
+        <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/scheduleView/refresh" commandName="schedule">
+            <label for="trainName">Train</label>
             <select id="trainName" name="trainName" required/>
             <c:forEach items="${trainList}" var="train">
                 <option>${train.name}</option>
             </c:forEach>
             </select>
-            <label for="routeName">Select route</label>
+            <label for="routeName">Route</label>
             <select id="routeName" name="routeName" required/>
             <c:forEach items="${routeList}" var="route">
                 <option>${route.title}</option>
@@ -29,7 +28,7 @@
             <form:hidden path="scheduleId"/>
             <label for="dateTrip">Date trip</label>
             <input type="date" id="dateTrip" name="dateTrip" required/>
-            <input class="btn btn-success" type="submit" value="Update"/>
+            <input class="btn-large btn-success" type="submit" value="Update"/>
             <c:if test="${msg != null}">
                 <h4 style="color: red">
                         ${msg}

@@ -16,13 +16,11 @@
         <c:if  test="${!empty trainList}">
             <table class="table table-bordered">
                 <tr>
-                    <th>TrainId</th>
                     <th>Name</th>
                     <th>Capacity</th>
                 </tr>
                 <c:forEach items="${trainList}" var="train">
                     <tr>
-                        <td>${train.trainId}</td>
                         <td>${train.name}</td>
                         <td>${train.numberOfSeats}</td>
                     </tr>

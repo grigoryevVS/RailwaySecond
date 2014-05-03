@@ -27,17 +27,16 @@
         <c:if test="${!empty stationList}">
             <table class="table table-bordered">
                 <tr>
-                    <th>StationId</th>
                     <th>Name</th>
-                    <th>Update station</th>
-                    <th>Delete station</th>
+                    <th>Management</th>
                 </tr>
                 <c:forEach items="${stationList}" var="station">
                     <tr>
-                        <td>${station.stationId}</td>
                         <td>${station.name}</td>
-                        <td><a class="btn-small btn-success" href="updateStation/${station.stationId}">update</a></td>
-                        <td><a class="btn-small btn-success" href="delete/${station.stationId}">delete</a></td>
+                        <td>
+                            <a class="btn-my btn-small btn-success" href="updateStation/${station.stationId}">update</a>
+                            <a class="btn-my btn-small btn-success" onclick="return isDelete()" href="delete/${station.stationId}">delete</a>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>

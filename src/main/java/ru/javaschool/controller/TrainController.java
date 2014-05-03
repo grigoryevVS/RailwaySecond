@@ -70,9 +70,13 @@ public class TrainController {
      * @param train - concrete train, which we need to input.
      * @return - redirection url, which will be appear i the browser.
      */
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addTrain(@Valid @ModelAttribute("train") Train train, RedirectAttributes redAttr, BindingResult result) {
+    @RequestMapping(value = "/add")
+    public String addTrain(@Valid @ModelAttribute("train") Train train, BindingResult result, RedirectAttributes redAttr) {
 
+        if (result.hasErrors()) {
+            redAttr.addFlashAttribute("msg", "Wrong data!");
+            return "redirect:/trainView/createTrain";
+        }
         if (train == null || train.getName().equals("")) {
             redAttr.addFlashAttribute("msg", "Name can't be empty!");
             return "redirect:/trainView/createTrain";
@@ -82,13 +86,9 @@ public class TrainController {
             redAttr.addFlashAttribute("msg", "Trains capacity must be between 1-400");
             return "redirect:/trainView/createTrain";
         }
-
-        if (result.hasErrors()) {
-            redAttr.addFlashAttribute("msg", "Wrong data!");
-            return "redirect:/trainView/createTrain";
-        }
         if (trainService.createTrain(train)) {
-            return "redirect:/trainView/trains";
+            redAttr.addFlashAttribute("msg", "Create train " + train.getName() + " successful!");
+            return "trainView/trains";
         } else {
             redAttr.addFlashAttribute("msg", "Such train is already exist or wrong capacity of train, it must be between 1-400");
             return "redirect:/trainView/createTrain";
@@ -157,6 +157,7 @@ public class TrainController {
             redAttr.addFlashAttribute("msg", "Capacity must be more than bought tickets on it! now there are " + trainService.maxBoughtTicketsOnTrain(train.getTrainId()) + " sold tickets!");
             return "redirect:/trainView/updateTrain/" + train.getTrainId();
         }
+        redAttr.addFlashAttribute("msg", "Update train " + train.getName() + " successful!");
         return "redirect:/trainView/trains";
     }
 }

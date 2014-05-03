@@ -91,9 +91,9 @@ public class RouteService {
     public boolean updateRoute(Route route) {
         List<Schedule> scheduleList = scheduleDao.getScheduleListByRoute(route.getRouteId());
         if (!scheduleList.isEmpty()) {
-            if (!scheduleDao.isTicketListEmpty(scheduleList)) {
-                return false;                                       // update can't be done, if someone already bought ticket on target route.
-            }
+//            if (!scheduleDao.isTicketListEmpty(scheduleList)) {
+//                return false;                                       // update can't be done, if someone already bought ticket on target route.
+//            }
             for (Schedule sch : scheduleList) {
                 sch.setRoute(route);
                 scheduleDao.update(sch);

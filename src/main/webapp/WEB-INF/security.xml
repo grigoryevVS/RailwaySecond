@@ -6,8 +6,7 @@
                  http://www.springframework.org/schema/security
                  http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-    <http access-denied-page="/error403">
-
+    <http>
         <intercept-url pattern="/routeView/routeIndex" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
         <intercept-url pattern="/routeView/details" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
         <intercept-url pattern="/routeView/createRoute" access="ROLE_ADMIN"/>

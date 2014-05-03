@@ -12,16 +12,13 @@
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
         <a class="btn-large btn-info" href="${pageContext.request.contextPath}/routeView/routes">Back to route</a>
-    <!-- Jumbotron -->
-    <div class="jumbotron">
 
-        <div>
-            <form:form method="post" action="${pageContext.request.contextPath}/routeView/refresh" commandName="route">
+    <div class="jumbotron">
+            <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/routeView/refresh" commandName="route">
             <form:label path="title"><h4>Name</h4></form:label>
             <form:input cssClass="autocomplete-suggestion" path="title"/>
             <form:hidden path="routeId"/>
-        </div>
-        <input class="btn-large btn-danger" type="submit" value="Update"/>
+        <input class="btn-large btn-success" type="submit" value="Update"/>
         <c:if test="${msg != null}">
             <h4 style="color: red">
                     ${msg}

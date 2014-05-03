@@ -15,40 +15,39 @@
 
     <!-- Jumbotron -->
     <div class="jumbotron">
-        <h3>Timetable</h3>
         <c:if test="${msg != null}">
-            <div style="color: red">
+            <h4 style="color: red">
                     ${msg}
-            </div>
+            </h4>
         </c:if>
         <c:if test="${!empty scheduleList}">
             <table class="table table-bordered">
                 <tr>
-                    <th>Id</th>
-                    <th>From</th>
-                    <th>TimeFrom</th>
-                    <th>To</th>
-                    <th>TimeTo</th>
-                    <th>Route</th>
                     <th>Train</th>
+                    <th>Route</th>
+                    <th>From</th>
+                    <th>Departure time</th>
+                    <th>To</th>
+                    <th>Arrival time</th>
                     <th>Date</th>
                     <th>Seats</th>
-                    <th>Details</th>
-                    <th>Buy</th>
+                    <th></th>
                 </tr>
                 <c:forEach items="${scheduleList}" var="scheduler">
                     <tr>
-                        <td>${scheduler.id}</td>
-                        <td>${scheduler.stationFrom}</td>
-                        <td>${scheduler.appearTimeFrom}</td>
-                        <td>${scheduler.stationTo}</td>
-                        <td>${scheduler.appearTimeTo}</td>
-                        <td>${scheduler.routeName}</td>
                         <td>${scheduler.trainName}</td>
+                        <td>${scheduler.routeName}</td>
+                        <td>${scheduler.stationFrom}</td>
+                        <td>${scheduler.departureTime}</td>
+                        <td>${scheduler.stationTo}</td>
+                        <td>${scheduler.arrivalTime}</td>
                         <td>${scheduler.date}</td>
                         <td>${scheduler.emptySeats}</td>
-                        <td><a class="btn-small btn-info" href="/RailWay/routeView/detailsFromSchedule/${scheduler.id}">details</a></td>
-                        <td><a class="btn-small btn-success" href="buyTicket/${scheduler.id}">buy</a></td>
+                        <td>
+                            <a class="btn-small btn-info" href="/RailWay/routeView/detailsFromSchedule/${scheduler.id}">details</a>
+                            <a class="btn-small btn-success" href="buyTicket/${scheduler.id}">buy</a>
+                        </td>
+
                     </tr>
                 </c:forEach>
             </table>

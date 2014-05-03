@@ -13,7 +13,7 @@
 
     <!-- Jumbotron -->
     <div class="jumbotron">
-        <form:form method="post" action="${pageContext.request.contextPath}/scheduleView/add" commandName="schedule">
+        <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/scheduleView/add" commandName="schedule">
             <label for="trainName">Select train</label>
             <select id="trainName" name="trainName" required/>
             <c:forEach items="${trainList}" var="train">
@@ -28,7 +28,7 @@
             </select>
             <label for="dateTrip">Date trip</label>
             <input type="date" id="dateTrip" name="dateTrip" required/>
-            <input class="btn btn-success" type="submit" value="Create"/>
+            <input class="btn-large btn-success" type="submit" value="Create"/>
             <c:if test="${msg != null}">
                 <h4 style="color: red">
                         ${msg}

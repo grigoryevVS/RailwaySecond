@@ -10,13 +10,11 @@
 <div class="container">
 
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
-
-    <!-- Jumbotron -->
     <div class="jumbotron">
-        <form:form method="post" action="${pageContext.request.contextPath}/trainView/add" commandName="train">
-            <form:label path="name">Name</form:label>
+        <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/trainView/add" commandName="train">
+            <form:label path="name"><h4>Name</h4></form:label>
             <form:input path="name" />
-            <form:label path="numberOfSeats">Capacity</form:label>
+            <form:label path="numberOfSeats"><h4>Capacity</h4></form:label>
             <form:input path="numberOfSeats" onkeypress="return IsNumeric(event);" ondrop="return false;"/>
             <span id="error" style="color: Red; display: none">* Input digits (0 - 9)</span>
             <script type="text/javascript">
@@ -29,7 +27,7 @@
                     return ret;
                 }
             </script>
-            <input type="submit" value="Create" />
+            <input class="btn-large btn-success" type="submit" value="Create" />
             <c:if test="${msg != null}">
                 <div style="color: red">
                         ${msg}

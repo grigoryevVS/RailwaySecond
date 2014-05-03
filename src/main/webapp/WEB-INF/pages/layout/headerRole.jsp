@@ -8,8 +8,6 @@
         <sec:authorize ifAnyGranted="ROLE_USER">
             <%@ include file="/WEB-INF/pages/layout/headerUser.jsp" %>
         </sec:authorize>
-
-        <%--<h6>Welcome : ${pageContext.request.userPrincipal.name}--%>
     </c:when>
     <c:otherwise>
         <sec:authorize ifAnyGranted="ROLE_ANONYMOUS">

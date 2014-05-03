@@ -17,12 +17,10 @@
         <c:if test="${!empty stationList}">
             <table class="table table-bordered">
                 <tr>
-                    <th>StationId</th>
                     <th>Name</th>
                 </tr>
                 <c:forEach items="${stationList}" var="station">
                     <tr>
-                        <td>${station.stationId}</td>
                         <td>${station.name}</td>
                     </tr>
                 </c:forEach>

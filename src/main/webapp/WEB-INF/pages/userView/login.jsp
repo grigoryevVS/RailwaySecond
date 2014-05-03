@@ -42,7 +42,7 @@
                                 Remember
                             </label>
                             <input class="btn btn-success" type="submit" value="login"/>
-                            <input class="btn btn-success" type="reset" value="Reset"/>
+                            <a class="btn btn-success" href="${pageContext.request.contextPath}/userView/registration">Sign Up</a>
                         </div>
                     </div>
                 </form>

@@ -15,15 +15,22 @@
     <div class="jumbotron">
 
         <form:form method="get" action="${pageContext.request.contextPath}/routeView/createRoute" commandName="route">
-            <input class="btn btn-large btn-success" align="center" type="submit" value="Add route"/>
+            <input class="btn btn-success" align="center" type="submit" value="Add route"/>
         </form:form>
 
         <h4>Routes</h4>
-        <c:if test="${msg != null}">
+        <div>
+        <c:if test="${msgg != null}">
             <h4 class="msg">
-                    ${msg}
+                    ${msgg}
             </h4>
         </c:if>
+        <c:if test="${msgf != null}">
+            <h4 class="error">
+                    ${msgf}
+            </h4>
+        </c:if>
+        </div>
         <c:if test="${!empty routeList}">
             <table class="table table-bordered text-center">
                 <tr>
@@ -34,9 +41,9 @@
                     <tr>
                         <td>${route.title}</td>
                         <td>
-                            <a class="btn-my btn-small btn-success" href="updateRoute/${route.routeId}"> update </a>
-                            <a class="btn-my btn-small btn-success" onclick="return isDelete()" href="delete/${route.routeId}"> delete </a>
-                            <a class="btn-my btn-small btn-info" href="details/${route.routeId}">details</a>
+                            <button class="btn-my btn-small btn-success" onclick="location.href='updateRoute/${route.routeId}'">update</button>
+                            <button class="btn-my btn-small btn-success" onclick="getModal('/RailWay/routeView/delete/${route.routeId}/')">delete</button>
+                            <button class="btn-my btn-small btn-info" onclick="location.href='details/${route.routeId}'">details</button>
                         </td>
                     </tr>
                 </c:forEach>

@@ -9,7 +9,7 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="routes" />
+    <c:set var="activeMenu" value="routes"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <!-- Jumbotron -->
@@ -20,8 +20,8 @@
                 <form:label path="title"><h4>Route title</h4></form:label>
                 <form:input path="title"/>
 
-                <input class="btn btn-success" align="center" type="submit" value="Create"/>
-                <a class="btn btn-info" href="${pageContext.request.contextPath}/routeView/routes">Back to the list</a>
+                <input class="btn-large btn-success" align="center" type="submit" value="Create"/>
+                <%--<button class="btn-my btn-small btn-success" onclick="location.href='${pageContext.request.contextPath}/routeView/routes'">update</button>--%>
 
             </form:form>
         </div>
@@ -45,7 +45,7 @@
                     <input type="time" id="appearenceTime" name="appearenceTime" required/>
 
 
-                    <input class="btn btn-success" align="center" type="submit" value="Add station"/>
+                    <input class="btn-large btn-success" align="center" type="submit" value="Add station"/>
 
                 </form>
             </div>
@@ -56,17 +56,29 @@
 
 
     <div>
-        <h4>StationDistances</h4>
+        <h4 align="center">StationDistances</h4>
+        <c:if test="${msgf != null}">
+            <h4 class="error">
+                    ${msgf}
+            </h4>
+        </c:if>
         <c:if test="${!empty distanceList}">
             <table class="table table-bordered">
                 <tr>
                     <th>Station name</th>
                     <th>Appearence time</th>
+                    <th></th>
                 </tr>
                 <c:forEach items="${distanceList}" var="stationDistanceDto">
                     <tr>
                         <td>${stationDistanceDto.stationName}</td>
                         <td>${stationDistanceDto.appearenceTime}</td>
+                        <td>
+                            <button class="btn-my btn-small btn-success"
+                                    onclick="getModal('/RailWay/routeView/deleteSD/${stationDistanceDto.stationName}/')">
+                                delete
+                            </button>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>
@@ -77,15 +89,16 @@
                        commandName="distanceList">
                 <div class="row-fluid">
                     <div class="span4">
-                <input class="btn-small btn-success" align="center" type="submit" value="Clear distanceList"/>
+                        <input class="btn-my btn-small btn-success" align="center" type="submit"
+                               value="Clear distanceList"/>
                     </div>
                     <div class="span4">
-                <c:if test="${msg != null}">
-                    <h4 style="color: red">
-                            ${msg}
-                    </h4>
-                </c:if>
-                        </div>
+                        <c:if test="${msgg != null}">
+                            <h4 class="msg">
+                                    ${msgg}
+                            </h4>
+                        </c:if>
+                    </div>
                 </div>
             </form:form>
 

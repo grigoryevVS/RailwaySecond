@@ -18,11 +18,11 @@
         <c:if test="${!empty stationList}">
             <table class="table table-bordered">
                 <tr>
-                    <th>Name</th>
+                    <th>Name <h6>*(You can just click on the station, to see its timetable)</h6></th>
                 </tr>
                 <c:forEach items="${stationList}" var="station">
                     <tr>
-                        <td>${station.name}</td>
+                        <td><a href="${pageContext.request.contextPath}/stationView/stationFilter/${station.name}">${station.name}</a></td>
                     </tr>
                 </c:forEach>
             </table>

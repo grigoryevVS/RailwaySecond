@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javaschool.dao.ScheduleDao;
 import ru.javaschool.dao.StationDistanceDao;
 import ru.javaschool.dao.TicketDao;
-import ru.javaschool.dto.ScheduleFilterDto;
 import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.model.entities.StationDistance;
 import ru.javaschool.model.entities.Ticket;
@@ -45,7 +44,7 @@ public class TicketService {
      * @param user     - target passenger.
      * @return - true if buying ticket successful, else return false.
      */
-    public String buyTicket(User user, Schedule schedule, ScheduleFilterDto filter) {
+    public String buyTicket(User user, Schedule schedule, String stationFrom, String stationTo) {
         if (isCorrectDate(schedule)) {
             if (!ticketDao.isExistPassenger(schedule, user)) {
                 if (!ticketDao.isTrainFull(schedule)) {
@@ -55,18 +54,18 @@ public class TicketService {
                         schedule.getRoute().setStationDistances(distanceDao.getStationsInRoute(schedule.getRoute()));
                         ticket.setSchedule(schedule);
                         List<StationDistance> distanceList = schedule.getRoute().getStationDistances();
-                        if (filter != null) {
-                            if (!filter.getStationFromName().equals("")) {
-                                ticket.setStationFrom(filter.getStationFromName());
+
+                            if (!stationFrom.equals("")) {
+                                ticket.setStationFrom(stationFrom);
                             } else {
                                 ticket.setStationFrom(distanceList.get(0).getStation().getName());
                             }
-                            if (!filter.getStationToName().equals("")) {
-                                ticket.setStationTo(filter.getStationToName());
+                            if (!stationTo.equals("")) {
+                                ticket.setStationTo(stationTo);
                             } else {
                                 ticket.setStationTo(distanceList.get(distanceList.size() - 1).getStation().getName());
                             }
-                        }
+
                         ticketDao.create(ticket);
                         return "Buy ticket success!";
                     }

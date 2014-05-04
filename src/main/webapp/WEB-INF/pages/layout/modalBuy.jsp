@@ -4,11 +4,11 @@
         <h3 id="myModalLabel">Confirm</h3>
     </div>
     <div class="modal-body">
-        <p>Delete target object?</p>
+        <p>Do you realy want to buy ticket on this train?</p>
     </div>
     <div class="modal-footer">
-        <button id="cls" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-        <button id="ok" class="btn btn-primary">Save changes</button>
+        <button id="cls" class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+        <button id="ok" class="btn btn-primary">Yes</button>
     </div>
 </div>
 
@@ -30,4 +30,3 @@
         $('#myModal').modal('show');
     }
 </script>
-

@@ -4,15 +4,26 @@
 .autocomplete-suggestions strong { font-weight: bold; color: #df8505; }
 
 .error{
+    display: inline-block;
+    *display: inline;
+    align-content: center;
+    padding-left: 5px;
+    vertical-align: middle;
+    *zoom: 1;
     color: red;
     font-size: large;
+}
 
+.validmsg {
+    color: green;
+    font-size: large;
 }
 
 
 body {
-    background-color:  floralwhite;
-
+    font-size: medium;
+    font-style: oblique;
+    font-family: sans-serif;
     padding-top: 20px;
     padding-bottom: 60px;
 }
@@ -75,6 +86,7 @@ body {
     display: table-cell;
     width: 1%;
     float: none;
+    background-color: lightgray;
 }
 
 .navbar .nav li a {
@@ -111,9 +123,10 @@ body {
     float: left;
 }
 
-.filter {
+div .filter {
     padding-bottom: 10px;
     padding-left: 2px;
+    background-color: #7f99ff
 }
 
 .control-label {
@@ -125,7 +138,7 @@ label {
 }
 
 .btn-my {
-    margin: 14px;
+    margin-left: 14px;
 }
 
 .msg {
@@ -134,4 +147,34 @@ label {
     padding-left: 5px;
     vertical-align: middle;
     *zoom: 1;
+    color: green;
+    font-size: large;
 }
+
+div .filter {
+    background-color: #48acca;
+}
+
+div .navbar-inner {
+}
+
+.table-bordered th {
+    background-color: lightgray;
+}
+
+.table-bordered td {
+    background-color: #f4f4f4;
+    vertical-align: middle;
+}
+
+.manage {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.manage-low {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 3px;
+}
+

@@ -23,6 +23,7 @@ import ru.javaschool.services.UserService;
 
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -60,11 +61,21 @@ public class TicketController {
         Schedule schedule = scheduleService.findSchedule(scheduleId);
         if (schedule != null) {
             ScheduleFilterDto filter = (ScheduleFilterDto) session.getAttribute("filter");
-            String validateResult = ticketService.buyTicket(user, schedule, (ScheduleFilterDto) session.getAttribute("filter"));
+            String validateResult;
+            if (filter != null) {
+                validateResult = ticketService.buyTicket(user, schedule, filter.getStationFromName(), filter.getStationToName());
+            } else {
+                validateResult = ticketService.buyTicket(user, schedule,"", "");
+            }
             if (validateResult.equals("Buy ticket success!")) {
                 List<ScheduleDto> schedList = scheduleService.getFilteredSchedule((ScheduleFilterDto) session.getAttribute("filter"));
                 session.setAttribute("scheduleList", schedList);
-                TicketDto ticketDto = new TicketDto(user, schedule, (ScheduleFilterDto) session.getAttribute("filter"));
+                TicketDto ticketDto;
+                if (filter != null) {
+                    ticketDto = new TicketDto(user, schedule, filter.getStationFromName(), filter.getStationToName());
+                } else {
+                    ticketDto = new TicketDto(user, schedule, "", "");
+                }
                 model.addAttribute("ticket", ticketDto);
                 return "scheduleView/buyTicket";
             } else {
@@ -104,11 +115,19 @@ public class TicketController {
      * @return - view of registered passengers on train, after deleting.
      */
     @RequestMapping(value = "passengers/deletePassenger/{userId}/{scheduleId}")
-    public String deletePassengerFromTrain(@PathVariable("userId") Long userId, @PathVariable("scheduleId") Long scheduleId) {
+    public String deletePassengerFromTrain(@PathVariable("userId") Long userId, @PathVariable("scheduleId") Long scheduleId, HttpSession session) {
 
         Ticket ticket = ticketService.getTicket(userId, scheduleId);
         if (ticket != null) {
             ticketService.deleteTicket(ticket);
+            if (session.getAttribute("filter") == null) {
+                session.setAttribute("filter", new ScheduleFilterDto());
+            }
+            List<ScheduleDto> schedList = scheduleService.getFilteredSchedule((ScheduleFilterDto) session.getAttribute("filter"));
+            if (session.getAttribute("schedList") == null) {
+                session.setAttribute("schedList", new ArrayList<ScheduleDto>());
+            }
+            session.setAttribute("scheduleList", schedList);
             return "redirect:/scheduleView/passengers/{scheduleId}";
         } else {
             return "error404";

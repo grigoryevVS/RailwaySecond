@@ -64,7 +64,7 @@ public class UserService {
         List<Ticket> tickets = user.getTicketList();
         List<TicketDto> ticketDtos = new ArrayList<>();
         for (Ticket t : tickets) {
-            //ticketDtos.add(new TicketDto(t.getUser(), t.getSchedule()));
+            ticketDtos.add(new TicketDto(t.getUser(), t.getSchedule(), t.getStationFrom(), t.getStationTo()));
         }
         return ticketDtos;
     }

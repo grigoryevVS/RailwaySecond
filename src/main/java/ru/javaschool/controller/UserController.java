@@ -157,7 +157,7 @@ public class UserController {
         if (user.getLogin().equals(auth.getName())) {
 
             if (!userService.isCorrectAge(user)) {
-                redAttr.addFlashAttribute("msg", "Incorrect birthDate! age must be < 110 years and not minus!");
+                redAttr.addFlashAttribute("msg", "Age must be between 0 and 110 years. So, correct birth date!");
                 return "redirect:/userView/editor/" + user.getLogin();
             }
             if (!userService.updateUser(user)) {

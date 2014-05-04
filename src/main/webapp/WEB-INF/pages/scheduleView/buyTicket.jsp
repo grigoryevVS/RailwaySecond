@@ -12,8 +12,6 @@
     <c:set var="activeMenu" value="timetable" />
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-    <a class="btn btn-info" href="${pageContext.request.contextPath}/scheduleView/scheduleFilter">Back to timetable</a>
-
     <div class="jumbotron">
         <table class="table table-bordered">
             <tr>

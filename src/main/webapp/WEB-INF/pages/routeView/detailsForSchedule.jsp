@@ -12,7 +12,6 @@
     <c:set var="activeMenu" value="timetable" />
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-    <!-- Jumbotron -->
     <div class="jumbotron">
 
         <h4>Station distances</h4>

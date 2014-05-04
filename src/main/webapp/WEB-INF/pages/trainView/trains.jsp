@@ -37,8 +37,8 @@
                         <td>${train.name}</td>
                         <td>${train.numberOfSeats}</td>
                         <td>
-                            <a class="btn-my btn-small btn-success" href="updateTrain/${train.trainId}">update</a>
-                            <a class="btn-my btn-small btn-success" onclick="return isDelete()" href="delete/${train.trainId}">delete</a>
+                            <button class="btn-my btn-small btn-success" onclick="location.href='updateTrain/${train.trainId}'">update</button>
+                            <button class="btn-my btn-small btn-success" onclick="getModal('/RailWay/trainView/delete/${train.trainId}/')">delete</button>
                         </td>
                     </tr>
                 </c:forEach>

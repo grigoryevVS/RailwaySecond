@@ -9,22 +9,26 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="routes" />
+    <c:set var="activeMenu" value="routes"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-        <a class="btn-large btn-info" href="${pageContext.request.contextPath}/routeView/routes">Back to route</a>
-
     <div class="jumbotron">
-            <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/routeView/refresh" commandName="route">
+        <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/routeView/refresh"
+                   commandName="route">
             <form:label path="title"><h4>Name</h4></form:label>
             <form:input cssClass="autocomplete-suggestion" path="title"/>
             <form:hidden path="routeId"/>
-        <input class="btn-large btn-success" type="submit" value="Update"/>
-        <c:if test="${msg != null}">
-            <h4 style="color: red">
-                    ${msg}
-            </h4>
-        </c:if>
+            <input class="btn-large btn-success" type="submit" value="Update"/>
+            <c:if test="${msgf != null}">
+                <h4 class="error">
+                        ${msgf}
+                </h4>
+            </c:if>
+            <c:if test="${msgg != null}">
+                <h4 class="msg">
+                        ${msgg}
+                </h4>
+            </c:if>
         </form:form>
     </div>
 

@@ -9,10 +9,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.javaschool.dto.ScheduleDto;
+import ru.javaschool.dto.ScheduleFilterDto;
 import ru.javaschool.model.entities.Station;
+import ru.javaschool.services.ScheduleService;
 import ru.javaschool.services.StationService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/stationView")
@@ -20,6 +25,9 @@ public class StationController {
 
     @Autowired
     private StationService stationService;
+
+    @Autowired
+    private ScheduleService scheduleService;
 
     /**
      * Get station list.
@@ -44,6 +52,25 @@ public class StationController {
     public String index(Model model) {
         model.addAttribute("station", new Station());
         model.addAttribute("stationList", stationService.getAllStations());
+        return "stationView/stationIndex";
+    }
+
+    @RequestMapping("/stationFilter/{stationName}")
+    public String stationFilter(HttpSession session, @PathVariable("stationName") String stationName) {
+        Station station = stationService.getStationByName(stationName);
+        if (station != null) {
+            if (session.getAttribute("filter") == null) {
+                session.setAttribute("filter", new ScheduleFilterDto());
+            }
+            ScheduleFilterDto filter = (ScheduleFilterDto) session.getAttribute("filter");
+            filter.setStationFromName(stationName);
+            filter.setDate("");
+            filter.setStationToName("");
+            session.setAttribute("filter", filter);
+            List<ScheduleDto> schedList = scheduleService.getFilteredSchedule((ScheduleFilterDto) session.getAttribute("filter"));
+            session.setAttribute("scheduleList", schedList);
+            return "redirect:/scheduleView/scheduleFilter";
+        }
         return "stationView/stationIndex";
     }
 

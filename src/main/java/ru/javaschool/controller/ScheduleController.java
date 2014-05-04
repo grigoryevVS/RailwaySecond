@@ -56,6 +56,7 @@ public class ScheduleController {
      */
     @RequestMapping("/schedule")
     public String getScheduleList(Model model) {
+
         model.addAttribute("scheduler", new ScheduleDto());
         model.addAttribute("scheduleList", scheduleService.getFullSchedule());
         return "scheduleView/schedule";
@@ -195,7 +196,7 @@ public class ScheduleController {
         }
         if (session.getAttribute("msg") != null) {
             model.addAttribute("msg", session.getAttribute("msg"));
-            //session.removeAttribute("msg");
+            session.removeAttribute("msg");
         }
         List<ScheduleDto> schedList = scheduleService.getFilteredSchedule((ScheduleFilterDto) session.getAttribute("filter"));
         if (session.getAttribute("scheduleList") == null) {

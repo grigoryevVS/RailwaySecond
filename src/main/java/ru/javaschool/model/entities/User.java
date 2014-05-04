@@ -29,6 +29,7 @@ public class User implements Serializable{
     @NotNull
     @Past
     @Column
+    @Temporal(TemporalType.DATE)
     private Date birthDate;
     @NotEmpty
     @Size(min=1, max=30)

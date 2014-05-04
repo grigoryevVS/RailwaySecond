@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <%@include file="../layout/styles.jsp" %>
+    <%@include file="../layout/modalBuy.jsp" %>
     <meta charset="utf-8">
     <title>Filtered schedule</title>
 </head>
@@ -42,8 +43,13 @@
                         <td>${scheduler.date}</td>
                         <td>${scheduler.emptySeats}</td>
                         <td>
-                            <a class="btn-small btn-info" href="/RailWay/routeView/detailsFromSchedule/${scheduler.id}">details</a>
-                            <a class="btn-small btn-success" href="buyTicket/${scheduler.id}">buy</a>
+                            <button class="btn-my btn-small btn-info"
+                                    onclick="location.href='/RailWay/routeView/detailsFromSchedule/${scheduler.id}'">
+                                details
+                            </button>
+                            <button class="btn-my btn-small btn-success"
+                                    onclick="getModal('/RailWay/scheduleView/buyTicket/${scheduler.id}/')">buy ticket
+                            </button>
                         </td>
 
                     </tr>

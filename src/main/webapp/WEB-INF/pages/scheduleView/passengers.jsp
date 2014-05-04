@@ -9,7 +9,7 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="management" />
+    <c:set var="activeMenu" value="management"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <!-- Jumbotron -->
@@ -30,12 +30,16 @@
                         <td>${user.firstName}</td>
                         <td>${user.lastName}</td>
                         <td>${user.birthDate}</td>
-                        <td><a class="btn-small btn-success" onclick="return isDelete()" href="deletePassenger/${user.userId}/${schedule.scheduleId}">delete</a></td>
+                        <td>
+                            <button class="btn-my btn-small btn-success"
+                                    onclick="getModal('/RailWay/scheduleView/passengers/deletePassenger/${user.userId}/${schedule.scheduleId}/')">
+                                delete
+                            </button>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>
         </c:if>
-        <a class="btn btn-info" href="${pageContext.request.contextPath}/scheduleView/schedule">Back to schedule</a>
     </div>
 
     <hr>

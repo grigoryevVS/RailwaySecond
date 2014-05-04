@@ -21,7 +21,7 @@
             <form:input path="numberOfSeats" />
             <form:hidden path="trainId"/>
 
-            <input class="btn-large btn-success" type="submit" value="Update" />
+            <input class=" btn-large btn-success" type="submit" value="Update" />
             <c:if test="${msg != null}">
                 <h4 style="color: red">
                         ${msg}

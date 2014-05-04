@@ -207,6 +207,6 @@ public class RouteService {
                 return "Next station appearance time must be later then time of previous station!";
             }
         }
-        return "ok";
+        return "Success!";
     }
 }

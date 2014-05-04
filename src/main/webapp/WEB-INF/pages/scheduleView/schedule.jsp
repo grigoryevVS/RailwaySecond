@@ -30,9 +30,9 @@
                     <th>Train</th>
                     <th>Route</th>
                     <th>From</th>
-                    <th>time</th>
+                    <th>Departure time</th>
                     <th>To</th>
-                    <th>Arriving time</th>
+                    <th>Arrival time</th>
                     <th>Date trip</th>
                     <th>Seats</th>
                     <th>Management</th>
@@ -49,7 +49,11 @@
                         <td>${scheduler.emptySeats}</td>
                         <td>
                             <%@ include file="/WEB-INF/pages/layout/adminHrefSchedule.jsp" %>
-                            <a class="btn-small btn-info" href="/RailWay/routeView/detailsFromSchedule/${scheduler.id}">details</a>
+                            <%--<a class="btn-small btn-info" href="/RailWay/routeView/detailsFromSchedule/${scheduler.id}">details</a>--%>
+                            <%--<button class="btn-my btn-small btn-info"--%>
+                                    <%--onclick="location.href='/RailWay/routeView/detailsFromSchedule/${scheduler.id}'">--%>
+                                <%--details--%>
+                            <%--</button>--%>
                         </td>
                     </tr>
                 </c:forEach>

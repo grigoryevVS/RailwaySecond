@@ -6,7 +6,7 @@
                  http://www.springframework.org/schema/security
                  http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-    <http>
+    <http access-denied-page="/error403.jsp">
         <intercept-url pattern="/routeView/routeIndex" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
         <intercept-url pattern="/routeView/details" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
         <intercept-url pattern="/routeView/createRoute" access="ROLE_ADMIN"/>
@@ -15,6 +15,7 @@
         <intercept-url pattern="/routeView/detailsFromSchedule" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
 
         <intercept-url pattern="/stationView/stationIndex" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
+        <intercept-url pattern="/stationView/stationFilter/**" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>
         <intercept-url pattern="/stationView/**" access="ROLE_ADMIN"/>
 
         <intercept-url pattern="/trainView/trainIndex" access="ROLE_USER,ROLE_ADMIN,ROLE_ANONYMOUS"/>

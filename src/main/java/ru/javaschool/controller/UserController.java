@@ -65,7 +65,6 @@ public class UserController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addUser(@Valid @ModelAttribute("user") UserDto userDto, BindingResult result, final RedirectAttributes redirectAttributes) {
-
         userDto.setRole("ROLE_USER");
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("msg", "Wrong data");
@@ -95,7 +94,6 @@ public class UserController {
      */
     @RequestMapping(value = "/tickets/{userId}")
     public String getUsersTickets(@PathVariable("userId") Long userId, Model model) {
-
         User user = userService.getUserByPk(userId);
         if (user == null) {
             return "error404";
@@ -114,7 +112,6 @@ public class UserController {
      */
     @RequestMapping(value = "/editor/{login}")
     public String viewUser(@PathVariable("login") String login, Model model) {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getName().equals(login)) {
             User user = userService.getUserByLogin(login);
@@ -136,7 +133,6 @@ public class UserController {
      */
     @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
     public String updateUser(@Valid @ModelAttribute("user") UserDto userDto, BindingResult result, Model model, RedirectAttributes redAttr) {
-
         User user = userService.getUserByLogin(userDto.getLogin());
         if (user == null) {
             return "error404";

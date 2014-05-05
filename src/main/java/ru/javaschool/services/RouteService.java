@@ -185,7 +185,7 @@ public class RouteService {
      * @param distanceDto  - dto object with data
      * @return - result string of validation
      */
-    public String isCorrectStation(List<StationDistanceDto> distanceList, StationDistanceDto distanceDto) {
+    public String isCorrectArrivalStation(List<StationDistanceDto> distanceList, StationDistanceDto distanceDto) {
         if (!distanceList.isEmpty()) {
             StationDistanceDto previousStation = distanceList.get(distanceList.size() - 1);
             if (previousStation.getStationName().equals(distanceDto.getStationName())) {
@@ -205,6 +205,31 @@ public class RouteService {
             }
             if (previous.after(target) || previous.equals(target)) {
                 return "Next station appearance time must be later then time of previous station!";
+            }
+        }
+        return "Success!";
+    }
+
+    public String isCorrectDepartureStation(ArrayList<StationDistanceDto> distanceList, StationDistanceDto distanceDto) {
+        if (!distanceList.isEmpty()) {
+            StationDistanceDto nextStation = distanceList.get(0);
+            if (nextStation.getStationName().equals(distanceDto.getStationName())) {
+                return "Next station exactly the same!";
+            }
+            String targetTime = distanceDto.getAppearenceTime();
+            String nextTime = nextStation.getAppearenceTime();
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            Date target;
+            Date next;
+            try {
+                target = sdf.parse(targetTime);
+                next = sdf.parse(nextTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return "Wrong format time!";
+            }
+            if (next.before(target) || next.equals(target)) {
+                return "Previous station appearance time must be before then time of next station!";
             }
         }
         return "Success!";

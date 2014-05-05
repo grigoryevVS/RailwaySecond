@@ -138,17 +138,23 @@ public class RouteController {
         StationDistanceDto stationDistanceDto = new StationDistanceDto();
         stationDistanceDto.setStationName(stationName);
         stationDistanceDto.setAppearenceTime(appearenceTime);
-        List<StationDistanceDto> distanceList = (List<StationDistanceDto>) session.getAttribute("distanceList");
-        String msg = routeService.isCorrectStation(distanceList, stationDistanceDto);
-        if (msg.equals("Success!")) {
+        ArrayList<StationDistanceDto> distanceList = (ArrayList<StationDistanceDto>) session.getAttribute("distanceList");
+        String msgArrivalCheck = routeService.isCorrectArrivalStation(distanceList, stationDistanceDto);
+        String msgDepartureCheck = routeService.isCorrectDepartureStation(distanceList, stationDistanceDto);
+        if (msgArrivalCheck.equals("Success!")) {
             distanceList.add(stationDistanceDto);
             redAttr.addFlashAttribute("msgg", "Success!");
             session.setAttribute("distanceList", distanceList);
-            return "redirect:/routeView/createRoute";
         } else {
-            redAttr.addFlashAttribute("msgf", msg);
-            return "redirect:/routeView/createRoute";
+            if (msgDepartureCheck.equals("Success!")) {
+                distanceList.add(0, stationDistanceDto);
+                redAttr.addFlashAttribute("msgg", "Success!");
+                session.setAttribute("distanceList", distanceList);
+            } else {
+                redAttr.addFlashAttribute("msgf", (msgArrivalCheck + " and " + msgDepartureCheck));
+            }
         }
+        return "redirect:/routeView/createRoute";
     }
 
     /**

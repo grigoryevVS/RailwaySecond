@@ -113,4 +113,16 @@ public class TicketService {
     public void deleteTicket(Ticket ticket) {
         ticketDao.delete(ticket);
     }
+
+    public boolean isSoldTicketsOnSchedule(Long routeId) {
+        List<Schedule> scheduleList = scheduleDao.getScheduleListByRoute(routeId);
+        if (!scheduleList.isEmpty()) {
+            for (Schedule sch : scheduleList) {
+                if (ticketDao.isTicketsOnTrain(sch)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

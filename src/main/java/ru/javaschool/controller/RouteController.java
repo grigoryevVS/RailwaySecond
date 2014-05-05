@@ -16,6 +16,7 @@ import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.services.RouteService;
 import ru.javaschool.services.ScheduleService;
 import ru.javaschool.services.StationService;
+import ru.javaschool.services.TicketService;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -38,6 +39,9 @@ public class RouteController {
     @Autowired
     private ScheduleService scheduleService;
 
+    @Autowired
+    private TicketService ticketService;
+
     /**
      * Get route list.
      *
@@ -45,7 +49,8 @@ public class RouteController {
      * @return - target url
      */
     @RequestMapping("/routes")
-    public String getRouteList(Model model) {
+    public String getRouteList(HttpSession session, Model model) {
+        session.removeAttribute("distanceListUpdate");
         model.addAttribute("route", new Route());
         model.addAttribute("routeList", routeService.getAllRoutes());
         return "routeView/routes";
@@ -201,8 +206,7 @@ public class RouteController {
                 redAttr.addFlashAttribute("msgf", "Wrong data!");
                 return "redirect:/routeView/createRoute";
             }
-            distanceList.clear();
-            session.setAttribute("distanceList", distanceList);
+            session.removeAttribute("distanceList");
             redAttr.addFlashAttribute("msgg", "Success!");
             return "redirect:/routeView/routes";
         }
@@ -231,43 +235,6 @@ public class RouteController {
     }
 
     /**
-     * Throw us to the update form
-     *
-     * @param routeId - targets identifier
-     * @param model   - model of view.
-     * @return - target url.
-     */
-    @RequestMapping("/updateRoute/{routeId}")
-    public String updateRoute(@PathVariable("routeId") Long routeId, Model model) {
-        Route route = routeService.findRoute(routeId);
-        if (route != null) {
-            model.addAttribute("route", route);
-            return "routeView/updateRoute";
-        }
-        return "error404";
-    }
-
-    /**
-     * Update route
-     *
-     * @param route - target route to update
-     * @return - redirect url.
-     */
-    @RequestMapping(value = "/refresh", method = RequestMethod.POST)
-    public String refreshRoute(@Valid @ModelAttribute("route") Route route, BindingResult result, RedirectAttributes redAttr) {
-        if (result.hasErrors()) {
-            redAttr.addFlashAttribute("msgf", "Wrong data!");
-            return "redirect:/routeView/updateRoute/" + route.getRouteId();
-        }
-        if (!routeService.updateRoute(route)) {
-            redAttr.addFlashAttribute("msgf", "Such route name already exist!");
-            return "redirect:/routeView/updateRoute/" + route.getRouteId();
-        }
-        redAttr.addFlashAttribute("msgg", "Update route " + route.getTitle() + " successful!");
-        return "redirect:/routeView/routes";
-    }
-
-    /**
      * Clear distance list in the view, if something gone wrong,
      * and we need to clean it.
      *
@@ -283,4 +250,158 @@ public class RouteController {
         }
         return "redirect:/routeView/createRoute";
     }
+
+
+    /**
+     * Apply new url, which will be the form,
+     * to set needed fields, to create route.
+     *
+     * @param model - - model of view.
+     * @return - target url
+     */
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "/updateRoute/{routeId}")
+    public String updateRoute(HttpSession session, @PathVariable("routeId") Long routeId, Model model, RedirectAttributes redAttr) {
+        Route route = routeService.findRoute(routeId);
+        if (route != null) {
+            if (ticketService.isSoldTicketsOnSchedule(routeId)) {
+                redAttr.addFlashAttribute("msgf", "You can't update route " + route.getTitle() + " now, because there are some tickets on it!");
+                return "redirect:/routeView/routes";
+            }
+            session.setAttribute("routeId", routeId);
+            List<StationDistanceDto> distanceList;
+            if (session.getAttribute("distanceListUpdate") == null) {
+                distanceList = routeService.getStationDistances(routeId);
+            } else {
+                distanceList = (List<StationDistanceDto>) session.getAttribute("distanceListUpdate");
+            }
+            if (distanceList != null) {
+                session.setAttribute("distanceListUpdate", distanceList);
+            } else {
+                return "error404";
+            }
+            model.addAttribute("distanceList", distanceList);
+            model.addAttribute("stationList", stationService.getAllStations());
+            model.addAttribute("route", route);
+            return "routeView/updateRoute";
+        }
+        return "error404";
+    }
+
+    /**
+     * On each push button add station, add stationDistance to the distanceList
+     * after validation.
+     *
+     * @param session        - http session
+     * @param stationName    - name of station distance
+     * @param appearenceTime - appearance time of train on target station
+     * @return - view.
+     */
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "/addStationUpdate", method = RequestMethod.POST)
+    public String addStationForUpdate(HttpSession session, @ModelAttribute("stationName") String stationName,
+                                      @ModelAttribute("appearenceTime") String appearenceTime, RedirectAttributes redAttr) {
+
+        StationDistanceDto stationDistanceDto = new StationDistanceDto();
+        stationDistanceDto.setStationName(stationName);
+        stationDistanceDto.setAppearenceTime(appearenceTime);
+        ArrayList<StationDistanceDto> distanceList = (ArrayList<StationDistanceDto>) session.getAttribute("distanceListUpdate");
+        String msgArrivalCheck = routeService.isCorrectArrivalStation(distanceList, stationDistanceDto);
+        String msgDepartureCheck = routeService.isCorrectDepartureStation(distanceList, stationDistanceDto);
+        if (msgArrivalCheck.equals("Success!")) {
+            distanceList.add(stationDistanceDto);
+            redAttr.addFlashAttribute("msgg", "Success!");
+            session.setAttribute("distanceListUpdate", distanceList);
+        } else {
+            if (msgDepartureCheck.equals("Success!")) {
+                distanceList.add(0, stationDistanceDto);
+                redAttr.addFlashAttribute("msgg", "Success!");
+                session.setAttribute("distanceListUpdate", distanceList);
+            } else {
+                redAttr.addFlashAttribute("msgf", (msgArrivalCheck + " and " + msgDepartureCheck));
+            }
+        }
+        if (session.getAttribute("routeId") == null) {
+            return "error404";
+        }
+        return "redirect:/routeView/updateRoute/" + session.getAttribute("routeId");
+    }
+
+    /**
+     * Delete station distance from the view
+     *
+     * @return - redirect url.
+     */
+    @RequestMapping("/deleteSDUpdate/{stationName}")
+    public String deleteStationDistanceForUpdate(@PathVariable("stationName") String stationName, HttpSession session, RedirectAttributes redAttr) {
+        @SuppressWarnings("unchecked")
+        ArrayList<StationDistanceDto> distanceDtoList = (ArrayList<StationDistanceDto>) session.getAttribute("distanceListUpdate");
+        for (StationDistanceDto sd : distanceDtoList) {
+            if (sd.getStationName().equals(stationName)) {
+                distanceDtoList.remove(sd);
+                distanceDtoList.trimToSize();
+                break;
+            }
+        }
+        session.setAttribute("distanceListUpdate", distanceDtoList);
+        redAttr.addFlashAttribute("msgg", "Delete successful!");
+        if (session.getAttribute("routeId") == null) {
+            return "error404";
+        }
+        return "redirect:/routeView/updateRoute/" + session.getAttribute("routeId");
+    }
+
+    /**
+     * Create new route and redirect us to central view.
+     *
+     * @param route - target route to create
+     * @return - redirect url.
+     */
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "/refresh", method = RequestMethod.POST)
+    public String refreshRoute(HttpSession session, @Valid @ModelAttribute("route") Route route, BindingResult result, RedirectAttributes redAttr) {
+
+        if (result.hasErrors()) {
+            redAttr.addFlashAttribute("msgf", "Wrong data");
+        }
+        if (session.getAttribute("distanceListUpdate") != null) {
+            List<StationDistanceDto> distanceList = (List<StationDistanceDto>) session.getAttribute("distanceListUpdate");
+            if (distanceList.size() < 2) {
+                redAttr.addFlashAttribute("msgf", "there is only 1 station distance. Must be 2 as minimum");
+                return "redirect:/routeView/updateRoute/" + route.getRouteId();
+            }
+            if (!routeService.updateRoute(route, distanceList)) {
+                redAttr.addFlashAttribute("msgf", "Wrong data!");
+                return "redirect:/routeView/updateRoute/" + route.getRouteId();
+            }
+            redAttr.addFlashAttribute("msgg", "Success!");
+            session.removeAttribute("routeId");
+            session.removeAttribute("distanceListUpdate");
+            return "redirect:/routeView/routes";
+        }
+        redAttr.addFlashAttribute("msgf", "Station distance list is empty!");
+        return "redirect:/routeView/updateRoute/" + route.getRouteId();
+    }
+
+    /**
+     * Clear distance list in the view, if something gone wrong,
+     * and we need to clean it.
+     *
+     * @param session - http session.
+     */
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "/clearDistanceListUpdate")
+    public String clearDistanceListForUpdate(HttpSession session) {
+        if (session.getAttribute("distanceListUpdate") != null) {
+            List<StationDistanceDto> distanceList = (List<StationDistanceDto>) session.getAttribute("distanceListUpdate");
+            distanceList.clear();
+            session.setAttribute("distanceListUpdate", distanceList);
+        }
+        if (session.getAttribute("routeId") == null) {
+            return "error404";
+        }
+        return "redirect:/routeView/updateRoute/" + session.getAttribute("routeId");
+    }
+
+
 }

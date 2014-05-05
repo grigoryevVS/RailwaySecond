@@ -97,4 +97,8 @@ public class TicketDao extends GenericDao<Ticket, Long> {
     public List<Ticket> findBySchedule(Schedule sch) {
         return sessionFactory.getCurrentSession().createQuery("from Ticket where schedule.scheduleId=" + sch.getScheduleId()).list();
     }
+
+    public boolean isTicketsOnTrain(Schedule sch) {
+        return (!(sessionFactory.getCurrentSession().createQuery("from Ticket where schedule.scheduleId=" + sch.getScheduleId()).list()).isEmpty());
+    }
 }

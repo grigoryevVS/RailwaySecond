@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -88,9 +89,12 @@ public class RouteService {
      * @param route - target route
      * @return - true, if update successful, else return false.
      */
-    public boolean updateRoute(Route route) {
-        if (routeDao.findByName(route.getTitle()) != null) {
-            return false;
+    public boolean updateRoute(Route route, List<StationDistanceDto> distanceList) {
+        Route dbRoute = routeDao.findByName(route.getTitle());
+        if (dbRoute != null) {
+            if (!dbRoute.getRouteId().equals(route.getRouteId())) {
+                return false;
+            }
         }
         List<Schedule> scheduleList = scheduleDao.getScheduleListByRoute(route.getRouteId());
         if (!scheduleList.isEmpty()) {
@@ -99,16 +103,41 @@ public class RouteService {
                 scheduleDao.update(sch);
             }
         }
-        route.setStationDistances(distanceDao.getStationsInRoute(route));
-        routeDao.update(route);
-        List<StationDistance> distanceList = route.getStationDistances();
-        for (StationDistance sd : distanceList) {
-            if (distanceDao.isExistInRoute(sd.getSequenceNumber(), route)) {
-                distanceDao.update(sd);
-            } else {
-                distanceDao.create(sd);
+
+        List<StationDistance> stationDistances = new ArrayList<>();
+        // creating stationDistances
+        Long sequenceNumber = (long) 1;
+        for (StationDistanceDto sdDto : distanceList) {
+            StationDistance stationDistance = new StationDistance();
+            stationDistance.setRoute(route);
+            stationDistance.setSequenceNumber(sequenceNumber);
+            stationDistance.setStation(stationDao.findByName(sdDto.getStationName()));
+            String[] time = sdDto.getAppearenceTime().split(":");
+            stationDistance.setAppearTime(new Time(Integer.parseInt(time[0]), Integer.parseInt(time[1]), 0));
+            stationDistances.add(stationDistance);
+            sequenceNumber++;
+        }
+        route.setStationDistances(stationDistances);
+
+        List<StationDistance> toDeleteList = distanceDao.getStationsInRoute(route);
+        if (!toDeleteList.isEmpty()) {
+            Iterator<StationDistance> it = toDeleteList.iterator();
+            while (it.hasNext()) {
+                distanceDao.deleteToUpd(it.next());
+                it.remove();
             }
         }
+//        for (StationDistance sd : toDeleteList) {
+//            distanceDao.delete(sd);
+//        }
+
+        List<StationDistance> distances = route.getStationDistances();
+        for (StationDistance sd : distances) {
+
+            distanceDao.create(sd);
+
+        }
+        routeDao.update(route);
         return true;
     }
 

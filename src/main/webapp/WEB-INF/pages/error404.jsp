@@ -3,7 +3,7 @@
 <head>
     <%@include file="layout/styles.jsp" %>
     <meta charset="utf-8">
-    <title>error403</title>
+    <title>error404</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">

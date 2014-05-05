@@ -63,4 +63,14 @@ public class StationDistanceDao extends GenericDao<StationDistance, Long> {
     public StationDistance getStationByName(String arrivalStationName) {
         return (StationDistance) sessionFactory.getCurrentSession().createQuery("from StationDistance where station.name='" + arrivalStationName + "'").uniqueResult();
     }
+
+    /**
+     * Method delete for route update
+     * @param distance - station distance need to be deleted
+     */
+    public void deleteToUpd(StationDistance distance) {
+            sessionFactory.getCurrentSession().delete(distance);
+            sessionFactory.getCurrentSession().flush();
+            sessionFactory.getCurrentSession().clear();
+    }
 }

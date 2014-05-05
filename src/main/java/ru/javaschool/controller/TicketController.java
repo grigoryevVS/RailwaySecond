@@ -49,6 +49,7 @@ public class TicketController {
 
     /**
      * Buy ticket on target schedule
+     * after all validation checks.
      *
      * @param scheduleId - schedule identifier
      * @param model      - model view
@@ -65,7 +66,7 @@ public class TicketController {
             if (filter != null) {
                 validateResult = ticketService.buyTicket(user, schedule, filter.getStationFromName(), filter.getStationToName());
             } else {
-                validateResult = ticketService.buyTicket(user, schedule,"", "");
+                validateResult = ticketService.buyTicket(user, schedule, "", "");
             }
             if (validateResult.equals("Buy ticket success!")) {
                 List<ScheduleDto> schedList = scheduleService.getFilteredSchedule((ScheduleFilterDto) session.getAttribute("filter"));
@@ -108,15 +109,16 @@ public class TicketController {
     }
 
     /**
-     * Administrator can delete tickets of passengers if they can't go.
+     * Administrator can delete tickets of passengers if they can't use there ticket
+     * caused by alimony as example.
      *
      * @param userId     - target user identifier
      * @param scheduleId - target schedule identifier
      * @return - view of registered passengers on train, after deleting.
      */
     @RequestMapping(value = "passengers/deletePassenger/{userId}/{scheduleId}")
-    public String deletePassengerFromTrain(@PathVariable("userId") Long userId, @PathVariable("scheduleId") Long scheduleId, HttpSession session) {
-
+    public String deletePassengerFromTrain(@PathVariable("userId") Long userId,
+                                           @PathVariable("scheduleId") Long scheduleId, HttpSession session) {
         Ticket ticket = ticketService.getTicket(userId, scheduleId);
         if (ticket != null) {
             ticketService.deleteTicket(ticket);
@@ -133,6 +135,4 @@ public class TicketController {
             return "error404";
         }
     }
-
-
 }

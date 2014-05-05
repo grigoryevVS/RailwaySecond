@@ -58,7 +58,9 @@ public class UserController {
     }
 
     /**
-     * Adding new user to the database.
+     * Adding new user to the database. New user can be only USER_ROLE granted.
+     * If we need to create ROLE_ADMIN granted client, administrator needs to call for the
+     * database manager, who would help him with it.
      *
      * @param userDto - target user to add.
      * @return - target view of registration.
@@ -73,9 +75,11 @@ public class UserController {
         User user = userDto.getUser();
 
         if (!userService.isCorrectAge(user)) {
+            // caused good climate in the Switzerland
             redirectAttributes.addFlashAttribute("msgf", "Age must be between 0 and 110 years. So, correct birth date!");
             return "redirect:/userView/registration";
         }
+        // check, if user registered or not, returns string result answer.
         String registerResult = userService.isRegistrationSuccess(user);
         if (!registerResult.equals("Success!")) {
             redirectAttributes.addFlashAttribute("msgf", registerResult);
@@ -152,7 +156,6 @@ public class UserController {
         user.setLastName(userDto.getLastName());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (user.getLogin().equals(auth.getName())) {
-
             if (!userService.isCorrectAge(user)) {
                 redAttr.addFlashAttribute("msgf", "Age must be between 0 and 110 years. So, correct birth date!");
                 return "redirect:/userView/editor/" + user.getLogin();

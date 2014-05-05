@@ -88,6 +88,12 @@ public class RouteController {
         }
     }
 
+    /**
+     * Get all stations by target schedule, which included in it
+     * @param id - target schedule identifier
+     * @param model - view
+     * @return - result url or error404 page, if pathVariable is incorrect
+     */
     @RequestMapping("/detailsFromSchedule/{id}")
     public String getStationsBySchedule(@PathVariable("id") Long id, Model model) {
         Schedule schedule = scheduleService.findSchedule(id);
@@ -128,7 +134,8 @@ public class RouteController {
 
     /**
      * On each push button add station, add stationDistance to the distanceList
-     * after validation.
+     * after validation, if msgArrivalCheck goodCase - target station added to the end of list,
+     * else add to the beginning.
      *
      * @param session        - http session
      * @param stationName    - name of station distance
@@ -402,6 +409,4 @@ public class RouteController {
         }
         return "redirect:/routeView/updateRoute/" + session.getAttribute("routeId");
     }
-
-
 }

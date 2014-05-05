@@ -68,7 +68,7 @@ public class TrainController {
      * Create train in the database, if it is not exists yet.
      *
      * @param train - concrete train, which we need to input.
-     * @return - redirection url, which will be appear i the browser.
+     * @return - redirection url, which will be appear in the browser, and validation messages.
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addTrain(@Valid @ModelAttribute("train") Train train, BindingResult result, RedirectAttributes redAttr) {
@@ -122,7 +122,7 @@ public class TrainController {
      *
      * @param trainId - to update entity, its primary key
      * @param model   - model of view
-     * @return -  url.
+     * @return -  url result or error404 if trainId is not correct.
      */
     @RequestMapping(value = "/updateTrain/{trainId}")
     public String updateTrain(@PathVariable("trainId") Long trainId, Model model) {

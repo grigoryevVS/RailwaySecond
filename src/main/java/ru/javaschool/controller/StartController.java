@@ -4,6 +4,9 @@ package ru.javaschool.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * Start controller, implements index and error pages actions.
+ */
 @Controller
 public class StartController {
 

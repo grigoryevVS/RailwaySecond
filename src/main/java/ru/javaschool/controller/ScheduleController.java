@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Controller of schedule actions in service, to bind with view.
+ */
 @Controller
 @RequestMapping("/scheduleView")
 public class ScheduleController {
@@ -90,7 +93,7 @@ public class ScheduleController {
     }
 
     /**
-     * Create new schedule and redirect us to central view.
+     * Create new schedule by scheduleDto, represent object for view, and redirect us to central view.
      *
      * @param schedule - target schedule to be created
      * @return - redirect url.
@@ -101,16 +104,16 @@ public class ScheduleController {
                               @ModelAttribute("routeName") String routeName,
                               @ModelAttribute("dateTrip") String dateTrip, RedirectAttributes redAttr) {
         if (result.hasErrors()) {
-            redAttr.addFlashAttribute("msgf", "Wrong data!");
+            redAttr.addFlashAttribute("msgf", "Wrong data!");                               // msgf - badCase validation message ( message fail ) - threw all project
             return "redirect:/scheduleView/createSchedule";
         }
         ScheduleDto scheduleDto = new ScheduleDto();
         scheduleDto.setTrainName(trainName);
         scheduleDto.setRouteName(routeName);
         scheduleDto.setDate(dateTrip);
-        String validateResult = scheduleService.unWrapAndCreateSchedule(scheduleDto);
+        String validateResult = scheduleService.unWrapAndCreateSchedule(scheduleDto);       // create schedule and return result/validate string
         if (validateResult.equals("Success!")) {
-            redAttr.addFlashAttribute("msgg", validateResult);
+            redAttr.addFlashAttribute("msgg", validateResult);                              // msgf - goodCase validation message ( message good ) - threw all project
             return "redirect:/scheduleView/schedule";
         } else {
             redAttr.addFlashAttribute("msgf", validateResult);
@@ -222,11 +225,10 @@ public class ScheduleController {
      */
     @RequestMapping(value = "/filteredSchedule")
     public String filteredSchedule(HttpSession session, @Valid @ModelAttribute("filter") ScheduleFilterDto filter,
-                                   BindingResult result, ModelMap model, RedirectAttributes redAttr) {
+                                   BindingResult result, ModelMap model) {
 
         session.setAttribute("filter", filter);
         if (result.hasErrors()) {
-            session.setAttribute("msgf", "Wrong data!");
             return "redirect:/scheduleView/scheduleFilter";
         }
 
@@ -236,19 +238,17 @@ public class ScheduleController {
         session.setAttribute("scheduleList", schedList);
 
         if (schedList == null) {
-            session.setAttribute("msgf", "Wrong credentials!");
             return "redirect:/scheduleView/scheduleFilter";
         }
 
         if (schedList.isEmpty()) {
-            session.setAttribute("msgf", "There are no trains with such filter!");
             return "redirect:/scheduleView/scheduleFilter";
         }
         return "scheduleView/filteredSchedule";
     }
 
     /**
-     * Get stations to the js autocomplete method
+     * Get stations to the js autocomplete method for user friendly model
      *
      * @param stationName Name of station
      * @return List of station
@@ -257,7 +257,7 @@ public class ScheduleController {
     public
     @ResponseBody
     List<Station> getStationsForJS(@RequestParam String stationName) {
-        List<Station> result = new ArrayList<Station>();
+        List<Station> result = new ArrayList<>();
         List<Station> stations = stationService.getAllStations();
         if (!stations.isEmpty()) {
             for (Station station : stations) {
@@ -269,4 +269,3 @@ public class ScheduleController {
         return result;
     }
 }
-

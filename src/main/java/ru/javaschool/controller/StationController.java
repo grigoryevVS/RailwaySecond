@@ -55,6 +55,15 @@ public class StationController {
         return "stationView/stationIndex";
     }
 
+    /**
+     * This method implements working with stations.
+     * If user click on the station name, we give him
+     * schedule for this target station.
+     *
+     * @param session     - http session
+     * @param stationName - target station name
+     * @return - result url
+     */
     @RequestMapping("/stationFilter/{stationName}")
     public String stationFilter(HttpSession session, @PathVariable("stationName") String stationName) {
         Station station = stationService.getStationByName(stationName);
@@ -70,6 +79,7 @@ public class StationController {
             List<ScheduleDto> schedList = scheduleService.getFilteredSchedule((ScheduleFilterDto) session.getAttribute("filter"));
             session.setAttribute("scheduleList", schedList);
             if (schedList.isEmpty()) {
+                // to get this message on the filteredSchedule view!
                 session.setAttribute("msgf", "There are no trains from station " + stationName + " !");
             }
             return "redirect:/scheduleView/scheduleFilter";
@@ -103,7 +113,6 @@ public class StationController {
             redAttr.addFlashAttribute("msgf", "Name can't be empty!");
             return "redirect:/stationView/createStation";
         }
-
         if (stationService.createStation(station)) {
             redAttr.addFlashAttribute("msgg", "Create station " + station.getName() + " successful!");
             return "redirect:/stationView/stations";

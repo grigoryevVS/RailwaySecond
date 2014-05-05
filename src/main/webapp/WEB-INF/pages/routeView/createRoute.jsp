@@ -12,17 +12,13 @@
     <c:set var="activeMenu" value="routes"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-    <!-- Jumbotron -->
     <div>
         <div class="row" align="center">
             <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/routeView/add"
                        commandName="route">
                 <form:label path="title"><h4>Route title</h4></form:label>
                 <form:input path="title"/>
-
                 <input class="btn-large btn-success" align="center" type="submit" value="Create"/>
-                <%--<button class="btn-my btn-small btn-success" onclick="location.href='${pageContext.request.contextPath}/routeView/routes'">update</button>--%>
-
             </form:form>
         </div>
 
@@ -30,30 +26,22 @@
 
         <div align="center">
             <div class="form-inline">
-
                 <form action="${pageContext.request.contextPath}/routeView/addStation" method="POST">
                     <label for="stationName" align="center"><h4>Select station</h4></label>
                     <select id="stationName" name="stationName" required/>
                     <c:forEach items="${stationList}" var="station">
                         <option>${station.name}</option>
                     </c:forEach>
-
                     </select>
-
-
                     <label for="appearenceTime" align="center"><h4>Arrival time</h4></label>
                     <input type="time" id="appearenceTime" name="appearenceTime" required/>
-
-
                     <input class="btn-large btn-success" align="center" type="submit" value="Add station"/>
-
                 </form>
             </div>
         </div>
     </div>
 
     <hr>
-
 
     <div>
         <h4 align="center">StationDistances</h4>
@@ -88,20 +76,20 @@
                 </c:forEach>
             </table>
 
-
             <form:form cssClass="form-inline"
                        action="${pageContext.request.contextPath}/routeView/clearDistanceList"
                        commandName="distanceList">
                 <div class="row-fluid">
                     <div class="span4">
-                        <input class="btn-my btn-small btn-success" onclick="getModal('/RailWay/routeView/clearDistanceList/'); return false;" align="center" type="submit"
+                        <input class="btn-my btn-small btn-success"
+                               onclick="getModal('/RailWay/routeView/clearDistanceList/'); return false;" align="center"
+                               type="submit"
                                value="Clear distanceList"/>
                     </div>
                     <div class="span4">
                     </div>
                 </div>
             </form:form>
-
         </c:if>
     </div>
 

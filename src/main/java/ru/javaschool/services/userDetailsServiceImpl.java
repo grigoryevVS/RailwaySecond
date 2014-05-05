@@ -1,7 +1,6 @@
 package ru.javaschool.services;
 
 
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -16,6 +15,9 @@ import ru.javaschool.dao.UserDao;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * This service class implements authentication of new users, check roles and so on.
+ */
 @Service("userDetailsServiceImpl")
 @Transactional
 public class userDetailsServiceImpl implements UserDetailsService {

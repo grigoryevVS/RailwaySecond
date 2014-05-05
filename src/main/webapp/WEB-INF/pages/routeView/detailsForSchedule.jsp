@@ -9,7 +9,7 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="timetable" />
+    <c:set var="activeMenu" value="timetable"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <div class="jumbotron">

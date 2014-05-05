@@ -1,3 +1,7 @@
+/**
+ * JS validation of authorization form
+ * client side validation.
+ */
 $(document).ready(function () {
     $("#user").validate({
         rules: {

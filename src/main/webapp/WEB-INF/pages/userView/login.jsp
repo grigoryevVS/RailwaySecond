@@ -9,7 +9,7 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="login" />
+    <c:set var="activeMenu" value="login"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <div class="row-fluid">
@@ -39,7 +39,8 @@
                     <div class="control-group">
                         <div class="controls">
                             <input class="btn btn-success" type="submit" value="login"/>
-                            <a class="btn btn-success" href="${pageContext.request.contextPath}/userView/registration">Sign Up</a>
+                            <a class="btn btn-success" href="${pageContext.request.contextPath}/userView/registration">Sign
+                                Up</a>
                         </div>
                     </div>
                 </form>

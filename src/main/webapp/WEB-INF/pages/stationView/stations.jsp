@@ -9,10 +9,9 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="stations" />
+    <c:set var="activeMenu" value="stations"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-    <!-- Jumbotron -->
     <div class="jumbotron">
         <form:form method="post" action="createStation" commandName="station">
             <input class="btn btn-success" type="submit" value="Add station"/>
@@ -37,10 +36,16 @@
                 </tr>
                 <c:forEach items="${stationList}" var="station">
                     <tr>
-                        <td><a href="${pageContext.request.contextPath}/stationView/stationFilter/${station.name}">${station.name}</a></td>
                         <td>
-                            <button class="btn-my btn-small btn-success" onclick="location.href='updateStation/${station.stationId}'">update</button>
-                            <button class="btn-my btn-small btn-success" onclick="getModal('/RailWay/stationView/delete/${station.stationId}/')">delete</button>
+                            <a href="${pageContext.request.contextPath}/stationView/stationFilter/${station.name}">${station.name}</a>
+                        </td>
+                        <td>
+                            <button class="btn-my btn-small btn-success"
+                                    onclick="location.href='updateStation/${station.stationId}'">update
+                            </button>
+                            <button class="btn-my btn-small btn-success"
+                                    onclick="getModal('/RailWay/stationView/delete/${station.stationId}/')">delete
+                            </button>
                         </td>
                     </tr>
                 </c:forEach>

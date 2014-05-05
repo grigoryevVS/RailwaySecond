@@ -1,3 +1,8 @@
+/**
+ * JS autocomplete of station selects in the scheduleFilter
+ * And ajax function for implementation filter on the same page, without redirect
+ * to improve usability and performance
+ */
 $(document).ready(function () {
 
     $('#stationFromName').autocomplete({

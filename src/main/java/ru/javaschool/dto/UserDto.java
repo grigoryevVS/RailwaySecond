@@ -8,20 +8,24 @@ import javax.validation.constraints.Size;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+/**
+ * Class user representation in the view
+ * with string parameters and validation on them
+ */
 public class UserDto {
 
     private Long id;
     @NotEmpty
-    @Size(min=1, max=30)
+    @Size(min = 1, max = 30)
     private String login;
     @NotEmpty
-    @Size(min=3, max=50)
+    @Size(min = 3, max = 50)
     private String password;
     @NotEmpty
-    @Size(min=2, max=30)
+    @Size(min = 2, max = 30)
     private String firstName;
     @NotEmpty
-    @Size(min=2, max=30)
+    @Size(min = 2, max = 30)
     private String lastName;
     private String role;
     @NotEmpty
@@ -97,6 +101,12 @@ public class UserDto {
         this.birthDate = birthDate;
     }
 
+    /**
+     * Method implements getting user instance from
+     * userDto object
+     *
+     * @return - user instance
+     */
     public User getUser() {
         User user = new User();
         user.setUserId(this.getId());

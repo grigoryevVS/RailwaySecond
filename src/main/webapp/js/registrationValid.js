@@ -1,3 +1,7 @@
+/**
+ * JS validation of user form
+ * client side validation.
+ */
 $(document).ready(function () {
     $("#user").validate({
         rules: {

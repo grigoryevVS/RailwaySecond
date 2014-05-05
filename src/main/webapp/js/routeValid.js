@@ -1,3 +1,7 @@
+/**
+ * JS validation of route form
+ * client side validation.
+ */
 $(document).ready(function () {
     $("#route").validate({
         rules: {

@@ -1,4 +1,5 @@
-<!-- Modal -->
+<%--Modal windows for the action buy ticket--%>
+
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <h3 id="myModalLabel">Confirm</h3>

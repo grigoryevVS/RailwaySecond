@@ -9,7 +9,7 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="login" />
+    <c:set var="activeMenu" value="login"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <div class="row-fluid">

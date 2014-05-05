@@ -9,11 +9,12 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="management" />
+    <c:set var="activeMenu" value="management"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <div class="jumbotron">
-        <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/scheduleView/refresh" commandName="schedule">
+        <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/scheduleView/refresh"
+                   commandName="schedule">
             <label for="trainName">Train</label>
             <select id="trainName" name="trainName" required/>
             <c:forEach items="${trainList}" var="train">

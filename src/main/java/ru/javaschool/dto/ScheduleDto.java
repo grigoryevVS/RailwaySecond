@@ -9,6 +9,9 @@ import ru.javaschool.services.ScheduleService;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+/**
+ * Class to represent schedule in the view with string parameters.
+ */
 public class ScheduleDto {
 
     private long id;

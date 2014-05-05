@@ -8,12 +8,12 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="trains" />
+    <c:set var="activeMenu" value="trains"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <div class="jumbotron">
         <h3>Trains</h3>
-        <c:if  test="${!empty trainList}">
+        <c:if test="${!empty trainList}">
             <table class="table table-bordered">
                 <tr>
                     <th>Name</th>

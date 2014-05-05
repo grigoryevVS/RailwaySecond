@@ -12,12 +12,10 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="home" />
-
+    <c:set var="activeMenu" value="home"/>
 
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-    <!-- Jumbotron -->
     <div class="jumbotron">
         <h2>SBB market</h2>
 

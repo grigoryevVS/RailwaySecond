@@ -4,16 +4,11 @@
     <%@include file="../layout/styles.jsp" %>
     <meta charset="utf-8">
 </head>
-
 <body>
-
 <div class="container">
-    <c:set var="activeMenu" value="routes" />
+    <c:set var="activeMenu" value="routes"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
-
-    <!-- Jumbotron -->
     <div class="jumbotron">
-
         <h4>Routes</h4>
         <c:if test="${msgf != null}">
             <h4 class="error">
@@ -21,10 +16,10 @@
             </h4>
         </c:if>
         <c:if test="${msgg != null}">
-        <h4 class="msg">
-                ${msgg}
-        </h4>
-    </c:if>
+            <h4 class="msg">
+                    ${msgg}
+            </h4>
+        </c:if>
         <c:if test="${!empty routeList}">
             <table class="table table-bordered text-center">
                 <tr>
@@ -42,12 +37,8 @@
             </table>
         </c:if>
     </div>
-
     <hr>
-
     <%@ include file="/WEB-INF/pages/layout/footer.jsp" %>
-
 </div>
-
 </body>
 </html>

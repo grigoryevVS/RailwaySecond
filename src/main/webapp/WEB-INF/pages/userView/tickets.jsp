@@ -9,10 +9,9 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="editor" />
+    <c:set var="activeMenu" value="editor"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-    <!-- Jumbotron -->
     <div class="jumbotron">
 
         <div>

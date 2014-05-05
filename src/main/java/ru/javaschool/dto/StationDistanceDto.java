@@ -5,6 +5,10 @@ import ru.javaschool.model.entities.StationDistance;
 
 import java.text.SimpleDateFormat;
 
+/**
+ * Class to represent station distance of route
+ * with string parameters in the view
+ */
 public class StationDistanceDto {
 
     private String routeName;

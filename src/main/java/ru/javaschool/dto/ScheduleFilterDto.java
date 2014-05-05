@@ -3,6 +3,9 @@ package ru.javaschool.dto;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * Class to represent scheduleFilter form in the view with string parameters
+ */
 public class ScheduleFilterDto {
 
     @NotNull

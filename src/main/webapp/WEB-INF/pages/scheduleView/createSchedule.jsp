@@ -12,7 +12,6 @@
     <c:set var="activeMenu" value="management"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-    <!-- Jumbotron -->
     <div class="jumbotron">
         <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/scheduleView/add"
                    commandName="schedule">

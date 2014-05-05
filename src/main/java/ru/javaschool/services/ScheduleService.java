@@ -79,7 +79,7 @@ public class ScheduleService {
      * @return - true, if delete successful, else return false.
      */
     public boolean deleteSchedule(Schedule schedule) {
-        if (schedule.getTicketList().isEmpty()) {   // && проверка что расписание уже не прошлое, если прошлое то делит вместе с билетами.
+        if (schedule.getTicketList().isEmpty()) {   // if schedule in the past, delete with tickets, because its to old.
             scheduleDao.delete(schedule);
             return true;
         }
@@ -115,7 +115,7 @@ public class ScheduleService {
 
                     String arrivalCheck = getArrivalStation(scheduleDto);
                     String departureCheck = getDepartureStation(scheduleDto);
-                    if (arrivalCheck.equals("none") ||departureCheck.equals("none")) {
+                    if (arrivalCheck.equals("none") || departureCheck.equals("none")) {
                         schedule.setRoute(route);
                         schedule.setDateTrip(dateToCheck);
                         schedule.setTrain(trainDao.findByName(scheduleDto.getTrainName()));
@@ -172,7 +172,7 @@ public class ScheduleService {
                     schedule.setTrain(trainDao.findByName(scheduleDto.getTrainName()));
                     schedule.setTicketList(new ArrayList<Ticket>());
                     scheduleDao.create(schedule);
-                    return  "Success!";
+                    return "Success!";
                 }
                 return "Train can go to the " + departureCheck + " or from the " + arrivalCheck + " !";
             }

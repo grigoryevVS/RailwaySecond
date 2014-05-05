@@ -1,4 +1,7 @@
-
+/**
+ * JS validation of train form
+ * client side validation.
+ */
 $(document).ready(function () {
     $("#train").validate({
         rules: {

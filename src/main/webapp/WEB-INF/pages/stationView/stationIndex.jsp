@@ -9,7 +9,7 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="stations" />
+    <c:set var="activeMenu" value="stations"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <div class="jumbotron">
@@ -21,7 +21,9 @@
                 </tr>
                 <c:forEach items="${stationList}" var="station">
                     <tr>
-                        <td><a href="${pageContext.request.contextPath}/stationView/stationFilter/${station.name}">${station.name}</a></td>
+                        <td>
+                            <a href="${pageContext.request.contextPath}/stationView/stationFilter/${station.name}">${station.name}</a>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>
@@ -36,7 +38,6 @@
 
 </body>
 </html>
-
 
 
 <%--<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>--%>

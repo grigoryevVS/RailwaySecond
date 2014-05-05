@@ -9,14 +9,15 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="stations" />
+    <c:set var="activeMenu" value="stations"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
     <div class="jumbotron">
 
-        <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/stationView/add" commandName="station">
+        <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/stationView/add"
+                   commandName="station">
             <form:label path="name"><h4>Name</h4></form:label>
-            <form:input path="name" />
-            <input class="btn-large btn-success" type="submit" value="Create" />
+            <form:input path="name"/>
+            <input class="btn-large btn-success" type="submit" value="Create"/>
         </form:form>
         <c:if test="${msgg != null}">
             <div class="validmsg">

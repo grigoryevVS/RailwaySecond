@@ -1,4 +1,7 @@
-
+/**
+ * JS validation of station form
+ * client side validation.
+ */
 $(document).ready(function () {
     $("#station").validate({
         rules: {

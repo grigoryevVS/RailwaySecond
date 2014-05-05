@@ -15,8 +15,6 @@ import ru.javaschool.model.entities.User;
 
 import java.util.List;
 
-//import ru.javaschool.dao.PassengerDao;
-
 @Service
 @Transactional
 public class TicketService {
@@ -55,16 +53,16 @@ public class TicketService {
                         ticket.setSchedule(schedule);
                         List<StationDistance> distanceList = schedule.getRoute().getStationDistances();
 
-                            if (!stationFrom.equals("")) {
-                                ticket.setStationFrom(stationFrom);
-                            } else {
-                                ticket.setStationFrom(distanceList.get(0).getStation().getName());
-                            }
-                            if (!stationTo.equals("")) {
-                                ticket.setStationTo(stationTo);
-                            } else {
-                                ticket.setStationTo(distanceList.get(distanceList.size() - 1).getStation().getName());
-                            }
+                        if (!stationFrom.equals("")) {
+                            ticket.setStationFrom(stationFrom);
+                        } else {
+                            ticket.setStationFrom(distanceList.get(0).getStation().getName());
+                        }
+                        if (!stationTo.equals("")) {
+                            ticket.setStationTo(stationTo);
+                        } else {
+                            ticket.setStationTo(distanceList.get(distanceList.size() - 1).getStation().getName());
+                        }
 
                         ticketDao.create(ticket);
                         return "Buy ticket success!";
@@ -114,6 +112,12 @@ public class TicketService {
         ticketDao.delete(ticket);
     }
 
+    /**
+     * This method implements check of the sold tickets on target schedules in the target route.
+     *
+     * @param routeId - target route, to check tickets on it
+     * @return - true, if there are some tickets sold, else return false.
+     */
     public boolean isSoldTicketsOnSchedule(Long routeId) {
         List<Schedule> scheduleList = scheduleDao.getScheduleListByRoute(routeId);
         if (!scheduleList.isEmpty()) {

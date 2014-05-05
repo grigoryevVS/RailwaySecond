@@ -12,7 +12,6 @@
     <c:set var="activeMenu" value="management"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-    <!-- Jumbotron -->
     <div class="jumbotron">
         <h3>Passengers of train ${schedule.train.name}</h3>
         <c:if test="${msgf != null}">

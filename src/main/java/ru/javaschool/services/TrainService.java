@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javaschool.dao.ScheduleDao;
-import ru.javaschool.dao.TicketDao;
 import ru.javaschool.dao.TrainDao;
 import ru.javaschool.model.entities.Schedule;
 import ru.javaschool.model.entities.Train;
@@ -28,9 +27,6 @@ public class TrainService {
     @Autowired
     ScheduleDao scheduleDao;
 
-    @Autowired
-    private TicketDao ticketDao;
-
     /**
      * Get all trains, which exists in our db
      *
@@ -48,7 +44,6 @@ public class TrainService {
      *              getting from the employee, who fills all its fields.
      */
     public boolean createTrain(Train train) {
-
         int capacity = train.getNumberOfSeats();
         if (capacity < 1 || capacity > 400 || trainDao.isTrainExist(train)) {
             return false;

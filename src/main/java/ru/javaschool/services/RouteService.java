@@ -127,15 +127,9 @@ public class RouteService {
                 it.remove();
             }
         }
-//        for (StationDistance sd : toDeleteList) {
-//            distanceDao.delete(sd);
-//        }
-
         List<StationDistance> distances = route.getStationDistances();
         for (StationDistance sd : distances) {
-
             distanceDao.create(sd);
-
         }
         routeDao.update(route);
         return true;
@@ -239,6 +233,13 @@ public class RouteService {
         return "Success!";
     }
 
+    /**
+     * Validation of correctness previous station in the route.
+     *
+     * @param distanceList - list of stations in the route
+     * @param distanceDto  - dto object with data
+     * @return - result validation string
+     */
     public String isCorrectDepartureStation(ArrayList<StationDistanceDto> distanceList, StationDistanceDto distanceDto) {
         if (!distanceList.isEmpty()) {
             StationDistanceDto nextStation = distanceList.get(0);

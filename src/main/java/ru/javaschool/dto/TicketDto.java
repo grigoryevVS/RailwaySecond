@@ -8,6 +8,10 @@ import ru.javaschool.model.entities.User;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+/**
+ * Class to represent ticket with string parameters
+ * in the view
+ */
 public class TicketDto {
 
     private String firstName;

@@ -12,7 +12,7 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="home" />
+    <c:set var="activeMenu" value="home"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <div class="jumbotron">
@@ -27,7 +27,6 @@
 
     <hr>
 
-    <!-- Example row of columns -->
     <div class="row-fluid">
         <div class="span8 offset2">
             <img src="/RailWay/images/page.jpg">

@@ -8,6 +8,12 @@ import org.springframework.stereotype.Repository;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Abstract generic class with crud operations
+ *
+ * @param <T>
+ * @param <PK>
+ */
 @Repository
 public abstract class GenericDao<T extends Serializable, PK extends Serializable> {
 
@@ -24,8 +30,8 @@ public abstract class GenericDao<T extends Serializable, PK extends Serializable
         return (T) sessionFactory.getCurrentSession().get(entity, key);
     }
 
-   @SuppressWarnings("unchecked")
-    public List<T> findAll(Class<T> entityClass){
+    @SuppressWarnings("unchecked")
+    public List<T> findAll(Class<T> entityClass) {
         return sessionFactory.getCurrentSession().createQuery("FROM " + entityClass.getSimpleName()).list();
     }
 
@@ -35,12 +41,12 @@ public abstract class GenericDao<T extends Serializable, PK extends Serializable
         sessionFactory.getCurrentSession().merge(t);
     }
 
-    public void delete(final T t){
+    public void delete(final T t) {
         sessionFactory.getCurrentSession().delete(t);
     }
 
     public void deleteObject(Class<T> entity, final PK key) {
-        sessionFactory.getCurrentSession().delete(sessionFactory.getCurrentSession().get(entity,key));
+        sessionFactory.getCurrentSession().delete(sessionFactory.getCurrentSession().get(entity, key));
     }
 
 }

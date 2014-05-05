@@ -9,10 +9,9 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="trains" />
+    <c:set var="activeMenu" value="trains"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-    <!-- Jumbotron -->
     <div class="jumbotron">
         <form:form method="post" action="createTrain" commandName="train">
             <input class="btn btn-success" type="submit" value="Add train"/>
@@ -42,8 +41,12 @@
                         <td>${train.name}</td>
                         <td>${train.numberOfSeats}</td>
                         <td>
-                            <button class="btn-my btn-small btn-success" onclick="location.href='updateTrain/${train.trainId}'">update</button>
-                            <button class="btn-my btn-small btn-success" onclick="getModal('/RailWay/trainView/delete/${train.trainId}/')">delete</button>
+                            <button class="btn-my btn-small btn-success"
+                                    onclick="location.href='updateTrain/${train.trainId}'">update
+                            </button>
+                            <button class="btn-my btn-small btn-success"
+                                    onclick="getModal('/RailWay/trainView/delete/${train.trainId}/')">delete
+                            </button>
                         </td>
                     </tr>
                 </c:forEach>

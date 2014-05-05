@@ -32,6 +32,7 @@ public class RouteDao extends GenericDao<Route, Long> {
 
     /**
      * To create schedule, we need to find target route of it.
+     *
      * @param routeName - title of route
      * @return -  route instance.
      */
@@ -39,16 +40,3 @@ public class RouteDao extends GenericDao<Route, Long> {
         return (Route) sessionFactory.getCurrentSession().createQuery("from Route where title='" + routeName + "'").uniqueResult();
     }
 }
-
-//    /**
-//     * Getting schedule of all trains at current station, which we are giving as a parameter
-//     *
-//     * @param stationDepart - station, from which we need to give a schedule.
-//     * @return - returns List of trains.
-//     */
-//    public Long getStationDeparture(Long stationDepart) {
-//
-//        Query query = getEm().createQuery("select s.stationId from Station s where s.stationId =:departure");
-//        query.setParameter("departure", stationDepart);
-//        return (Long) query.getSingleResult();
-//    }

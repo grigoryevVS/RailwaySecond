@@ -2,9 +2,8 @@ package ru.javaschool.aspect;
 
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
 
 /**
  * Annotated class for logging
@@ -48,6 +47,22 @@ public class LoggingAspect {
         loggerStr.append(point.getSignature().getDeclaringTypeName()).append(".").append(point.getSignature().getName()).append(" returned ");
         loggerStr.append(returnValue);
         logger.info(loggerStr);
+    }
+
+    @Pointcut("execution(public * *Throwable(..))")
+    void throwableMethod() {}
+
+    /**
+     * For exception handling
+     * @param pjp - join point
+     */
+    @Around("throwableMethod()")
+    public void swallowThrowing(ProceedingJoinPoint pjp) {
+        try {
+            pjp.proceed();
+        } catch (Throwable e) {
+            logger.debug("swallow " + e.toString());
+        }
     }
 
 

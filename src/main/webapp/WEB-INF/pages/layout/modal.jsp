@@ -7,8 +7,8 @@
         <p>Delete target object?</p>
     </div>
     <div class="modal-footer">
-        <button id="cls" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-        <button id="ok" class="btn btn-success">Save changes</button>
+        <button id="cls" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button id="ok" class="btn btn-success">Ok</button>
     </div>
 </div>
 

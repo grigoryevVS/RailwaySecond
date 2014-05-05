@@ -10,14 +10,14 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="timetable" />
+    <c:set var="activeMenu" value="timetable"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <div class="jumbotron">
         <h4>Timetable</h4>
         <c:if test="${msgg != null}">
             <h4 class="validmsg">
-                ${msgg}
+                    ${msgg}
             </h4>
         </c:if>
         <c:if test="${msgf != null}">

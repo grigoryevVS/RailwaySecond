@@ -62,6 +62,11 @@
                     ${msgf}
             </h4>
         </c:if>
+        <c:if test="${msgg != null}">
+            <h4 class="validmsg">
+                    ${msgg}
+            </h4>
+        </c:if>
         <c:if test="${!empty distanceList}">
             <table class="table table-bordered">
                 <tr>
@@ -84,27 +89,21 @@
             </table>
 
 
-            <form:form cssClass="form-inline" method="post"
+            <form:form cssClass="form-inline"
                        action="${pageContext.request.contextPath}/routeView/clearDistanceList"
                        commandName="distanceList">
                 <div class="row-fluid">
                     <div class="span4">
-                        <input class="btn-my btn-small btn-success" align="center" type="submit"
+                        <input class="btn-my btn-small btn-success" onclick="getModal('/RailWay/routeView/clearDistanceList/'); return false;" align="center" type="submit"
                                value="Clear distanceList"/>
                     </div>
                     <div class="span4">
-                        <c:if test="${msgg != null}">
-                            <h4 class="msg">
-                                    ${msgg}
-                            </h4>
-                        </c:if>
                     </div>
                 </div>
             </form:form>
 
         </c:if>
     </div>
-
 
     <hr>
 

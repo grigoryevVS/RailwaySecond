@@ -79,7 +79,7 @@ public class TicketController {
                 model.addAttribute("ticket", ticketDto);
                 return "scheduleView/buyTicket";
             } else {
-                redAttr.addFlashAttribute("msg", validateResult);
+                redAttr.addFlashAttribute("msgf", validateResult);
                 return "redirect:/scheduleView/scheduleFilter";
             }
         } else {

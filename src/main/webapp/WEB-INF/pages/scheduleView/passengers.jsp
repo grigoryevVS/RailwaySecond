@@ -15,6 +15,16 @@
     <!-- Jumbotron -->
     <div class="jumbotron">
         <h3>Passengers of train ${schedule.train.name}</h3>
+        <c:if test="${msgf != null}">
+            <h4 class="error">
+                    ${msgf}
+            </h4>
+        </c:if>
+        <c:if test="${msgg != null}">
+            <h4 class="validmsg">
+                    ${msgg}
+            </h4>
+        </c:if>
         <c:if test="${!empty userList}">
             <table class="table table-bordered">
                 <tr>

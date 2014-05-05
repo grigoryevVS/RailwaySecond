@@ -14,13 +14,18 @@
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <div class="jumbotron">
-        <c:if test="${msg != null}">
-            <h4 style="color: red">
-                    ${msg}
-            </h4>
-        </c:if>
         <c:if test="${!empty scheduleList}">
             <table class="table table-bordered">
+                <c:if test="${msgg != null}">
+                    <h4 class="validmsg">
+                            ${msgg}
+                    </h4>
+                </c:if>
+                <c:if test="${msgf != null}">
+                    <h4 class="error">
+                            ${msgf}
+                    </h4>
+                </c:if>
                 <tr>
                     <th>Train</th>
                     <th>Route</th>

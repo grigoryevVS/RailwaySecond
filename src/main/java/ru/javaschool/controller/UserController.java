@@ -74,13 +74,15 @@ public class UserController {
         User user = userDto.getUser();
 
         if (!userService.isCorrectAge(user)) {
-            redirectAttributes.addFlashAttribute("msg", "Incorrect birthDate! age must be < 110 years and not minus!");
+            redirectAttributes.addFlashAttribute("msgf", "Age must be between 0 and 110 years. So, correct birth date!");
             return "redirect:/userView/registration";
         }
-        if (!userService.isRegistrationSuccess(user)) {
-            redirectAttributes.addFlashAttribute("msg", "Such client/login is already exist!");
+        String registerResult = userService.isRegistrationSuccess(user);
+        if (!registerResult.equals("Success!")) {
+            redirectAttributes.addFlashAttribute("msgf", registerResult);
             return "redirect:/userView/registration";
         }
+        redirectAttributes.addFlashAttribute("msgg", "Registration success!");
         return "userView/login";
     }
 
@@ -137,11 +139,10 @@ public class UserController {
 
         User user = userService.getUserByLogin(userDto.getLogin());
         if (user == null) {
-            redAttr.addFlashAttribute("msg", "Login incorrect!");
             return "error404";
         }
         if (result.hasErrors()) {
-            redAttr.addFlashAttribute("msg", "Wrong data");
+            redAttr.addFlashAttribute("msgf", "Wrong data");
             return "redirect:/userView/editor/" + user.getLogin();
         }
         user.setPassword(userDto.getPassword());
@@ -157,13 +158,15 @@ public class UserController {
         if (user.getLogin().equals(auth.getName())) {
 
             if (!userService.isCorrectAge(user)) {
-                redAttr.addFlashAttribute("msg", "Age must be between 0 and 110 years. So, correct birth date!");
+                redAttr.addFlashAttribute("msgf", "Age must be between 0 and 110 years. So, correct birth date!");
                 return "redirect:/userView/editor/" + user.getLogin();
             }
-            if (!userService.updateUser(user)) {
-                redAttr.addFlashAttribute("msg", "Such client/login is already exist!");
+            String updateResult = userService.updateUser(user);
+            if (!updateResult.equals("Success!")) {
+                redAttr.addFlashAttribute("msgf", updateResult);
                 return "redirect:/userView/editor/" + user.getLogin();
             }
+            redAttr.addFlashAttribute("msgg", "Update successful!");
             model.addAttribute("user", user);
             return "userView/editor";
         }

@@ -17,12 +17,17 @@
             <form:label path="name"><h4>Name</h4></form:label>
             <form:input path="name" />
             <input class="btn-large btn-success" type="submit" value="Create" />
-            <c:if test="${msg != null}">
-                <div style="color: red">
-                        ${msg}
-                </div>
-            </c:if>
         </form:form>
+        <c:if test="${msgg != null}">
+            <div class="validmsg">
+                    ${msgg}
+            </div>
+        </c:if>
+        <c:if test="${msgf != null}">
+            <div class="error">
+                    ${msgf}
+            </div>
+        </c:if>
     </div>
 
     <hr>

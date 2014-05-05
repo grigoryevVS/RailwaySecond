@@ -4,7 +4,7 @@
             <h2 class="muted"><a href="${pageContext.request.contextPath}/index">SBB CFF FFS</a></h2>
         </div>
         <div class="bug">
-            <a href="${pageContext.request.contextPath}/index"><img src="/RailWay/images/logo1.jpg"></a>
+            <a href="${pageContext.request.contextPath}/index"><img src="/RailWay/images/logo.jpg"></a>
         </div>
     </div>
     <div class="navbar">

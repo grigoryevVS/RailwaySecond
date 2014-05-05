@@ -110,6 +110,10 @@ body {
     text-decoration: none;
 }
 
+.masthead {
+    width: 1000px;
+}
+
 .span3 img{
     float:right;
     line-height: 100%;
@@ -159,10 +163,21 @@ div .navbar-inner {
 }
 
 .table-bordered th {
+     background-color: #dfdfdf;
+    border: 1px solid #bfbfbf;
+ }
+
+.table-bordered td {
+    background-color: #f4f4f4;
+    vertical-align: middle;
+    border: 1px solid #d5d5d5;
+}
+
+.table th {
     background-color: lightgray;
 }
 
-.table-bordered td {
+.table td {
     background-color: #f4f4f4;
     vertical-align: middle;
 }
@@ -176,5 +191,17 @@ div .navbar-inner {
     margin-top: 5px;
     margin-bottom: 5px;
     margin-left: 3px;
+}
+
+.modal {
+    background-color: lightgray;
+}
+
+.modal .fade {
+    background-color: lightgray;
+}
+
+.modal-footer {
+    background-color: lightgray;
 }
 

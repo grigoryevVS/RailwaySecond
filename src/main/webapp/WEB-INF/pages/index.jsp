@@ -3,7 +3,7 @@
 <head>
     <%@include file="layout/styles.jsp" %>
     <meta charset="utf-8">
-    <title>Template &middot; Bootstrap</title>
+    <title>SBB CFF FFS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -37,13 +37,15 @@
             <h3>About company</h3>
 
             <p class="lead">
-                Switzerland railway company offers you to
-                buy tickets to our trains that goes around
-                the country without interruption for over 20 years now.
+                On our website care about the safety of your information.
+                All data, protected from tampering and leakage.
+                Order railway tickets is on a secure page, so buying railway tickets online safe.
+                At all stages will help to fill and easy to buy air or railway ticket,
+                even if you order the e-rail ticket for the first time.
             </p>
         </div>
         <div class="span8">
-            <img src="/RailWay/images/just2.jpg">
+            <img class="img-rounded" src="/RailWay/images/just2.jpg">
 
         </div>
     </div>

@@ -20,10 +20,15 @@
 
 
         <h4>Trains</h4>
-        <c:if test="${msg != null}">
-            <h4 style="color: red">
-                    ${msg}
-            </h4>
+        <c:if test="${msgg != null}">
+            <div class="validmsg">
+                    ${msgg}
+            </div>
+        </c:if>
+        <c:if test="${msgf != null}">
+            <div class="error">
+                    ${msgf}
+            </div>
         </c:if>
         <c:if test="${!empty trainList}">
             <table class="table table-bordered">

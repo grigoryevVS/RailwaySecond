@@ -9,12 +9,13 @@
 <body>
 
 <div class="container">
-    <c:set var="activeMenu" value="management" />
+    <c:set var="activeMenu" value="management"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
     <!-- Jumbotron -->
     <div class="jumbotron">
-        <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/scheduleView/add" commandName="schedule">
+        <form:form cssClass="form-inline" method="post" action="${pageContext.request.contextPath}/scheduleView/add"
+                   commandName="schedule">
             <label for="trainName">Select train</label>
             <select id="trainName" name="trainName" required/>
             <c:forEach items="${trainList}" var="train">
@@ -30,9 +31,14 @@
             <label for="dateTrip">Date trip</label>
             <input type="date" id="dateTrip" name="dateTrip" required/>
             <input class="btn-large btn-success" type="submit" value="Create"/>
-            <c:if test="${msg != null}">
-                <h4 style="color: red">
-                        ${msg}
+            <c:if test="${msgf != null}">
+                <h4 class="error">
+                        ${msgf}
+                </h4>
+            </c:if>
+            <c:if test="${msgg != null}">
+                <h4 class="validmsg">
+                        ${msgg}
                 </h4>
             </c:if>
         </form:form>

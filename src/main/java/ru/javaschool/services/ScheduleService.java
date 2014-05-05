@@ -12,12 +12,16 @@ import ru.javaschool.dao.StationDistanceDao;
 import ru.javaschool.dao.TrainDao;
 import ru.javaschool.dto.ScheduleDto;
 import ru.javaschool.dto.ScheduleFilterDto;
-import ru.javaschool.model.entities.*;
+import ru.javaschool.model.entities.Route;
+import ru.javaschool.model.entities.Schedule;
+import ru.javaschool.model.entities.StationDistance;
+import ru.javaschool.model.entities.Ticket;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -197,12 +201,12 @@ public class ScheduleService {
             e.printStackTrace();
             return "Wrong date format!";
         }
-        List<Schedule> scheduleList = new ArrayList<>();
         // if departure day equals to the departure day of target schedule add to result scheduleList
         if (!schedules.isEmpty()) {
-            for (Schedule sch : schedules) {
-                if (dateToCheck.compareTo(sch.getDateTrip()) == 0) {
-                    scheduleList.add(sch);
+            Iterator<Schedule> it = schedules.iterator();
+            while (it.hasNext()) {
+                if (!(it.next().getDateTrip().equals(dateToCheck))) {
+                    it.remove();
                 }
             }
         }
@@ -213,14 +217,14 @@ public class ScheduleService {
         StationDistance sd = distanceDao.getStationsInRoute(route).get(0);  // target  departure station
         Date targetDateFrom = sd.getAppearTime();
         // if there were no schedules with this train within target day return that it is.
-        if (scheduleList.isEmpty()) {
+        if (schedules.isEmpty()) {
             return "none";
         }
         // check if arrival time of previous stations after target departure time, if it is wrong, save name of the previous station.
         else {
             Date controlDate = null;
             String resultStation = "Wrong!";
-            for (Schedule schedule : scheduleList) {
+            for (Schedule schedule : schedules) {
                 List<StationDistance> distanceList = distanceDao.getStationsInRoute(schedule.getRoute());
                 StationDistance previousStationTo = distanceList.get(distanceList.size() - 1);  // previous station
                 Date previousTimeTo = previousStationTo.getAppearTime();        // previousTime
@@ -240,7 +244,7 @@ public class ScheduleService {
                     if (controlDate.before(targetDateFrom)) {
                         return "none";
                     }
-                    return "Wrong time, need to be later then previous route arrival time!";
+                    return ". Wrong time, need to be later then previous route arrival time!";
                 }
                 return "Wrong!";
             }
@@ -269,12 +273,12 @@ public class ScheduleService {
             e.printStackTrace();
             return "Wrong date format!";
         }
-        List<Schedule> scheduleList = new ArrayList<>();
         // if departure day equals to the departure day of target schedule add to result scheduleList
         if (!schedules.isEmpty()) {
-            for (Schedule sch : schedules) {
-                if (dateToCheck.compareTo(sch.getDateTrip()) == 0) {
-                    scheduleList.add(sch);
+            Iterator<Schedule> it = schedules.iterator();
+            while (it.hasNext()) {
+                if (!(it.next().getDateTrip().equals(dateToCheck))) {
+                    it.remove();
                 }
             }
         }
@@ -286,14 +290,14 @@ public class ScheduleService {
         StationDistance sd = distanceListDepart.get(distanceListDepart.size() - 1);  // target  arrival station
         Date targetTimeTo = sd.getAppearTime();
         // if there were no schedules with this train within target day return that it is.
-        if (scheduleList.isEmpty()) {
+        if (schedules.isEmpty()) {
             return "none";
         }
         // check if departure time of next stations before target arrival time, if it is wrong, save name of the next station.
         else {
             Date controlTime = null;
             String resultStation = "Wrong!";
-            for (Schedule schedule : scheduleList) {
+            for (Schedule schedule : schedules) {
                 List<StationDistance> distanceList = distanceDao.getStationsInRoute(schedule.getRoute());
                 StationDistance previousStationFrom = distanceList.get(0);  // previous station departure
                 Date previousTimeFrom = previousStationFrom.getAppearTime();        // previousTime departure

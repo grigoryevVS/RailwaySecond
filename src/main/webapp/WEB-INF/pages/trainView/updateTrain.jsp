@@ -22,13 +22,17 @@
             <form:hidden path="trainId"/>
 
             <input class=" btn-large btn-success" type="submit" value="Update" />
-            <c:if test="${msg != null}">
-                <h4 style="color: red">
-                        ${msg}
-                </h4>
-            </c:if>
-
         </form:form>
+        <c:if test="${msgg != null}">
+            <div class="validmsg">
+                    ${msgg}
+            </div>
+        </c:if>
+        <c:if test="${msgf != null}">
+            <div class="error">
+                    ${msgf}
+            </div>
+        </c:if>
     </div>
 
     <hr>

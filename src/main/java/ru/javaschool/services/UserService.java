@@ -33,14 +33,15 @@ public class UserService {
      * @param user - target user to check.
      * @return - true if we create new one, else return false - such user already exist.
      */
-    public boolean isRegistrationSuccess(User user) {
+    public String isRegistrationSuccess(User user) {
         if (!userDao.loginExist(user.getLogin())) {
             if (!userDao.isRegistrationPass(user)) {
                 userDao.create(user);
-                return true;
+                return "Success!";
             }
+            return "Client " + user.getFirstName() + user.getLastName() + " born in " + user.getBirthDate() + " already registered!";
         }
-        return false;
+        return "Login " + user.getLogin() + " is already busy!";
     }
 
     /**
@@ -74,14 +75,15 @@ public class UserService {
      *
      * @param user - target
      */
-    public boolean updateUser(User user) {
+    public String updateUser(User user) {
         if (!userDao.loginCheckForUpdate(user)) {
             if (userDao.isUpdateAccess(user)) {
                 userDao.update(user);
-                return true;
+                return "Success!";
             }
+            return "Client " + user.getFirstName() + user.getLastName() + " born in " + user.getBirthDate() + " already registered!";
         }
-        return false;
+        return "Login " + user.getLogin() + " is already busy!";
 
     }
 

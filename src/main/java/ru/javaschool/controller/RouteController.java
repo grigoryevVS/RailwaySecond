@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.javaschool.dto.StationDistanceDto;
 import ru.javaschool.model.entities.Route;
 import ru.javaschool.model.entities.Schedule;
@@ -44,15 +45,7 @@ public class RouteController {
      * @return - target url
      */
     @RequestMapping("/routes")
-    public String getRouteList(Model model, HttpSession session) {
-        if (session.getAttribute("msgg") != null) {
-            session.removeAttribute("msgf");
-            model.addAttribute("msgg", session.getAttribute("msgg"));
-        }
-        if (session.getAttribute("msgf") != null) {
-            session.removeAttribute("msgg");
-            model.addAttribute("msgf", session.getAttribute("msgf"));
-        }
+    public String getRouteList(Model model) {
         model.addAttribute("route", new Route());
         model.addAttribute("routeList", routeService.getAllRoutes());
         return "routeView/routes";
@@ -65,13 +58,7 @@ public class RouteController {
      * @return - target url
      */
     @RequestMapping("/routeIndex")
-    public String index(Model model, HttpSession session) {
-        if (session.getAttribute("msgg") != null) {
-            model.addAttribute("msgg", session.getAttribute("msgg"));
-        }
-        if (session.getAttribute("msgf") != null) {
-            model.addAttribute("msgf", session.getAttribute("msgf"));
-        }
+    public String index(Model model) {
         model.addAttribute("route", new Route());
         model.addAttribute("routeList", routeService.getAllRoutes());
         return "routeView/routeIndex";
@@ -86,7 +73,6 @@ public class RouteController {
      */
     @RequestMapping("/details/{routeId}")
     public String getStationDistances(@PathVariable("routeId") Long routeId, Model model) {
-
         List<StationDistanceDto> distanceList = routeService.getStationDistances(routeId);
         if (!distanceList.isEmpty()) {
             model.addAttribute("stationDistanceDto", new StationDistanceDto());
@@ -122,7 +108,6 @@ public class RouteController {
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/createRoute", method = RequestMethod.GET)
     public String createRoute(HttpSession session, Model model) {
-
         List<StationDistanceDto> distanceList;
         if (session.getAttribute("distanceList") != null) {
             distanceList = (List<StationDistanceDto>) session.getAttribute("distanceList");
@@ -133,8 +118,6 @@ public class RouteController {
         model.addAttribute("distanceList", distanceList);
         model.addAttribute("stationList", stationService.getAllStations());
         model.addAttribute("route", new Route());
-        model.addAttribute("msgg", session.getAttribute("msgg"));
-        model.addAttribute("msgf", session.getAttribute("msgf"));
         return "routeView/createRoute";
     }
 
@@ -150,23 +133,20 @@ public class RouteController {
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/addStation", method = RequestMethod.POST)
     public String addStation(HttpSession session, @ModelAttribute("stationName") String stationName,
-                             @ModelAttribute("appearenceTime") String appearenceTime) {
+                             @ModelAttribute("appearenceTime") String appearenceTime, RedirectAttributes redAttr) {
 
         StationDistanceDto stationDistanceDto = new StationDistanceDto();
         stationDistanceDto.setStationName(stationName);
         stationDistanceDto.setAppearenceTime(appearenceTime);
-
         List<StationDistanceDto> distanceList = (List<StationDistanceDto>) session.getAttribute("distanceList");
         String msg = routeService.isCorrectStation(distanceList, stationDistanceDto);
         if (msg.equals("Success!")) {
             distanceList.add(stationDistanceDto);
-            session.removeAttribute("msgf");
-            session.setAttribute("msgg", msg);
+            redAttr.addFlashAttribute("msgg", "Success!");
             session.setAttribute("distanceList", distanceList);
             return "redirect:/routeView/createRoute";
         } else {
-            session.removeAttribute("msgg");
-            session.setAttribute("msgf", msg);
+            redAttr.addFlashAttribute("msgf", msg);
             return "redirect:/routeView/createRoute";
         }
     }
@@ -177,19 +157,18 @@ public class RouteController {
      * @return - redirect url.
      */
     @RequestMapping("/deleteSD/{stationName}")
-    public String deleteStationDistance(@PathVariable("stationName") String stationName, HttpSession session) {
-
+    public String deleteStationDistance(@PathVariable("stationName") String stationName, HttpSession session, RedirectAttributes redAttr) {
         @SuppressWarnings("unchecked")
-        List<StationDistanceDto> distanceDtoList = (List<StationDistanceDto>) session.getAttribute("distanceList");
-        List<StationDistanceDto> result = new ArrayList<>();
+        ArrayList<StationDistanceDto> distanceDtoList = (ArrayList<StationDistanceDto>) session.getAttribute("distanceList");
         for (StationDistanceDto sd : distanceDtoList) {
-            if (!sd.getStationName().equals(stationName)) {
-                result.add(sd);
+            if (sd.getStationName().equals(stationName)) {
+                distanceDtoList.remove(sd);
+                distanceDtoList.trimToSize();
+                break;
             }
         }
-        session.removeAttribute("msgf");
-        session.setAttribute("distanceList", result);
-        session.setAttribute("msgg", "Delete successful!");
+        session.setAttribute("distanceList", distanceDtoList);
+        redAttr.addFlashAttribute("msgg", "Delete successful!");
         return "redirect:/routeView/createRoute";
     }
 
@@ -201,29 +180,27 @@ public class RouteController {
      */
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addRoute(HttpSession session, @Valid @ModelAttribute("route") Route route, BindingResult result) {
+    public String addRoute(HttpSession session, @Valid @ModelAttribute("route") Route route, BindingResult result, RedirectAttributes redAttr) {
 
-        session.removeAttribute("msgg");
-        session.removeAttribute("msgf");
         if (result.hasErrors()) {
-            session.setAttribute("msgf", "Wrong data");
+            redAttr.addFlashAttribute("msgf", "Wrong data");
         }
         if (session.getAttribute("distanceList") != null) {
             List<StationDistanceDto> distanceList = (List<StationDistanceDto>) session.getAttribute("distanceList");
             if (distanceList.size() < 2) {
-                session.setAttribute("msgf", "there is only 1 station distance. Must be 2 as minimum");
+                redAttr.addFlashAttribute("msgf", "there is only 1 station distance. Must be 2 as minimum");
                 return "redirect:/routeView/createRoute";
             }
             if (!routeService.createRoute(route, distanceList)) {
-                session.setAttribute("msgf", "Wrong data!");
+                redAttr.addFlashAttribute("msgf", "Wrong data!");
                 return "redirect:/routeView/createRoute";
             }
             distanceList.clear();
             session.setAttribute("distanceList", distanceList);
-            session.setAttribute("msgg", "Success!");
+            redAttr.addFlashAttribute("msgg", "Success!");
             return "redirect:/routeView/routes";
         }
-        session.setAttribute("msgf", "Station distance list is empty!");
+        redAttr.addFlashAttribute("msgf", "Station distance list is empty!");
         return "redirect:/routeView/createRoute";
     }
 
@@ -234,15 +211,13 @@ public class RouteController {
      * @return - redirect url.
      */
     @RequestMapping("/delete/{routeId}")
-    public String deleteRoute(@PathVariable("routeId") Long routeId, HttpSession session) {
+    public String deleteRoute(@PathVariable("routeId") Long routeId, RedirectAttributes redAttr) {
         Route route = routeService.findRoute(routeId);
         if (route != null) {
             if (!routeService.deleteRoute(routeId)) {
-                session.removeAttribute("msgg");
-                session.setAttribute("msgf", "There are some tickets! You can't delete it!");
+                redAttr.addFlashAttribute("msgf", "There are some tickets! You can't delete it!");
             } else {
-                session.removeAttribute("msgf");
-                session.setAttribute("msgg", "Delete route " + route.getTitle() + " successful!");
+                redAttr.addFlashAttribute("msgg", "Delete route " + route.getTitle() + " successful!");
             }
             return "redirect:/routeView/routes";
         }
@@ -257,9 +232,7 @@ public class RouteController {
      * @return - target url.
      */
     @RequestMapping("/updateRoute/{routeId}")
-    public String updateRoute(HttpSession session, @PathVariable("routeId") Long routeId, Model model) {
-        //session.removeAttribute("msgg");
-        //session.removeAttribute("msgf");
+    public String updateRoute(@PathVariable("routeId") Long routeId, Model model) {
         Route route = routeService.findRoute(routeId);
         if (route != null) {
             model.addAttribute("route", route);
@@ -275,18 +248,16 @@ public class RouteController {
      * @return - redirect url.
      */
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
-    public String refreshRoute(@Valid @ModelAttribute("route") Route route, BindingResult result, HttpSession session) {
+    public String refreshRoute(@Valid @ModelAttribute("route") Route route, BindingResult result, RedirectAttributes redAttr) {
         if (result.hasErrors()) {
-            session.setAttribute("msgf", "Wrong data!");
+            redAttr.addFlashAttribute("msgf", "Wrong data!");
             return "redirect:/routeView/updateRoute/" + route.getRouteId();
         }
         if (!routeService.updateRoute(route)) {
-            session.removeAttribute("msgg");
-            session.setAttribute("msgf", "There are some tickets!");
+            redAttr.addFlashAttribute("msgf", "Such route name already exist!");
             return "redirect:/routeView/updateRoute/" + route.getRouteId();
         }
-        session.removeAttribute("msgf");
-        session.setAttribute("msgg", "Update route " + route.getTitle() + " successful!");
+        redAttr.addFlashAttribute("msgg", "Update route " + route.getTitle() + " successful!");
         return "redirect:/routeView/routes";
     }
 
@@ -297,7 +268,7 @@ public class RouteController {
      * @param session - http session.
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping(value = "/clearDistanceList", method = RequestMethod.POST)
+    @RequestMapping(value = "/clearDistanceList")
     public String clearDistanceList(HttpSession session) {
         if (session.getAttribute("distanceList") != null) {
             List<StationDistanceDto> distanceList = (List<StationDistanceDto>) session.getAttribute("distanceList");

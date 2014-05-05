@@ -9,7 +9,7 @@
                 </c:choose>
         </div>
         <div class="bug">
-            <a href="${pageContext.request.contextPath}/index"><img src="/RailWay/images/logo1.jpg"></a>
+            <a href="${pageContext.request.contextPath}/index"><img src="/RailWay/images/logo.jpg"></a>
         </div>
     </div>
     <div class="navbar">

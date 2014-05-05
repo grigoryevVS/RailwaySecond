@@ -69,9 +69,12 @@ public class StationController {
             session.setAttribute("filter", filter);
             List<ScheduleDto> schedList = scheduleService.getFilteredSchedule((ScheduleFilterDto) session.getAttribute("filter"));
             session.setAttribute("scheduleList", schedList);
+            if (schedList.isEmpty()) {
+                session.setAttribute("msgf", "There are no trains from station " + stationName + " !");
+            }
             return "redirect:/scheduleView/scheduleFilter";
         }
-        return "stationView/stationIndex";
+        return "error404";
     }
 
     /**
@@ -97,14 +100,15 @@ public class StationController {
     public String addStation(@ModelAttribute("station") Station station, RedirectAttributes redAttr) {
 
         if (station == null || station.getName().equals("")) {
-            redAttr.addFlashAttribute("msg", "Name can't be empty!");
+            redAttr.addFlashAttribute("msgf", "Name can't be empty!");
             return "redirect:/stationView/createStation";
         }
 
         if (stationService.createStation(station)) {
+            redAttr.addFlashAttribute("msgg", "Create station " + station.getName() + " successful!");
             return "redirect:/stationView/stations";
         } else {
-            redAttr.addFlashAttribute("msg", "Such station is already exist!");
+            redAttr.addFlashAttribute("msgf", "Such station is already exist!");
             return "redirect:/stationView/createStation";
         }
     }
@@ -120,10 +124,10 @@ public class StationController {
         Station station = stationService.findStation(stationId);
         if (station != null) {
             if (!stationService.deleteStation(station)) {
-                redAttr.addFlashAttribute("msg", "Station " + station.getName() + " exist in some route, you can't delete it!");
+                redAttr.addFlashAttribute("msgf", "Station " + station.getName() + " exist in some route, you can't delete it!");
                 return "redirect:/stationView/stations";
             }
-            redAttr.addFlashAttribute("msg", "Delete station " + station.getName() + " successful!");
+            redAttr.addFlashAttribute("msgg", "Delete station " + station.getName() + " successful!");
             return "redirect:/stationView/stations";
         }
         return "error404";
@@ -139,11 +143,11 @@ public class StationController {
     @RequestMapping("/updateStation/{stationId}")
     public String updateStation(@PathVariable("stationId") Long stationId, Model model) {
         Station station = stationService.findStation(stationId);
-        if (station == null) {
-            return "error404";
+        if (station != null) {
+            model.addAttribute("station", station);
+            return "stationView/updateStation";
         }
-        model.addAttribute("station", station);
-        return "stationView/updateStation";
+        return "error404";
     }
 
     /**
@@ -156,14 +160,15 @@ public class StationController {
     public String refreshStation(@Valid @ModelAttribute("station") Station station, BindingResult result,
                                  RedirectAttributes redAttr) {
         if (result.hasErrors()) {
-            redAttr.addFlashAttribute("msg", "Wrong data!");
+            redAttr.addFlashAttribute("msgf", "Wrong data!");
             return "redirect:/stationView/updateStation/" + station.getStationId();
         }
         if (stationService.getStationByName(station.getName()) != null) {
-            redAttr.addFlashAttribute("msg", "Such station name is already exist!");
+            redAttr.addFlashAttribute("msgf", "Such station name is already exist!");
             return "redirect:/stationView/updateStation/" + station.getStationId();
         }
         stationService.updateStation(station);
+        redAttr.addFlashAttribute("msgg", "Update station " + station.getName() + " successful!");
         return "redirect:/stationView/stations";
     }
 }

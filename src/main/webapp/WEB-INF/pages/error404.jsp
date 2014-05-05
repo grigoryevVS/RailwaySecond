@@ -20,6 +20,8 @@
 
         <p class="lead">
             Caused by incorrect request to your browser!
+            Please check your request in the browser, it's might
+            not correct.
         </p>
     </div>
 
@@ -27,18 +29,8 @@
 
     <!-- Example row of columns -->
     <div class="row-fluid">
-        <div class="span4">
-            <h3>About company</h3>
-
-            <p class="lead">
-                Switzerland railway company offers you to
-                buy tickets to our trains that goes around
-                the country without interruption for over 20 years now.
-            </p>
-        </div>
-        <div class="span8">
-            <img src="/RailWay/images/just2.jpg">
-
+        <div class="span8 offset2">
+            <img src="/RailWay/images/page.jpg">
         </div>
     </div>
 

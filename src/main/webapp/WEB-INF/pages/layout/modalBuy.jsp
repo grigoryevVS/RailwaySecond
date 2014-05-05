@@ -8,7 +8,7 @@
     </div>
     <div class="modal-footer">
         <button id="cls" class="btn" data-dismiss="modal" aria-hidden="true">No</button>
-        <button id="ok" class="btn btn-primary">Yes</button>
+        <button id="ok" class="btn btn-success">Yes</button>
     </div>
 </div>
 

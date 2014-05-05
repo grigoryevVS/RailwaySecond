@@ -12,7 +12,6 @@
     <c:set var="activeMenu" value="stations" />
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-    <!-- Jumbotron -->
     <div class="jumbotron">
         <h3>Stations</h3>
         <c:if test="${!empty stationList}">

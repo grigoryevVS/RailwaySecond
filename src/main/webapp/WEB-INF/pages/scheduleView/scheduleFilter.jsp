@@ -13,18 +13,16 @@
     <c:set var="activeMenu" value="timetable"/>
     <%@ include file="/WEB-INF/pages/layout/headerRole.jsp" %>
 
-    <%--<form class="form-horizontal" id="data" method="post" action="${pageContext.request.contextPath}/scheduleView/filteredSchedule" commandName="filter">--%>
-
-
-    <%--</form>--%>
-
-
-    <!-- Jumbotron -->
     <div class="filter" align="center">
         <h3>Search train</h3>
-        <c:if test="${msg != null}">
+        <c:if test="${msgg != null}">
+            <h4 class="validmsg">
+                    ${msgg}
+            </h4>
+        </c:if>
+        <c:if test="${msgf != null}">
             <h4 class="error">
-                    ${msg}
+                    ${msgf}
             </h4>
         </c:if>
         <form:form cssClass="form-inline" id="data" method="post"
@@ -45,11 +43,6 @@
     <hr>
 
     <div id="table">
-        <c:if test="${msg != null}">
-            <h4 style="color: red">
-                    ${msg}
-            </h4>
-        </c:if>
         <c:if test="${!empty scheduleList}">
             <table class="table table-bordered">
                 <tr>

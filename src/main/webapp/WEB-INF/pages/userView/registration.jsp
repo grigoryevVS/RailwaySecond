@@ -80,6 +80,16 @@
                 </div>
             </div>
             </form:form>
+            <c:if test="${msgg != null}">
+                <div class="validmsg">
+                        ${msgg}
+                </div>
+            </c:if>
+            <c:if test="${msgf != null}">
+                <div class="error">
+                        ${msgf}
+                </div>
+            </c:if>
         </div>
     </div>
 

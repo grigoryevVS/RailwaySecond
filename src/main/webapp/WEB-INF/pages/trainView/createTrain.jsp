@@ -29,9 +29,14 @@
                 }
             </script>
             <input class="btn-large btn-success" type="submit" value="Create" />
-            <c:if test="${msg != null}">
-                <div style="color: red">
-                        ${msg}
+            <c:if test="${msgg != null}">
+                <div class="validmsg">
+                        ${msgg}
+                </div>
+            </c:if>
+            <c:if test="${msgf != null}">
+                <div class="error">
+                        ${msgf}
                 </div>
             </c:if>
         </form:form>

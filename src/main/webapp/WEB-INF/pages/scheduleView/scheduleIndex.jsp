@@ -15,9 +15,14 @@
 
     <div class="jumbotron">
         <h4>Timetable</h4>
-        <c:if test="${msg != null}">
-            <h4 style="color: red">
-                ${msg}
+        <c:if test="${msgg != null}">
+            <h4 class="validmsg">
+                ${msgg}
+            </h4>
+        </c:if>
+        <c:if test="${msgf != null}">
+            <h4 class="error">
+                    ${msgf}
             </h4>
         </c:if>
         <c:if test="${!empty scheduleList}">

@@ -74,23 +74,23 @@ public class TrainController {
     public String addTrain(@Valid @ModelAttribute("train") Train train, BindingResult result, RedirectAttributes redAttr) {
 
         if (result.hasErrors()) {
-            redAttr.addFlashAttribute("msg", "Wrong data!");
+            redAttr.addFlashAttribute("msgf", "Wrong data!");
             return "redirect:/trainView/createTrain";
         }
         if (train == null || train.getName().equals("")) {
-            redAttr.addFlashAttribute("msg", "Name can't be empty!");
+            redAttr.addFlashAttribute("msgf", "Name can't be empty!");
             return "redirect:/trainView/createTrain";
         }
 
         if (0 >= train.getNumberOfSeats() || train.getNumberOfSeats() > 400) {
-            redAttr.addFlashAttribute("msg", "Trains capacity must be between 1-400");
+            redAttr.addFlashAttribute("msgf", "Trains capacity must be between 1-400");
             return "redirect:/trainView/createTrain";
         }
         if (trainService.createTrain(train)) {
-            redAttr.addFlashAttribute("msg", "Create train " + train.getName() + " successful!");
+            redAttr.addFlashAttribute("msgg", "Create train " + train.getName() + " successful!");
             return "redirect:/trainView/trains";
         } else {
-            redAttr.addFlashAttribute("msg", "Such train is already exist or wrong capacity of train, it must be between 1-400");
+            redAttr.addFlashAttribute("msgf", "Such train is already exist or wrong capacity of train, it must be between 1-400");
             return "redirect:/trainView/createTrain";
         }
     }
@@ -107,10 +107,10 @@ public class TrainController {
         Train train = trainService.findTrain(trainId);
         if (train != null) {
             if (!trainService.deleteTrain(trainId)) {
-                redAttr.addFlashAttribute("msg", "Train " + train.getName() + " exist in schedule, you can't delete it!");
+                redAttr.addFlashAttribute("msgf", "Train " + train.getName() + " exist in schedule, you can't delete it!");
                 return "redirect:/trainView/trains";
             } else {
-                redAttr.addFlashAttribute("msg", "Delete train " + train.getName() + " successful!");
+                redAttr.addFlashAttribute("msgg", "Delete train " + train.getName() + " successful!");
                 return "redirect:/trainView/trains";
             }
         }
@@ -145,19 +145,19 @@ public class TrainController {
     public String refreshTrain(@Valid @ModelAttribute("train") Train train, BindingResult result, RedirectAttributes redAttr) {
 
         if (result.hasErrors()) {
-            redAttr.addFlashAttribute("msg", "Wrong data!");
+            redAttr.addFlashAttribute("msgf", "Wrong data!");
             return "redirect:/trainView/updateTrain/" + train.getTrainId();
         }
         Train checkTrain = trainService.getTrainByName(train.getName());
         if (checkTrain != null && checkTrain.getTrainId() != train.getTrainId()) {
-            redAttr.addFlashAttribute("msg", "Such train name is already exist!");
+            redAttr.addFlashAttribute("msgf", "Such train is already exist!");
             return "redirect:/trainView/updateTrain/" + train.getTrainId();
         }
         if (!trainService.updateTrain(train)) {
-            redAttr.addFlashAttribute("msg", "Capacity must be more than bought tickets on it! now there are " + trainService.maxBoughtTicketsOnTrain(train.getTrainId()) + " sold tickets!");
+            redAttr.addFlashAttribute("msgf", "Wrong capacity! Need to be between 1 and 400, and more than bought tickets on it:  " + trainService.maxBoughtTicketsOnTrain(train.getTrainId()) + " sold tickets!");
             return "redirect:/trainView/updateTrain/" + train.getTrainId();
         }
-        redAttr.addFlashAttribute("msg", "Update train " + train.getName() + " successful!");
+        redAttr.addFlashAttribute("msgg", "Update train " + train.getName() + " successful!");
         return "redirect:/trainView/trains";
     }
 }

@@ -56,7 +56,6 @@ public class ScheduleController {
      */
     @RequestMapping("/schedule")
     public String getScheduleList(Model model) {
-
         model.addAttribute("scheduler", new ScheduleDto());
         model.addAttribute("scheduleList", scheduleService.getFullSchedule());
         return "scheduleView/schedule";
@@ -100,9 +99,9 @@ public class ScheduleController {
     public String addSchedule(@ModelAttribute("schedule") Schedule schedule, BindingResult result,
                               @ModelAttribute("trainName") String trainName,
                               @ModelAttribute("routeName") String routeName,
-                              @ModelAttribute("dateTrip") String dateTrip,  RedirectAttributes redAttr) {
+                              @ModelAttribute("dateTrip") String dateTrip, RedirectAttributes redAttr) {
         if (result.hasErrors()) {
-            redAttr.addFlashAttribute("msg", "Wrong data!");
+            redAttr.addFlashAttribute("msgf", "Wrong data!");
             return "redirect:/scheduleView/createSchedule";
         }
         ScheduleDto scheduleDto = new ScheduleDto();
@@ -111,9 +110,10 @@ public class ScheduleController {
         scheduleDto.setDate(dateTrip);
         String validateResult = scheduleService.unWrapAndCreateSchedule(scheduleDto);
         if (validateResult.equals("Success!")) {
+            redAttr.addFlashAttribute("msgg", validateResult);
             return "redirect:/scheduleView/schedule";
         } else {
-            redAttr.addFlashAttribute("msg", validateResult);
+            redAttr.addFlashAttribute("msgf", validateResult);
             return "redirect:/scheduleView/createSchedule";
         }
     }
@@ -129,7 +129,9 @@ public class ScheduleController {
         Schedule schedule = scheduleService.findSchedule(scheduleId);
         if (schedule != null) {
             if (!scheduleService.deleteSchedule(schedule)) {
-                redAttr.addFlashAttribute("msg", "There are some tickets on this schedule, you can't delete it!");
+                redAttr.addFlashAttribute("msgf", "There are some tickets on this schedule, you can't delete it!");
+            } else {
+                redAttr.addFlashAttribute("msgg", "Delete schedule " + schedule.getRoute() + " at " + schedule.getDateTrip() + " successful!");
             }
             return "redirect:/scheduleView/schedule";
         }
@@ -175,10 +177,10 @@ public class ScheduleController {
         scheduleDto.setId(scheduleId);
         String validateResult = scheduleService.updateSchedule(scheduleDto);
         if (validateResult.equals("Success!")) {
-            redAttr.addFlashAttribute("msg", "Update successful!");
+            redAttr.addFlashAttribute("msgg", "Update successful!");
             return "redirect:/scheduleView/schedule";
         } else {
-            redAttr.addFlashAttribute("msg", validateResult);
+            redAttr.addFlashAttribute("msgf", validateResult);
             return "redirect:/scheduleView/updateSchedule/" + schedule.getScheduleId();
         }
     }
@@ -190,17 +192,17 @@ public class ScheduleController {
      * @return - view
      */
     @RequestMapping(value = "/scheduleFilter")
-    public String createFilter(HttpSession session, Model model) {
+    public String createFilter(HttpSession session, Model model, RedirectAttributes redAttr) {
         if (session.getAttribute("filter") == null) {
             session.setAttribute("filter", new ScheduleFilterDto());
-        }
-        if (session.getAttribute("msg") != null) {
-            model.addAttribute("msg", session.getAttribute("msg"));
-            session.removeAttribute("msg");
         }
         List<ScheduleDto> schedList = scheduleService.getFilteredSchedule((ScheduleFilterDto) session.getAttribute("filter"));
         if (session.getAttribute("scheduleList") == null) {
             session.setAttribute("scheduleList", schedList);
+        }
+        if (session.getAttribute("msgf") != null) {
+            model.addAttribute("msgf", session.getAttribute("msgf"));
+            session.removeAttribute("msgf");
         }
         model.addAttribute("scheduleList", schedList);
         model.addAttribute("filter", session.getAttribute("filter"));
@@ -214,18 +216,17 @@ public class ScheduleController {
     /**
      * Get schedule list in accordance with the filter
      *
-     * @param filter  - target filter of schedule
-     * @param model   - model of view
+     * @param filter - target filter of schedule
+     * @param model  - model of view
      * @return - view
      */
     @RequestMapping(value = "/filteredSchedule")
     public String filteredSchedule(HttpSession session, @Valid @ModelAttribute("filter") ScheduleFilterDto filter,
-                                   BindingResult result, ModelMap model) {
+                                   BindingResult result, ModelMap model, RedirectAttributes redAttr) {
 
         session.setAttribute("filter", filter);
-
         if (result.hasErrors()) {
-            session.setAttribute("msg", "Wrong data!");
+            session.setAttribute("msgf", "Wrong data!");
             return "redirect:/scheduleView/scheduleFilter";
         }
 
@@ -235,12 +236,12 @@ public class ScheduleController {
         session.setAttribute("scheduleList", schedList);
 
         if (schedList == null) {
-            session.setAttribute("msg", "Wrong credentials!");
+            session.setAttribute("msgf", "Wrong credentials!");
             return "redirect:/scheduleView/scheduleFilter";
         }
 
         if (schedList.isEmpty()) {
-            session.setAttribute("msg", "There are no trains with such filter!");
+            session.setAttribute("msgf", "There are no trains with such filter!");
             return "redirect:/scheduleView/scheduleFilter";
         }
         return "scheduleView/filteredSchedule";

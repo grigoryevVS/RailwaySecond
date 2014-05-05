@@ -19,17 +19,12 @@
             <form:input cssClass="autocomplete-suggestion" path="title"/>
             <form:hidden path="routeId"/>
             <input class="btn-large btn-success" type="submit" value="Update"/>
-            <c:if test="${msgf != null}">
-                <h4 class="error">
-                        ${msgf}
-                </h4>
-            </c:if>
-            <c:if test="${msgg != null}">
-                <h4 class="msg">
-                        ${msgg}
-                </h4>
-            </c:if>
         </form:form>
+        <c:if test="${msgf != null}">
+            <h4 class="error">
+                    ${msgf}
+            </h4>
+        </c:if>
     </div>
 
     <hr>

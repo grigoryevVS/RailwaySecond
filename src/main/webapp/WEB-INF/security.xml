@@ -30,6 +30,7 @@
         <intercept-url pattern="/scheduleView/**" access="ROLE_ADMIN"/>
 
         <intercept-url pattern="/userView/editor/**" access="ROLE_USER,ROLE_ADMIN"/>
+        <intercept-url pattern="/userView/tickets/**" access="ROLE_USER,ROLE_ADMIN"/>
 
 
         <form-login login-page="/userView/login" default-target-url="/index"

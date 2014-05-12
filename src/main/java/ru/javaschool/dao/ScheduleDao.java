@@ -29,7 +29,7 @@ public class ScheduleDao extends GenericDao<Schedule, Long> {
      * @return - list of schedules.
      */
     @SuppressWarnings("unchecked")
-    public List<Schedule> getScheduleListByDate(String date) {
+    public List<Schedule> getScheduleListByDate(final String date) {
         return sessionFactory.getCurrentSession().createQuery("from Schedule where DATE_FORMAT(dateTrip,'%Y-%m-%d')='" + date + "'").list();
     }
 
@@ -41,7 +41,7 @@ public class ScheduleDao extends GenericDao<Schedule, Long> {
      * @return - true, if it was found, else return false.
      */
     @SuppressWarnings("unchecked")
-    public boolean isTrainInSchedule(Long key) {
+    public boolean isTrainInSchedule(final Long key) {
         List<Schedule> scheduleList = sessionFactory.getCurrentSession().createQuery("from Schedule where train.trainId=" + key).list();
         return (!scheduleList.isEmpty());
     }
@@ -55,7 +55,7 @@ public class ScheduleDao extends GenericDao<Schedule, Long> {
      * @return - list of concrete schedules to update.
      */
     @SuppressWarnings("unchecked")
-    public List<Schedule> getScheduleListByRoute(Long routeId) {
+    public List<Schedule> getScheduleListByRoute(final Long routeId) {
         return sessionFactory.getCurrentSession().createQuery("from Schedule where route.routeId=" + routeId).list();
     }
 
@@ -67,7 +67,7 @@ public class ScheduleDao extends GenericDao<Schedule, Long> {
      * @return - true, if we can update schedules,
      * false - if someone already bought ticket on any of items of target schedule list.
      */
-    public boolean isTicketListEmpty(List<Schedule> scheduleList) {
+    public boolean isTicketListEmpty(final List<Schedule> scheduleList) {
         for (Schedule sch : scheduleList) {
             if (!sch.getTicketList().isEmpty()) {
                 return false;
@@ -82,7 +82,7 @@ public class ScheduleDao extends GenericDao<Schedule, Long> {
      * @param schedule - target schedule to check.
      * @return - true if it's too late to buy tickets on it, else return false.
      */
-    public boolean isTooLate(Schedule schedule) {
+    public boolean isTooLate(final Schedule schedule) {
 
         Duration interval = new Duration(600 * 1000L);
         DateTime departureTime = new DateTime(schedule.getDateTrip());
@@ -101,7 +101,7 @@ public class ScheduleDao extends GenericDao<Schedule, Long> {
      * @return - list of schedule
      */
     @SuppressWarnings("unchecked")
-    public List<Schedule> getScheduleListByTrain(Long trainId) {
+    public List<Schedule> getScheduleListByTrain(final Long trainId) {
         return sessionFactory.getCurrentSession().createQuery("from Schedule where train.trainId=" + trainId).list();
     }
 
@@ -112,7 +112,7 @@ public class ScheduleDao extends GenericDao<Schedule, Long> {
      * @return - true, if schedule unique within target day. else return false
      */
     @SuppressWarnings("unchecked")
-    public boolean isUniqueSchedule(ScheduleDto scheduleDto) {
+    public boolean isUniqueSchedule(final ScheduleDto scheduleDto) {
         List<Schedule> scheduleList = sessionFactory.getCurrentSession().createQuery("from Schedule where dateTrip='" + scheduleDto.getDate() +
                 "' and train.name='" + scheduleDto.getTrainName() + "' and route.title='" + scheduleDto.getRouteName() + "'").list();
         return scheduleList.isEmpty();
@@ -125,7 +125,7 @@ public class ScheduleDao extends GenericDao<Schedule, Long> {
      * @return - list of schedule
      */
     @SuppressWarnings("unchecked")
-    public List<Schedule> getScheduleListTodayByTrain(String trainName) {
+    public List<Schedule> getScheduleListTodayByTrain(final String trainName) {
         String queryString = "from Schedule where train.name='" + trainName + "'";
         return sessionFactory.getCurrentSession().createQuery(queryString).list();
 

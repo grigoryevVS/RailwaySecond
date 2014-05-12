@@ -25,7 +25,7 @@ public class RouteDao extends GenericDao<Route, Long> {
      * @return - true if it is exist, false another way.
      */
     @SuppressWarnings("unchecked")
-    public boolean isRouteExist(String name) {
+    public boolean isRouteExist(final String name) {
         List<Route> routeList = (List<Route>) sessionFactory.getCurrentSession().createQuery("from Route where title='" + name + "'").list();
         return (!routeList.isEmpty());
     }
@@ -36,7 +36,7 @@ public class RouteDao extends GenericDao<Route, Long> {
      * @param routeName - title of route
      * @return -  route instance.
      */
-    public Route findByName(String routeName) {
+    public Route findByName(final String routeName) {
         return (Route) sessionFactory.getCurrentSession().createQuery("from Route where title='" + routeName + "'").uniqueResult();
     }
 }

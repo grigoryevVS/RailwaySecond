@@ -26,7 +26,7 @@ public class TicketDao extends GenericDao<Ticket, Long> {
      * @return - true, if such passenger already have ticket, else return false.
      */
     @SuppressWarnings("unchecked")
-    public boolean isExistPassenger(Schedule schedule, User user) {
+    public boolean isExistPassenger(final Schedule schedule, final User user) {
         String queryString = "from Ticket where user.userId=" + user.getUserId() + " and schedule.scheduleId=" + schedule.getScheduleId();
         List<Ticket> ticketList = sessionFactory.getCurrentSession().createQuery(queryString).list();
         return (!ticketList.isEmpty());
@@ -39,7 +39,7 @@ public class TicketDao extends GenericDao<Ticket, Long> {
      * @return - true if train full, else return false.
      */
     @SuppressWarnings("unchecked")
-    public boolean isTrainFull(Schedule schedule) {
+    public boolean isTrainFull(final Schedule schedule) {
         String queryString = "from Ticket where schedule.scheduleId=" + schedule.getScheduleId();
         List<Ticket> ticketList = sessionFactory.getCurrentSession().createQuery(queryString).list();
         int soldTickets = ticketList.size();
@@ -54,7 +54,7 @@ public class TicketDao extends GenericDao<Ticket, Long> {
      * @return - list
      */
     @SuppressWarnings("unchecked")
-    public List<User> getAllPassengersOnTrain(Schedule schedule) {
+    public List<User> getAllPassengersOnTrain(final Schedule schedule) {
         String queryString = "from Ticket where schedule.scheduleId=" + schedule.getScheduleId();
         List<Ticket> ticketList = sessionFactory.getCurrentSession().createQuery(queryString).list();
         List<User> passengerList = new ArrayList<>();
@@ -71,7 +71,7 @@ public class TicketDao extends GenericDao<Ticket, Long> {
      * @param scheduleId - target scheduleId
      * @return - instance of ticket.
      */
-    public Ticket getTicket(Long userId, Long scheduleId) {
+    public Ticket getTicket(final Long userId, final Long scheduleId) {
         String queryString = "from Ticket where user.userId=" + userId + " and schedule.scheduleId=" + scheduleId;
         return (Ticket) sessionFactory.getCurrentSession().createQuery(queryString).uniqueResult();
     }
@@ -83,7 +83,7 @@ public class TicketDao extends GenericDao<Ticket, Long> {
      * @return - list of tickets
      */
     @SuppressWarnings("unchecked")
-    public List<Ticket> findByUser(Long userId) {
+    public List<Ticket> findByUser(final Long userId) {
         return sessionFactory.getCurrentSession().createQuery("from Ticket where user.userId=" + userId).list();
     }
 
@@ -94,7 +94,7 @@ public class TicketDao extends GenericDao<Ticket, Long> {
      * @return - list of tickets
      */
     @SuppressWarnings("unchecked")
-    public List<Ticket> findBySchedule(Schedule sch) {
+    public List<Ticket> findBySchedule(final Schedule sch) {
         return sessionFactory.getCurrentSession().createQuery("from Ticket where schedule.scheduleId=" + sch.getScheduleId()).list();
     }
 
@@ -104,7 +104,7 @@ public class TicketDao extends GenericDao<Ticket, Long> {
      * @param sch - target schedule
      * @return - true, if tickets exist, else return false
      */
-    public boolean isTicketsOnTrain(Schedule sch) {
+    public boolean isTicketsOnTrain(final Schedule sch) {
         return (!(sessionFactory.getCurrentSession().createQuery("from Ticket where schedule.scheduleId=" + sch.getScheduleId()).list()).isEmpty());
     }
 }

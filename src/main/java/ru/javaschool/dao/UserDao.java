@@ -24,7 +24,7 @@ public class UserDao extends GenericDao<User, Long> {
      * @return - true, if target passenger already exist in the database, else return false.
      */
     @SuppressWarnings("unchecked")
-    public boolean isRegistrationPass(User passenger) {
+    public boolean isRegistrationPass(final User passenger) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String queryString = "from User where firstName='" + passenger.getFirstName() + "'" + " and lastName='" +
                 passenger.getLastName() + "'" + " AND DATE_FORMAT(birthDate,'%Y-%m-%d')='" +
@@ -40,7 +40,7 @@ public class UserDao extends GenericDao<User, Long> {
      * @return - user instance.
      */
     @SuppressWarnings("unchecked")
-    public User getUserByLogin(String login) {
+    public User getUserByLogin(final String login) {
         return (User) sessionFactory.getCurrentSession().createQuery("from User where login='" + login + "'").uniqueResult();
     }
 
@@ -50,7 +50,7 @@ public class UserDao extends GenericDao<User, Long> {
      * @param login - target login to find
      * @return - true, if such login already exist, else return false
      */
-    public boolean loginExist(String login) {
+    public boolean loginExist(final String login) {
         User user = (User) sessionFactory.getCurrentSession().createQuery("from User where login='" + login + "'").uniqueResult();
         return user != null;
     }
@@ -62,7 +62,7 @@ public class UserDao extends GenericDao<User, Long> {
      * @return - true, if update successful, else return false.
      */
     @SuppressWarnings("unchecked")
-    public boolean isUpdateAccess(User passenger) {
+    public boolean isUpdateAccess(final User passenger) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String queryString = "from User where firstName='" + passenger.getFirstName() + "'" + " and lastName='" +
                 passenger.getLastName() + "'" + " AND DATE_FORMAT(birthDate,'%Y-%m-%d')='" +
@@ -82,7 +82,7 @@ public class UserDao extends GenericDao<User, Long> {
      * @param user - target user
      * @return - true if logins not equal, else return false.
      */
-    public boolean loginCheckForUpdate(User user) {
+    public boolean loginCheckForUpdate(final User user) {
         User result = (User) sessionFactory.getCurrentSession().createQuery("from User where login='" + user.getLogin() + "'").uniqueResult();
         return !result.getUserId().equals(user.getUserId());
     }

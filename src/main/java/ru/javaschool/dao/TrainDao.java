@@ -21,7 +21,7 @@ public class TrainDao extends GenericDao<Train, Long> {
      * @return - true if it is exist, false another way.
      */
     @SuppressWarnings("unchecked")
-    public boolean isTrainExist(Train train) {
+    public boolean isTrainExist(final Train train) {
         List<Train> trainList = (List<Train>) sessionFactory.getCurrentSession().createQuery("from Train where name='" + train.getName() + "'").list();
         return (!trainList.isEmpty());
     }
@@ -31,7 +31,7 @@ public class TrainDao extends GenericDao<Train, Long> {
      * @param trainName - name of train
      * @return -  train instance.
      */
-    public Train findByName(String trainName) {
+    public Train findByName(final String trainName) {
         return (Train) sessionFactory.getCurrentSession().createQuery("from Train where name='" + trainName + "'").uniqueResult();
     }
 }

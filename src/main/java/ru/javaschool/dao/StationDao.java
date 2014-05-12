@@ -20,7 +20,7 @@ public class StationDao extends GenericDao<Station, Long> {
      * @return - true if it is exist, false another way.
      */
     @SuppressWarnings("unchecked")
-    public boolean isStationExist(String name) {
+    public boolean isStationExist(final String name) {
         List<Station> stationList = (List<Station>) sessionFactory.getCurrentSession().createQuery("from Station where name='" + name + "'").list();
         return (!stationList.isEmpty());
     }
@@ -31,7 +31,7 @@ public class StationDao extends GenericDao<Station, Long> {
      * @param name - target name
      * @return - instance of target station.
      */
-    public Station findByName(String name) {
+    public Station findByName(final String name) {
         return (Station) sessionFactory.getCurrentSession().createQuery("from Station where name='" + name + "'").uniqueResult();
 
     }

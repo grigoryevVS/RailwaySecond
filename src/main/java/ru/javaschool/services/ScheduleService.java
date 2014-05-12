@@ -65,7 +65,7 @@ public class ScheduleService {
      * @param schedule - target schedule to create.
      */
     @SuppressWarnings("unchecked")
-    public void createSchedule(Schedule schedule) {
+    public void createSchedule(final Schedule schedule) {
         schedule.setTicketList(new ArrayList<Ticket>());
         scheduleDao.create(schedule);
     }
@@ -78,7 +78,7 @@ public class ScheduleService {
      * @param schedule - target schedule.
      * @return - true, if delete successful, else return false.
      */
-    public boolean deleteSchedule(Schedule schedule) {
+    public boolean deleteSchedule(final Schedule schedule) {
         if (schedule.getTicketList().isEmpty()) {   // if schedule in the past, delete with tickets, because its to old.
             scheduleDao.delete(schedule);
             return true;
@@ -92,7 +92,7 @@ public class ScheduleService {
      * @param scheduleDto - target schedule to update.
      * @return - true if update successful, else return false.
      */
-    public String updateSchedule(ScheduleDto scheduleDto) {
+    public String updateSchedule(final ScheduleDto scheduleDto) {
         Schedule schedule = scheduleDao.findByPK(Schedule.class, scheduleDto.getId());
         if (schedule == null) {
             return "Wrong sch!";
@@ -138,7 +138,7 @@ public class ScheduleService {
      * @param scheduleId - schedule id.
      * @return - schedule instance
      */
-    public Schedule findSchedule(Long scheduleId) {
+    public Schedule findSchedule(final Long scheduleId) {
         return scheduleDao.findByPK(Schedule.class, scheduleId);
     }
 
@@ -148,7 +148,7 @@ public class ScheduleService {
      * @param scheduleDto - scheduleDto object
      * @return - true, if creating target schedule successful, else return false.
      */
-    public String unWrapAndCreateSchedule(ScheduleDto scheduleDto) {
+    public String unWrapAndCreateSchedule(final ScheduleDto scheduleDto) {
         Schedule schedule = new Schedule();
         Route route = routeDao.findByName(scheduleDto.getRouteName());
 
@@ -188,7 +188,7 @@ public class ScheduleService {
      * @param scheduleDto - target dto object
      * @return - result message
      */
-    public String getArrivalStation(ScheduleDto scheduleDto) {
+    public String getArrivalStation(final ScheduleDto scheduleDto) {
         // find all schedule with target train
         List<Schedule> schedules = scheduleDao.getScheduleListTodayByTrain(scheduleDto.getTrainName());
         Route route = routeDao.findByName(scheduleDto.getRouteName());
@@ -260,7 +260,7 @@ public class ScheduleService {
      * @param scheduleDto - target dto object
      * @return - result message
      */
-    public String getDepartureStation(ScheduleDto scheduleDto) {
+    public String getDepartureStation(final ScheduleDto scheduleDto) {
         // find all schedule with target train
         List<Schedule> schedules = scheduleDao.getScheduleListTodayByTrain(scheduleDto.getTrainName());
         Route route = routeDao.findByName(scheduleDto.getRouteName());
@@ -331,7 +331,7 @@ public class ScheduleService {
      * @param scheduleDto - target object
      * @return - true if schedule unique ( i.e. train and route ) within target day. else return false
      */
-    private boolean isUniqueWithinDay(ScheduleDto scheduleDto) {
+    private boolean isUniqueWithinDay(final ScheduleDto scheduleDto) {
         return scheduleDao.isUniqueSchedule(scheduleDto);
     }
 
@@ -342,7 +342,7 @@ public class ScheduleService {
      * @param timeToCheck - appearTimeFrom station( just first one)
      * @return - true if correct future date, false - if date in the past.
      */
-    private boolean isCorrectDate(Date dateToCheck, Date timeToCheck) {
+    private boolean isCorrectDate(final Date dateToCheck,final Date timeToCheck) {
         LocalDate localDate = new LocalDate();
         int compareResult = localDate.toDate().compareTo(dateToCheck);
         if (compareResult > 0) {
@@ -364,7 +364,7 @@ public class ScheduleService {
      * @param filter - station from and/or station to going train, and date when it is going.
      * @return - list of schedule, which succeed this filter.
      */
-    public List<ScheduleDto> getFilteredSchedule(ScheduleFilterDto filter) {
+    public List<ScheduleDto> getFilteredSchedule(final ScheduleFilterDto filter) {
 
         List<Schedule> scheduleListDate;
 

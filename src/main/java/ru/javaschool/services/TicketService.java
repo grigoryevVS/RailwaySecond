@@ -42,7 +42,7 @@ public class TicketService {
      * @param user     - target passenger.
      * @return - true if buying ticket successful, else return false.
      */
-    public String buyTicket(User user, Schedule schedule, String stationFrom, String stationTo) {
+    public String buyTicket(final User user, final Schedule schedule, final String stationFrom, final String stationTo) {
         if (isCorrectDate(schedule)) {
             if (!ticketDao.isExistPassenger(schedule, user)) {
                 if (!ticketDao.isTrainFull(schedule)) {
@@ -77,7 +77,7 @@ public class TicketService {
         return "Input date in the past!";
     }
 
-    private boolean isCorrectDate(Schedule schedule) {
+    private boolean isCorrectDate(final Schedule schedule) {
         return schedule.getDateTrip().after(new LocalDate().minusDays(1).toDate());
     }
 
@@ -88,7 +88,7 @@ public class TicketService {
      * @param schedule - target schedule.
      * @return - list of all passengers, who bought tickets on target train.
      */
-    public List<User> getAllRegisteredOnTrain(Schedule schedule) {
+    public List<User> getAllRegisteredOnTrain(final Schedule schedule) {
         return ticketDao.getAllPassengersOnTrain(schedule);
     }
 
@@ -99,7 +99,7 @@ public class TicketService {
      * @param scheduleId - schedule identifier
      * @return - ticket instance.
      */
-    public Ticket getTicket(Long userId, Long scheduleId) {
+    public Ticket getTicket(final Long userId, final Long scheduleId) {
         return ticketDao.getTicket(userId, scheduleId);
     }
 
@@ -108,7 +108,7 @@ public class TicketService {
      *
      * @param ticket - target ticket to delete
      */
-    public void deleteTicket(Ticket ticket) {
+    public void deleteTicket(final Ticket ticket) {
         ticketDao.delete(ticket);
     }
 
@@ -118,7 +118,7 @@ public class TicketService {
      * @param routeId - target route, to check tickets on it
      * @return - true, if there are some tickets sold, else return false.
      */
-    public boolean isSoldTicketsOnSchedule(Long routeId) {
+    public boolean isSoldTicketsOnSchedule(final Long routeId) {
         List<Schedule> scheduleList = scheduleDao.getScheduleListByRoute(routeId);
         if (!scheduleList.isEmpty()) {
             for (Schedule sch : scheduleList) {

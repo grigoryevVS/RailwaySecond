@@ -58,7 +58,7 @@ public class RouteService {
      * @param routeId - unique identifier of the concrete route.
      * @return - true, if delete successful, else return false.
      */
-    public boolean deleteRoute(Long routeId) {
+    public boolean deleteRoute(final Long routeId) {
         Route route = routeDao.findByPK(Route.class, routeId);
         if (route != null) {
             List<Schedule> scheduleList = scheduleDao.getScheduleListByRoute(routeId);
@@ -89,7 +89,7 @@ public class RouteService {
      * @param route - target route
      * @return - true, if update successful, else return false.
      */
-    public boolean updateRoute(Route route, List<StationDistanceDto> distanceList) {
+    public boolean updateRoute(final Route route, final List<StationDistanceDto> distanceList) {
         Route dbRoute = routeDao.findByName(route.getTitle());
         if (dbRoute != null) {
             if (!dbRoute.getRouteId().equals(route.getRouteId())) {
@@ -141,7 +141,7 @@ public class RouteService {
      * @param key - identifier
      * @return - instance of target route.
      */
-    public Route findRoute(Long key) {
+    public Route findRoute(final Long key) {
         return routeDao.findByPK(Route.class, key);
     }
 
@@ -151,7 +151,7 @@ public class RouteService {
      * @param routeId - identifier of target route
      * @return - list of station distances.
      */
-    public List<StationDistanceDto> getStationDistances(Long routeId) {
+    public List<StationDistanceDto> getStationDistances(final Long routeId) {
         Route route = routeDao.findByPK(Route.class, routeId);
         if (route != null) {
             List<StationDistance> sdList = distanceDao.getStationsInRoute(route);
@@ -171,7 +171,7 @@ public class RouteService {
      * @param distanceList - list of stationDistances to add in the database.
      * @return -  true, if creating stationDistances success. else return false.
      */
-    public boolean createRoute(Route route, List<StationDistanceDto> distanceList) {
+    public boolean createRoute(final Route route, final List<StationDistanceDto> distanceList) {
         // if not exist yet
         if (route.getTitle().equals("")) {
             return false;
@@ -208,7 +208,7 @@ public class RouteService {
      * @param distanceDto  - dto object with data
      * @return - result string of validation
      */
-    public String isCorrectArrivalStation(List<StationDistanceDto> distanceList, StationDistanceDto distanceDto) {
+    public String isCorrectArrivalStation(final List<StationDistanceDto> distanceList, final StationDistanceDto distanceDto) {
         if (!distanceList.isEmpty()) {
             StationDistanceDto previousStation = distanceList.get(distanceList.size() - 1);
             if (previousStation.getStationName().equals(distanceDto.getStationName())) {
@@ -240,7 +240,7 @@ public class RouteService {
      * @param distanceDto  - dto object with data
      * @return - result validation string
      */
-    public String isCorrectDepartureStation(ArrayList<StationDistanceDto> distanceList, StationDistanceDto distanceDto) {
+    public String isCorrectDepartureStation(final ArrayList<StationDistanceDto> distanceList, final StationDistanceDto distanceDto) {
         if (!distanceList.isEmpty()) {
             StationDistanceDto nextStation = distanceList.get(0);
             if (nextStation.getStationName().equals(distanceDto.getStationName())) {

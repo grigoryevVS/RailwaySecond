@@ -29,7 +29,7 @@ public class UserService {
      * @param user - target user to check.
      * @return - true if we create new one, else return false - such user already exist.
      */
-    public String isRegistrationSuccess(User user) {
+    public String isRegistrationSuccess(final User user) {
         if (!userDao.loginExist(user.getLogin())) {
             if (!userDao.isRegistrationPass(user)) {
                 userDao.create(user);
@@ -46,7 +46,7 @@ public class UserService {
      * @param userId - targets identifier.
      * @return - user instance.
      */
-    public User getUserByPk(Long userId) {
+    public User getUserByPk(final Long userId) {
         return userDao.findByPK(User.class, userId);
     }
 
@@ -56,7 +56,7 @@ public class UserService {
      * @param userId - target user identifier.
      * @return - list of users tickets wrapped by ticketDto to show info on the view.
      */
-    public List<TicketDto> getUsersTicketList(Long userId) {
+    public List<TicketDto> getUsersTicketList(final Long userId) {
         User user = userDao.findByPK(User.class, userId);
         List<Ticket> tickets = user.getTicketList();
         List<TicketDto> ticketDtos = new ArrayList<>();
@@ -72,7 +72,7 @@ public class UserService {
      * @param user - target user
      * @return - result string
      */
-    public String updateUser(User user) {
+    public String updateUser(final User user) {
         if (!userDao.loginCheckForUpdate(user)) {
             if (userDao.isUpdateAccess(user)) {
                 userDao.update(user);
@@ -90,7 +90,7 @@ public class UserService {
      * @param name - users login
      * @return - user instance
      */
-    public User getUserByLogin(String name) {
+    public User getUserByLogin(final String name) {
         return userDao.getUserByLogin(name);
     }
 
@@ -100,7 +100,7 @@ public class UserService {
      * @param user - target user
      * @return - true if his birth date correct, else return false
      */
-    public boolean isCorrectAge(User user) {
+    public boolean isCorrectAge(final User user) {
         Duration interval = new Duration(3468960000000L);
         DateTime birthDate = new DateTime(user.getBirthDate());
         DateTime currentTime = new DateTime();

@@ -43,7 +43,7 @@ public class TrainService {
      * @param train - what train we need to create,
      *              getting from the employee, who fills all its fields.
      */
-    public boolean createTrain(Train train) {
+    public boolean createTrain(final Train train) {
         int capacity = train.getNumberOfSeats();
         if (capacity < 1 || capacity > 400 || trainDao.isTrainExist(train)) {
             return false;
@@ -58,7 +58,7 @@ public class TrainService {
      *
      * @param key - primary key( unique identifier of concrete train, to delete.
      */
-    public boolean deleteTrain(Long key) {
+    public boolean deleteTrain(final Long key) {
         Train train = trainDao.findByPK(Train.class, key);
         if (train != null) {
             if (!scheduleDao.isTrainInSchedule(key)) {
@@ -76,7 +76,7 @@ public class TrainService {
      *
      * @param train - target train to update.
      */
-    public boolean updateTrain(Train train) {
+    public boolean updateTrain(final Train train) {
         int capacity = train.getNumberOfSeats();
         if (capacity < 1 || capacity > 400) {
             return false;
@@ -97,7 +97,7 @@ public class TrainService {
      * @param trainId - target train id to check its schedule
      * @return - counted tickets.
      */
-    public int maxBoughtTicketsOnTrain(Long trainId) {
+    public int maxBoughtTicketsOnTrain(final Long trainId) {
         List<Schedule> scheduleList = scheduleDao.getScheduleListByTrain(trainId);
         int actualTickets = 0;
         for (Schedule schedule : scheduleList) {
@@ -114,7 +114,7 @@ public class TrainService {
      * @param key - primary key.
      * @return - instance of target train.
      */
-    public Train findTrain(Long key) {
+    public Train findTrain(final Long key) {
         return trainDao.findByPK(Train.class, key);
     }
 
@@ -124,7 +124,7 @@ public class TrainService {
      * @param name - target trains name
      * @return - train instance
      */
-    public Train getTrainByName(String name) {
+    public Train getTrainByName(final String name) {
         return trainDao.findByName(name);
     }
 }

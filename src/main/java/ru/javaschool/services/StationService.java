@@ -41,7 +41,7 @@ public class StationService {
      * @return - true if creating success, another way - false.
      */
     @SuppressWarnings("unchecked")
-    public boolean createStation(Station station) {
+    public boolean createStation(final Station station) {
         if (stationDao.isStationExist(station.getName())) {
             return false;
         } else {
@@ -61,7 +61,7 @@ public class StationService {
      * false - if such station included in some routes.
      */
     @SuppressWarnings("unchecked")
-    public boolean deleteStation(Station station) {
+    public boolean deleteStation(final Station station) {
         if (!distanceDao.isStationDistance(station.getStationId())) {
             stationDao.delete(station);
             return true;
@@ -76,7 +76,7 @@ public class StationService {
      *                and changed name.
      */
     @SuppressWarnings("unchecked")
-    public void updateStation(Station station) {
+    public void updateStation(final Station station) {
         stationDao.update(station);
     }
 
@@ -87,7 +87,7 @@ public class StationService {
      * @return - instance of target station.
      */
     @SuppressWarnings("unchecked")
-    public Station findStation(Long key) {
+    public Station findStation(final Long key) {
         return (Station) stationDao.findByPK(Station.class, key);
     }
 
@@ -97,7 +97,7 @@ public class StationService {
      * @param stationName - target name
      * @return - instance of target station.
      */
-    public Station getStationByName(String stationName) {
+    public Station getStationByName(final String stationName) {
         return stationDao.findByName(stationName);
     }
 }

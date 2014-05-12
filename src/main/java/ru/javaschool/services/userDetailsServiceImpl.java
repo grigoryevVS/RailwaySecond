@@ -26,7 +26,7 @@ public class userDetailsServiceImpl implements UserDetailsService {
     private UserDao userDao;
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String login) throws UsernameNotFoundException {
 
         ru.javaschool.model.entities.User user = userDao.getUserByLogin(login);
         if (user == null) {

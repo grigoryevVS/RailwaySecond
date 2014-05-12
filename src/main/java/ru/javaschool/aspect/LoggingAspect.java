@@ -2,8 +2,9 @@ package ru.javaschool.aspect;
 
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 
 /**
  * Annotated class for logging
@@ -14,7 +15,7 @@ public class LoggingAspect {
     private Logger logger = Logger.getLogger(this.getClass());
 
     /**
-     * This vethod implements logging action before methods, which are included in the packages
+     * This method implements logging action before methods, which are included in the packages
      * added to the execution..
      *
      * @param point - where to join
@@ -35,7 +36,7 @@ public class LoggingAspect {
     }
 
     /**
-     * This vethod implements logging action after returning result methods, which are included in the packages
+     * This method implements logging action after returning result methods, which are included in the packages
      * added to the execution..
      *
      * @param point - where to join
@@ -48,22 +49,4 @@ public class LoggingAspect {
         loggerStr.append(returnValue);
         logger.info(loggerStr);
     }
-
-    @Pointcut("execution(public * *Throwable(..))")
-    void throwableMethod() {}
-
-    /**
-     * For exception handling
-     * @param pjp - join point
-     */
-    @Around("throwableMethod()")
-    public void swallowThrowing(ProceedingJoinPoint pjp) {
-        try {
-            pjp.proceed();
-        } catch (Throwable e) {
-            logger.debug("swallow " + e.toString());
-        }
-    }
-
-
 }

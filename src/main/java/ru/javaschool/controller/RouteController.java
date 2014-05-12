@@ -281,7 +281,7 @@ public class RouteController {
                 distanceList = routeService.getStationDistances(routeId);
             } else {
                 distanceList = (List<StationDistanceDto>) session.getAttribute("distanceListUpdate");
-            }
+           }
             if (distanceList != null) {
                 session.setAttribute("distanceListUpdate", distanceList);
             } else {
